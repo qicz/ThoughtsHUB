@@ -1,0 +1,1044 @@
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+ <channel>
+   <title>design-principle on Qicz&#39;s Thoughts HUB</title>
+   <link>https://izcqi.com/tags/design-principle/</link>
+   <description>Recent content in design-principle on Qicz&#39;s Thoughts HUB</description>
+   <generator>Hugo -- gohugo.io</generator>
+   <managingEditor>zcq#zhucongqi.cn (Qicz)</managingEditor>
+   <webMaster>zcq#zhucongqi.cn (Qicz)</webMaster>
+   <copyright>&amp;copy; 2012 - </copyright>
+   <lastBuildDate>Tue, 03 Dec 2019 22:48:20 +0800</lastBuildDate>
+   
+       <atom:link href="https://izcqi.com/tags/design-principle/index.xml" rel="self" type="application/rss+xml" />
+   
+   
+     <item>
+       <title>SpringBoot FatJar vs ThinJar&amp;SpringBoot Thin Planing</title>
+       <link>https://izcqi.com/posts/2019/12/20/springboot-fatjar-vs-thinjar/</link>
+       <pubDate>Fri, 20 Dec 2019 23:54:17 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2019/12/20/springboot-fatjar-vs-thinjar/</guid>
+       <description>
+
+&lt;p&gt;什么是FatJar和ThinJar？&lt;/p&gt;
+
+&lt;h3 id=&#34;fatjar&#34;&gt;FatJar&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;FatJar又叫做UberJar，就是一种&lt;strong&gt;超级Jar&lt;/strong&gt;，其实就是把一个基础Jar及其依赖都打包到一个Jar里面，然后用了它就可以独立工作的Jar。总数很“重”。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;thinjar&#34;&gt;ThinJar&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;ThinJar就是对超级Jar相对应的Jar，“纤瘦”的Jar。只有自身的资源组合（.class，properties等等）。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;从二者的“身段”来看，和字面来看，FatJar就是一种肥Jar，ThinJar就是一种瘦Jar。在SpringBoot中二者的对比就会更加的明显。因为一个通常的SpringBoot应用（Jar）万万都在几MB，而ThinJar的Jar可能就在几KB，大点也就是几十KB的样子。&lt;/p&gt;
+
+&lt;p&gt;如果有一种方式可以让SpringBoot瘦身，你要不要？&lt;/p&gt;
+
+&lt;p&gt;我们先看看为什么要瘦身？&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;因为ThinJar很小，易于部署到服务器（可能是因为我网速慢@.@）。想想如果在一台服务器上部署多个服务的话（也会你不会这样用，但是不一定就不会存在），相同的很多依赖包在网速贼慢的情况下，还得慢慢悠悠的传。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;下面就该看看如何瘦身了。从一本书开始说起，书叫&lt;a href=&#34;https://izcqi.com/ebooks/SpringBoot-2-Recipes.pdf&#34;&gt;《SpringBoot 2 Recipes》&lt;/a&gt;。在书中看了一个thinjar的章节（11-3 Reduce Archive Size Through the Thin Launcher&lt;/p&gt;
+
+&lt;p&gt;Problem）。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Spring Boot, by default, generates a so-called fat JAR, a JAR with all the dependencies inside it. This has some obvious benefits, as the JAR is fully self-contained. However, the JAR size can grow considerably, and when using multiple applications you might want to reuse already downloaded dependencies to reduce the overall footprint.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;然后就看到了这个项目&lt;a href=&#34;https://github.com/spring-projects-experimental/spring-boot-thin-launcher&#34;&gt;Spring Boot Thin Launcher&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;然后整合到了&lt;a href=&#34;https://github.com/LearnedHub/learning-springboot2-LTS&#34;&gt;Learning SpringBoot2 LTS&lt;/a&gt;项目中。先用的thin-layout-1.0.22.RELEASE一直出错，找不到ThinJarLauncher，后来改为thin-layout-1.0.23.RELEASE之后，就ok了(&lt;strong&gt;这个问题耽误了我一天的太多的时间了，不过不尝试怎么知道问题呢！&lt;/strong&gt;)。FatJar从尽30MB，变成了20KB不到。启动方式一样:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;java -jar xx.jar&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;springboot-thin-launcher原理&#34;&gt;SpringBoot Thin Launcher原理&lt;/h3&gt;
+
+&lt;p&gt;我查看了ThinJarLauncher的源码，就是解析生成的ThinJar中的pom.xml，来下载或者直接引用本地的~/.m2/repository中的libs。&lt;/p&gt;
+
+&lt;p&gt;具体怎么使用，参考项目&lt;a href=&#34;https://github.com/LearnedHub/learning-springboot2-LTS&#34;&gt;Learning SpringBoot2 LTS&lt;/a&gt;，参考：&lt;a href=&#34;https://beldon.me/posts/2019/05/22/spring-boot-thin-jar.html&#34;&gt;https://beldon.me/posts/2019/05/22/spring-boot-thin-jar.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;在这种版本&lt;a href=&#34;https://github.com/LearnedHub/learning-springboot2-LTS/tree/31408f802570371a3c16010bdeb6f537adb365a1&#34;&gt;https://github.com/LearnedHub/learning-springboot2-LTS/tree/31408f802570371a3c16010bdeb6f537adb365a1&lt;/a&gt;中使用另外的一种方式，也可以让让Jar小些，但不如thin-launcher效果好。不过在特定情景下（比如web项目的静态资源不需要打包到Jar中时），还是可以用的。参考：&lt;a href=&#34;https://blog.csdn.net/ssrc0604hx/article/details/54175027&#34;&gt;https://blog.csdn.net/ssrc0604hx/article/details/54175027&lt;/a&gt;。在这个参考中，作者使用了excludeGroupIds来去除需要独立出来的libs，其实使用include，仅包括少数需要（比如子module）的即可。比如在&lt;a href=&#34;https://github.com/LearnedHub/learning-springboot2-LTS/blob/31408f802570371a3c16010bdeb6f537adb365a1/web/pom.xml&#34;&gt;Learning SpringBoot2 LTS&lt;/a&gt;中我的做法是：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&amp;lt;!-- just include self --&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;include&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;${groupId}&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+  	&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;${artifactId}&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;/include&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+     </item>
+   
+     <item>
+       <title>MyBatis Plugin工作机理</title>
+       <link>https://izcqi.com/posts/2019/12/09/mybatis-plugins-principle/</link>
+       <pubDate>Mon, 09 Dec 2019 22:00:43 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2019/12/09/mybatis-plugins-principle/</guid>
+       <description>&lt;p&gt;故事开头：
+在使用MyBatis的RowBounds时，发现结果没有和理论的一致，然后深入研究RowBounds的实现原理：&lt;strong&gt;MyBatis仅借助RowBounds在内存中完成了数据的分页处理——逻辑分页&lt;/strong&gt;。还有一种是&lt;strong&gt;物理分页&lt;/strong&gt;，就是常见的Limit offset, limit的方式（MySQL）。然后查资料，研究找到了很多的实现方式。我先尝试了一下其中的一种：使用Interceptor的方式。大体的逻辑是在当前执行的SQL后面把RowBounds的offset，limit按照&lt;strong&gt;limit offset,limit&lt;/strong&gt;的方式拼接在SQL后面。&lt;/p&gt;
+
+&lt;p&gt;实现如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;@Intercepts({@Signature(type &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; Executor.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, method &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;query&amp;#34;&lt;/span&gt;, args &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; {MappedStatement.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, Object.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, RowBounds.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, ResultHandler.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;})})
+public class PageInterceptor implements Interceptor {
+
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        Object[] args &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; invocation.&lt;span style=&#34;color:#50fa7b&#34;&gt;getArgs&lt;/span&gt;();
+        MappedStatement ms &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; (MappedStatement) args[0]; &lt;span style=&#34;color:#6272a4&#34;&gt;// MappedStatement
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;        BoundSql boundSql &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; ms.&lt;span style=&#34;color:#50fa7b&#34;&gt;getBoundSql&lt;/span&gt;(args[1]); &lt;span style=&#34;color:#6272a4&#34;&gt;// Object parameter
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;        RowBounds rb &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; (RowBounds) args[2]; &lt;span style=&#34;color:#6272a4&#34;&gt;// RowBounds
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;==&lt;/span&gt; rb &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; rb &lt;span style=&#34;color:#ff79c6&#34;&gt;==&lt;/span&gt; RowBounds.&lt;span style=&#34;color:#50fa7b&#34;&gt;DEFAULT&lt;/span&gt;) {
+            &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; invocation.&lt;span style=&#34;color:#50fa7b&#34;&gt;proceed&lt;/span&gt;();
+        }
+
+        &lt;span style=&#34;color:#6272a4&#34;&gt;// append limit statement
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;        StringBuilder sqlBuidler &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; StringBuilder(boundSql.&lt;span style=&#34;color:#50fa7b&#34;&gt;getSql&lt;/span&gt;());
+        String limit &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; String.&lt;span style=&#34;color:#50fa7b&#34;&gt;format&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34; limit %d,%d&amp;#34;&lt;/span&gt;, rb.&lt;span style=&#34;color:#50fa7b&#34;&gt;getOffset&lt;/span&gt;(), rb.&lt;span style=&#34;color:#50fa7b&#34;&gt;getLimit&lt;/span&gt;());
+        sqlBuidler.&lt;span style=&#34;color:#50fa7b&#34;&gt;append&lt;/span&gt;(limit);
+
+        &lt;span style=&#34;color:#6272a4&#34;&gt;// replace sqlSource by reflection
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;        SqlSource sqlSource &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; StaticSqlSource(ms.&lt;span style=&#34;color:#50fa7b&#34;&gt;getConfiguration&lt;/span&gt;(), sqlBuidler.&lt;span style=&#34;color:#50fa7b&#34;&gt;toString&lt;/span&gt;(), boundSql.&lt;span style=&#34;color:#50fa7b&#34;&gt;getParameterMappings&lt;/span&gt;());
+        Field field &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; MappedStatement.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;getDeclaredField&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;sqlSource&amp;#34;&lt;/span&gt;);
+        field.&lt;span style=&#34;color:#50fa7b&#34;&gt;setAccessible&lt;/span&gt;(&lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;);
+        field.&lt;span style=&#34;color:#50fa7b&#34;&gt;set&lt;/span&gt;(ms, sqlSource);
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; invocation.&lt;span style=&#34;color:#50fa7b&#34;&gt;proceed&lt;/span&gt;();
+    }
+
+    @Override
+    public Object plugin(Object target) {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; Plugin.&lt;span style=&#34;color:#50fa7b&#34;&gt;wrap&lt;/span&gt;(target, &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;);
+    }
+
+    @Override
+    public void setProperties(Properties properties) {
+
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;别忘记在&lt;strong&gt;mybatis-config.xml&lt;/strong&gt;中配置plugins：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;  &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;plugin&lt;/span&gt; &lt;span style=&#34;color:#50fa7b&#34;&gt;interceptor=&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;cn.zhucongqi.interceptor.PageInterceptor&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;然后测试，成功了。&lt;/p&gt;
+
+&lt;p&gt;那么下面问题来了？这Interceptor是如何工作的，工作原理是什么？ 然后就开始打断点跟踪如何实现的，然后一步步发现了MyBatis设计真的精妙得很哟。&lt;/p&gt;
+
+&lt;p&gt;正式进入正题，来说说Interceptor的工作原理。&lt;/p&gt;
+
+&lt;p&gt;Interceptor字面意思是拦截器，在很多得很有用应用。顾名思义，就是在do一件事之前先拦截一下，所以我们再做物理分页时，才有机会去干预，去拼接SQL。&lt;/p&gt;
+
+&lt;p&gt;从MyBatis-config.xml的配置文件来看，其属于MyBatis的Plugin范畴。&lt;/p&gt;
+
+&lt;p&gt;所以研究Plugin成为了重头戏。&lt;/p&gt;
+
+&lt;p&gt;从SqlSession入手，openSession时在DefaultSqlSessionFactory的私有方法&lt;strong&gt;openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit)&lt;/strong&gt;中有这样一段代码&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt; final Executor executor &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; configuration.&lt;span style=&#34;color:#50fa7b&#34;&gt;newExecutor&lt;/span&gt;(tx, execType);&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这段代码成了一个开头。再深入卡一下newExecutor的实现&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;public Executor newExecutor(Transaction transaction, ExecutorType executorType) {
+	&lt;span style=&#34;color:#6272a4&#34;&gt;// 确保ExecutorType合法
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;    executorType &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; executorType &lt;span style=&#34;color:#ff79c6&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;?&lt;/span&gt; defaultExecutorType &lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; executorType;
+    executorType &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; executorType &lt;span style=&#34;color:#ff79c6&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;?&lt;/span&gt; ExecutorType.&lt;span style=&#34;color:#50fa7b&#34;&gt;SIMPLE&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; executorType;
+    Executor executor;
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (ExecutorType.&lt;span style=&#34;color:#50fa7b&#34;&gt;BATCH&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;==&lt;/span&gt; executorType) { &lt;span style=&#34;color:#6272a4&#34;&gt;// 如果是Batch类型选择BatchExecutor
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;      executor &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; BatchExecutor(&lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;, transaction);
+    } &lt;span style=&#34;color:#ff79c6&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (ExecutorType.&lt;span style=&#34;color:#50fa7b&#34;&gt;REUSE&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;==&lt;/span&gt; executorType) { &lt;span style=&#34;color:#6272a4&#34;&gt;// 如果是Reuse类型选择ReuseExecutor
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;      executor &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; ReuseExecutor(&lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;, transaction);
+    } &lt;span style=&#34;color:#ff79c6&#34;&gt;else&lt;/span&gt; {
+      executor &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; SimpleExecutor(&lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;, transaction);&lt;span style=&#34;color:#6272a4&#34;&gt;// 否则是默认的SimpleExecutor
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;    }
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (cacheEnabled) {
+      executor &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; CachingExecutor(executor); &lt;span style=&#34;color:#6272a4&#34;&gt;// 二级缓存，用CachingExecutor包装一下
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;    }
+    &lt;span style=&#34;color:#6272a4&#34;&gt;// 这里⬇️重要了
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;    executor &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; (Executor) interceptorChain.&lt;span style=&#34;color:#50fa7b&#34;&gt;pluginAll&lt;/span&gt;(executor);
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; executor;
+  }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;重点就在这里了&lt;code&gt;executor = (Executor) interceptorChain.pluginAll(executor);&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;再看看这里做了什么？&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;  public Object pluginAll(Object target) {
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;for&lt;/span&gt; (Interceptor interceptor &lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; interceptors) {
+      target &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; interceptor.&lt;span style=&#34;color:#50fa7b&#34;&gt;plugin&lt;/span&gt;(target);
+    }
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; target;
+  }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;好像又找到了一线索，这个的plugin方法和PageInterceptor中的plugin方法很像？看调用关系，果然就是它。&lt;/p&gt;
+
+&lt;p&gt;那么Plugin成了下一个线索。然后发现Plugin implements InvocationHandler，看来Proxy了。往下走，先来看看Plugin.wrap其实现：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;public static Object wrap(Object target, Interceptor interceptor) {
+    Map&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt;, Set&amp;lt;Method&amp;gt;&amp;gt; signatureMap &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; getSignatureMap(interceptor);
+    Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; type &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; target.&lt;span style=&#34;color:#50fa7b&#34;&gt;getClass&lt;/span&gt;();
+    Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt;[] interfaces &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; getAllInterfaces(type, signatureMap);
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (interfaces.&lt;span style=&#34;color:#50fa7b&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt; 0) {
+      &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; Proxy.&lt;span style=&#34;color:#50fa7b&#34;&gt;newProxyInstance&lt;/span&gt;(
+          type.&lt;span style=&#34;color:#50fa7b&#34;&gt;getClassLoader&lt;/span&gt;(),
+          interfaces,
+          &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; Plugin(target, interceptor, signatureMap));
+    }
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; target;
+  }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;果然发现了&lt;code&gt;Proxy.newProxyInstance&lt;/code&gt;，这就是jdk动态代理了。那么这里的target就是interceptorChain.pluginAll(executor)中的executor了。那么对应type.getClassLoader()就是BatchExecutor或SimpleExecutor或ReuseExecutor或CachingExecutor的classloader了，那么在这里又动态创建了一个xxExecutor？继续往下找答案。&lt;/p&gt;
+
+&lt;p&gt;在这个wrap方法中，还有两个本地方法的调用一个是getSignatureMap，一个是getAllInterfaces。先看看代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;private static Map&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt;, Set&amp;lt;Method&amp;gt;&amp;gt; getSignatureMap(Interceptor interceptor) {
+    Intercepts interceptsAnnotation &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; interceptor.&lt;span style=&#34;color:#50fa7b&#34;&gt;getClass&lt;/span&gt;().&lt;span style=&#34;color:#50fa7b&#34;&gt;getAnnotation&lt;/span&gt;(Intercepts.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;);
+    &lt;span style=&#34;color:#6272a4&#34;&gt;// issue #251
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (interceptsAnnotation &lt;span style=&#34;color:#ff79c6&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;) {
+      &lt;span style=&#34;color:#ff79c6&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; PluginException(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;No @Intercepts annotation was found in interceptor &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; interceptor.&lt;span style=&#34;color:#50fa7b&#34;&gt;getClass&lt;/span&gt;().&lt;span style=&#34;color:#50fa7b&#34;&gt;getName&lt;/span&gt;());
+    }
+    Signature[] sigs &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; interceptsAnnotation.&lt;span style=&#34;color:#50fa7b&#34;&gt;value&lt;/span&gt;();
+    Map&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt;, Set&amp;lt;Method&amp;gt;&amp;gt; signatureMap &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt;();
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;for&lt;/span&gt; (Signature sig &lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; sigs) {
+      Set&amp;lt;Method&amp;gt; methods &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; signatureMap.&lt;span style=&#34;color:#50fa7b&#34;&gt;computeIfAbsent&lt;/span&gt;(sig.&lt;span style=&#34;color:#50fa7b&#34;&gt;type&lt;/span&gt;(), k &lt;span style=&#34;color:#ff79c6&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; HashSet&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt;());
+      &lt;span style=&#34;color:#ff79c6&#34;&gt;try&lt;/span&gt; {
+        Method method &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; sig.&lt;span style=&#34;color:#50fa7b&#34;&gt;type&lt;/span&gt;().&lt;span style=&#34;color:#50fa7b&#34;&gt;getMethod&lt;/span&gt;(sig.&lt;span style=&#34;color:#50fa7b&#34;&gt;method&lt;/span&gt;(), sig.&lt;span style=&#34;color:#50fa7b&#34;&gt;args&lt;/span&gt;());
+        methods.&lt;span style=&#34;color:#50fa7b&#34;&gt;add&lt;/span&gt;(method);
+      } &lt;span style=&#34;color:#ff79c6&#34;&gt;catch&lt;/span&gt; (NoSuchMethodException e) {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; PluginException(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;Could not find method on &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; sig.&lt;span style=&#34;color:#50fa7b&#34;&gt;type&lt;/span&gt;() &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34; named &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; sig.&lt;span style=&#34;color:#50fa7b&#34;&gt;method&lt;/span&gt;() &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;. Cause: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; e, e);
+      }
+    }
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; signatureMap;
+  }
+
+  private static Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt;[] getAllInterfaces(Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; type, Map&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt;, Set&amp;lt;Method&amp;gt;&amp;gt; signatureMap) {
+    Set&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&amp;gt;&lt;/span&gt; interfaces &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; HashSet&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt;();
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;while&lt;/span&gt; (type &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;) {
+      &lt;span style=&#34;color:#ff79c6&#34;&gt;for&lt;/span&gt; (Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; c &lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; type.&lt;span style=&#34;color:#50fa7b&#34;&gt;getInterfaces&lt;/span&gt;()) {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (signatureMap.&lt;span style=&#34;color:#50fa7b&#34;&gt;containsKey&lt;/span&gt;(c)) {
+          interfaces.&lt;span style=&#34;color:#50fa7b&#34;&gt;add&lt;/span&gt;(c);
+        }
+      }
+      type &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; type.&lt;span style=&#34;color:#50fa7b&#34;&gt;getSuperclass&lt;/span&gt;();
+    }
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; interfaces.&lt;span style=&#34;color:#50fa7b&#34;&gt;toArray&lt;/span&gt;(&lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt;[interfaces.&lt;span style=&#34;color:#50fa7b&#34;&gt;size&lt;/span&gt;()]);
+  }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;从代码实现来看，是根据Intercepts的注解来获取对应的Signature和Method信息，果然在PagerInterceptor的class上有这样的一个注解：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;@Intercepts({@Signature(type &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; Executor.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, method &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;query&amp;#34;&lt;/span&gt;, args &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; {MappedStatement.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, Object.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, RowBounds.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, ResultHandler.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;})})&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;结合getSignatureMap和getAllInterfaces两个方法，看到目的是为了找到Executor.class的一个query方法，其定义是这样的：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;query(MappedStatement ms, Object obj, RowBounds rowBounds, ResultHandler resultHandler);&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;原来越接近真相咯。这个方法在Executor接口中的确有对应的声明，如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;E&amp;gt; List&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;E&amp;gt; query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;其在各个Executor也有对应的实现。&lt;/p&gt;
+
+&lt;p&gt;解开真相前，再看看Plugin的invoke方法实现：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;try&lt;/span&gt; {
+      Set&amp;lt;Method&amp;gt; methods &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; signatureMap.&lt;span style=&#34;color:#50fa7b&#34;&gt;get&lt;/span&gt;(method.&lt;span style=&#34;color:#50fa7b&#34;&gt;getDeclaringClass&lt;/span&gt;());
+      &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (methods &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; methods.&lt;span style=&#34;color:#50fa7b&#34;&gt;contains&lt;/span&gt;(method)) {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; interceptor.&lt;span style=&#34;color:#50fa7b&#34;&gt;intercept&lt;/span&gt;(&lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; Invocation(target, method, args));
+      }
+      &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; method.&lt;span style=&#34;color:#50fa7b&#34;&gt;invoke&lt;/span&gt;(target, args);
+    } &lt;span style=&#34;color:#ff79c6&#34;&gt;catch&lt;/span&gt; (Exception e) {
+      &lt;span style=&#34;color:#ff79c6&#34;&gt;throw&lt;/span&gt; ExceptionUtil.&lt;span style=&#34;color:#50fa7b&#34;&gt;unwrapThrowable&lt;/span&gt;(e);
+    }
+  }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;那么真相就来咯。路径是这样的：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1. openSession时，在DefaultSqlSessionFactory中根据executorType获取对应的Executor；&lt;/li&gt;
+&lt;li&gt;2. 如果有配置Plugin，那么executor = (Executor) interceptorChain.pluginAll(executor);就会工作，会在创建好对应的Executor后，在使用Plugin的wrap方法wrap一下，其实就是获取其Intercepts注解的Signature，以此获取对应的Method；&lt;/li&gt;
+&lt;li&gt;3. 根据Executor——target的type和对应的Interfaces，使用jdk的动态代理生成一个新的Executor；&lt;/li&gt;
+&lt;li&gt;4. 动态生成了新的Executor，那么mapper调用时会触发它的任意方法时，都会触发对应的InnovationHandler也就Plugin的invoke方法；&lt;/li&gt;
+&lt;li&gt;5. 在invoke方法中，根据对应的有@Intercepts注解的Interceptor的SignatureMap和当前调用的method来判断，将与Intercepts的Signature对应的方法调用进行&lt;strong&gt;拦截&lt;/strong&gt;——调用Interceptor的intercept方法。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;那么在PageInterceptor中，就是Executor调动query(MappedStatement ms, Object obj, RowBounds rowBounds, ResultHandler resultHandler)&lt;strong&gt;前&lt;/strong&gt;就会先调用PageInterceptor的intercept方法，从而实现对操作的拦截。&lt;/p&gt;
+
+&lt;p&gt;搞定！！！&lt;/p&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;https://pagehelper.github.io/docs/interceptor/&#34;&gt;https://pagehelper.github.io/docs/interceptor/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;2019.12.10更新&lt;/p&gt;
+
+&lt;p&gt;在拦截相似方法，仅参数列表不一样的interceptor时，如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;E&amp;gt; List&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;E&amp;gt; query(
+      MappedStatement ms,
+      Object parameter,
+      RowBounds rowBounds,
+      ResultHandler resultHandler,
+      CacheKey cacheKey,
+      BoundSql boundSql) throws SQLException;
+
+&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;E&amp;gt; List&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;E&amp;gt; query(
+      MappedStatement ms,
+      Object parameter,
+      RowBounds rowBounds,
+      ResultHandler resultHandler) throws SQLException;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;需要注意插件配置顺序：按照参数数量，倒序在MyBatis-config.xml中配置，这样能确保，每一个interceptor都能正常工作。因为对应不同的参数的方法，在拦截时，对应的调用顺序会被打乱，导致部分拦截无法工作。比如query拦截，直接调用了query的6参方法，那么对4参的方法拦截就不能生效——因为跳过了4参方法的调用。所以按照参数数量倒序配置，执行时会按照参数数量从少到多的顺序执行，保证每个interceptor都能正常工作。&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>快速的生成你需要的.gitignore文件</title>
+       <link>https://izcqi.com/posts/2019/12/08/generate-gitigore-file/</link>
+       <pubDate>Sun, 08 Dec 2019 01:02:50 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2019/12/08/generate-gitigore-file/</guid>
+       <description>
+
+&lt;h3 id=&#34;怎样在项目中快速的生成-gitignore文件呢&#34;&gt;怎样在项目中快速的生成.gitignore文件呢？&lt;/h3&gt;
+
+&lt;p&gt;使用git过程中，重视需要加入gitignore忽略文件把项目中不必要的文件忽略掉。但是每次都拷贝之前旧的文件很不方便。而且，针对不同的环境，不同的程序语言，使用的忽略文件可能还不一样，如何快速的生成对应的 ignore 文件呢？&lt;/p&gt;
+
+&lt;p&gt;ps：因为我在 mac 平台，我就以 mac 平台举例了。&lt;/p&gt;
+
+&lt;h3 id=&#34;gitignore-io-帮助完成ignore文件的自动化生成&#34;&gt;gitignore.io 帮助完成ignore文件的自动化生成&lt;/h3&gt;
+
+&lt;p&gt;在Terminal中执行如下操作&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;function gi() { curl -sL https://www.gitignore.io/api/\$@ ;}&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;~/.bash_profile &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;source&lt;/span&gt; ~/.bash_profile&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;使用举例&#34;&gt;使用举例&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;需要macOS下使用Idea(intellij)、Maven开发 Java的ignore，在项目根目录下（.git 文件夹所在目录）执行如下操作&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;gi java,macos,maven,intellij &amp;gt;&amp;gt; .gitignore&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;需要 macOS下使用XCode,Objective-C开发App的ignore&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;gi macos,xcode,objective-c &amp;gt;&amp;gt; .gitignore&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;特别注意：&lt;strong&gt;gi使用时，均为小写&lt;/strong&gt;。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;更多查看这里 &lt;a href=&#34;https://docs.gitignore.io/install/command-line&#34;&gt;https://docs.gitignore.io/install/command-line&lt;/a&gt;&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>软件设计原则及常用设计模式</title>
+       <link>https://izcqi.com/posts/2019/12/03/design-principles-patterns-summary/</link>
+       <pubDate>Tue, 03 Dec 2019 22:48:20 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2019/12/03/design-principles-patterns-summary/</guid>
+       <description>
+
+&lt;h1 id=&#34;软件设计原则&#34;&gt;软件设计原则&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;开闭原则 Open-Closed Principle, OCP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;软件实体如类、模块和函数应该对扩展开放，对修改关闭。 所谓的开闭，也正是对扩展和修改两个行为的一个原则。&lt;strong&gt;用抽象构建框架，用实现扩展细节。&lt;/strong&gt;可提高软件系统的可复用性和可维护性。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;单一职责原则 Simple Responsibility Principle，SRP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;不要存在多于一个导致类变更的原因。如有一个 Class 负责两个职责，一旦发生需求变化，修改其中一个职责的逻辑代码，有可能会导致另一个职责的功能发生故障——这个 Class 就存在了两个导致类变更的因素。此时，我们就需要给两个职责分别用两个 Class 来实现，实现解耦职责的清晰拆分。后期的需要变更维护互不影响。如此设计，可降低类的复杂度，提高类的可读性，提高系统的可维护性，降低变更引起的风险。&lt;strong&gt;一个 Class/Interface/Method只负责一项职能.&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;依赖倒置原则 Dependence Inversion Principle，DIP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;设计代码结构时，高层模块不应该依赖底层模块，二者都应该是依赖其抽象。&lt;strong&gt;抽象不应依赖细节；细节应该依赖抽象。&lt;/strong&gt;通过依赖倒置，可减少类与类的耦合性，提高系统的稳定性，提高代码的可读性和可维护性，并可以降低修改程序所造成的风险。【&lt;strong&gt;依赖注入&lt;/strong&gt;】&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;接口隔离原则 Interface Segregation Principle，ISP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;使用多个专门的接口，而不是用一个单一的总接口，客户端不应该依赖它不需要的接口。符合 &lt;strong&gt;高内聚低耦合&lt;/strong&gt;，使得类具有很好的可读性、可扩展性和可维护性。
+设计时应注意&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一个类对一类的依赖应该建立在最小的接口之上；&lt;/li&gt;
+&lt;li&gt;建立单一接口，不要建立炮打臃肿的接口；&lt;/li&gt;
+&lt;li&gt;尽量细化接口，接口中的方法尽量少（不是越少越好，适度）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;迪米特法则 Law of Demeter ，LoD / 最少知道原则（Least Knowledge Principle，LKP）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;一个对象应该对其他对象保持最少的了解。尽量降低类与类之间的耦合。&lt;strong&gt;主要强调只和朋友交流，不和陌生人说话。&lt;/strong&gt;出现在成员变量、方法的输入、输出参数中的类都可以称之为成员朋友类，而出现在方法体内部的类不属于朋友类。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;里氏替换原则 Liskov Substitution Principle，LSP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;如果每一个类型为 T1 的对象 o1都有类型为 T2 的对应 o2，使用以 T1 定义的所有程序 P 在所有的对象 o1都替换成 o2 时，程序 P 的行为没有发生变化，那么类型 T2 是类型 T1 的子类。
+一个软件实体如果适用于一个父类的话，那么一定适用于其子类，所有引用父类的地方必须能透明地使用其子类的对象，子类对象能够替换父类对象，而不影响程序原来的逻辑。&lt;strong&gt;子类可以扩展父类的功能，但不能改变父类原有的功能。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;子类可以实现父类的抽象方法，但不能覆盖父类的非抽象方法；&lt;/li&gt;
+&lt;li&gt;子类中可以增加自己特有的方法；&lt;/li&gt;
+&lt;li&gt;当子类的方法重载Overloading父类的方法时，方法的前置条件（即方法的输入/入参）要比父类方法的输入参数更宽松；&lt;/li&gt;
+&lt;li&gt;当子类的方法实现父类的方式时（重写 Override/重载 Overloading 或实现抽象方法），方法的后置条件（即方法的输出/返回值）要比父类更严格或相等。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;某种情况下会违背开闭原则。&lt;/strong&gt;
+该原则的优点：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;约束继承泛滥，开闭原则的一种体现；&lt;/li&gt;
+&lt;li&gt;加强程序的健壮性，同时变更时也可以做到非常好的兼容性，提高程序的维护性、扩展性，降低需要变更时引入的风险。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;合成复用原则 Composite/Aggregate Reuse Principle，CARP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;尽量使用对象组合（Has-a）/聚合（Contain-a），而不是继承关系达到软件复用的目的。可以使用系统更加灵活，降低类与类之间的耦合度，一个类的变化对其他类造成的影响相对较少。&lt;strong&gt;继承：白箱复用&lt;/strong&gt;，相当于把所有的实现细节暴露给子类。&lt;strong&gt;组合/聚合：黑箱复用&lt;/strong&gt;，对类以外的对象是无法获取到其实现细节的。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;设计原则总结&#34;&gt;设计原则总结&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;在实际开发中，并不是一定要求所有代码都遵循设计原则，要在适当的场景遵循设计原则，体现一种平衡取舍。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;设计模式&#34;&gt;设计模式&lt;/h1&gt;
+
+&lt;h2 id=&#34;工厂模式&#34;&gt;工厂模式&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;简单工厂模式 Simple Factory Pattern&lt;/strong&gt;
+
+&lt;ul&gt;
+&lt;li&gt;由一个工厂对象决定创建出哪一种产品类的实例；&lt;/li&gt;
+&lt;li&gt;创建型模式，不属于 GOF(The authors Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides are often referred to as the GoF, or Gang of Four.)23 中设计模式；&lt;/li&gt;
+&lt;li&gt;适用场景：
+
+&lt;ul&gt;
+&lt;li&gt;工厂类负责创建的对象较少；&lt;/li&gt;
+&lt;li&gt;客户端只需要传入工厂类的参数，对应如何创建对象的逻辑不需要关系。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;优点：
+
+&lt;ul&gt;
+&lt;li&gt;只需传入一个正确的参数，就可以获取你所需要的对应，无须知道其创建的细节。&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;缺点：
+
+&lt;ul&gt;
+&lt;li&gt;工厂类职责过重，增加新的产品时需要修改工厂类的判断逻辑，违背开闭原则；&lt;/li&gt;
+&lt;li&gt;不易于扩展过于复杂的产品结构。&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;eg:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;Logger.&lt;span style=&#34;color:#50fa7b&#34;&gt;getLogger&lt;/span&gt;(ClassName)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;工厂方法模式 Factory Method Pattern&lt;/strong&gt;
+
+&lt;ul&gt;
+&lt;li&gt;定义一个创建对象的接口，让实现这个接口的类自己来决定实例化哪个类，工厂方法让类的实例化推迟到到子类中进行；&lt;/li&gt;
+&lt;li&gt;创建型模式。&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;使用场景：
+
+&lt;ul&gt;
+&lt;li&gt;创建对象需要大量重复的代码；&lt;/li&gt;
+&lt;li&gt;客户端（应用层）不依赖产品类实例如何创建、实现等细节；&lt;/li&gt;
+&lt;li&gt;一个类通过其子类来指定创建哪个对象。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;优点：
+
+&lt;ul&gt;
+&lt;li&gt;用户只需要管理所需产品对应的工厂，无须关心创建细节；&lt;/li&gt;
+&lt;li&gt;加入新的产品符合开闭原则，提高了系统的可扩展性。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;缺点：
+
+&lt;ul&gt;
+&lt;li&gt;类的个人易变得过多，增加了代码结构的复杂度；&lt;/li&gt;
+&lt;li&gt;增加了系统的抽象性和理解难度。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;VS &lt;strong&gt;简单工厂模式&lt;/strong&gt;，遵循开闭原则，增加新的产品时，有对应的产品的子工厂去完成。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;抽象工程模式 Abstract Factory Pattern&lt;/strong&gt;
+
+&lt;ul&gt;
+&lt;li&gt;提供一个创建一系列相关或相互依赖对象的接口，无须指定他们的具体的类；&lt;strong&gt;(在设计规则时，具体的业务逻辑都还未确定的情况，具体实现依靠工厂，高度抽象的工厂)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;创建型设计模式。&lt;/li&gt;
+&lt;li&gt;适用场景：
+
+&lt;ul&gt;
+&lt;li&gt;客户端（应用层）不依赖产品类实现如何被创建、实现等细节；&lt;strong&gt;（与工厂方法模式有相同处）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;强调一系列相关的产品对象（属于同一产品族）一起使用创建对象需要大量重复的代码；&lt;/li&gt;
+&lt;li&gt;提供一个产品类的库，所有产品以同样的接口出现，从而使客户端不依赖于具体实现。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;优点：
+
+&lt;ul&gt;
+&lt;li&gt;具体产品在应用层代码隔离，无须关心创建细节；&lt;/li&gt;
+&lt;li&gt;将一个系列的产品族统一到一起创建。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;缺点：
+
+&lt;ul&gt;
+&lt;li&gt;规定了所有可能被创建的产品集合，产品族中扩展新的产品困难，需要修改抽象工厂的接口；&lt;/li&gt;
+&lt;li&gt;增加了系统的抽象性和理解难度；&lt;strong&gt;（与工厂方法模式有相同处）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;不符合开闭原则，顶级工厂在新增产品时，需要修改其实现，而这样修改会影响子工厂的变动。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;单例模式-singleton-pattern&#34;&gt;单例模式 Singleton Pattern&lt;/h2&gt;
+
+&lt;p&gt;点击查看 &amp;gt;&amp;gt; &lt;a href=&#34;https://izcqi.com/2019-12-02-design-patterns-singleton/&#34;&gt;单例模式&lt;/a&gt; &amp;lt;&amp;lt;&lt;/p&gt;
+
+&lt;h2 id=&#34;原型模式prototype-pattern&#34;&gt;原型模式Prototype Pattern&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;原型实例指定创建对象的种类，通过靠谱这些原型创建新的对象&lt;/li&gt;
+&lt;li&gt;调用者无须知道任何创建细节，不用调用构造函数&lt;/li&gt;
+&lt;li&gt;创建型模式&lt;/li&gt;
+&lt;li&gt;适用场景
+
+&lt;ul&gt;
+&lt;li&gt;类初始化消耗资源较多&lt;/li&gt;
+&lt;li&gt;new产生的一个对象需要繁琐的过程（数据准备，访问权限等）&lt;/li&gt;
+&lt;li&gt;构造函数较复杂&lt;/li&gt;
+&lt;li&gt;循环体中生产大量对象&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;代理模式-proxy-pattern&#34;&gt;代理模式 Proxy Pattern&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;造成系统设计中类的数目增加&lt;/li&gt;
+&lt;li&gt;客户端与目标对象（委托类）之间加了一个代理对象（代理类），造成请求处理速度变慢&lt;/li&gt;
+&lt;li&gt;增加系统的复杂度&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;委派模式-delegate-pattern&#34;&gt;委派模式 Delegate Pattern&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;精简程序逻辑，提升代码可读性&lt;/li&gt;
+&lt;li&gt;全权静态代理&lt;/li&gt;
+&lt;li&gt;不属于 GOF23 之一&lt;/li&gt;
+&lt;li&gt;行为型模式&lt;/li&gt;
+&lt;li&gt;命名含：Delegate或Dispatcher&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;eg:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;HttpServlet&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&#34;策略模式-strategy-pattern&#34;&gt;策略模式 Strategy Pattern&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;定义了算法家族、分别封装起来，让它们之间可以相互替换，此模式让算法的变化不会影响到使用算法的用户；&lt;/li&gt;
+&lt;li&gt;消除程序中大量的if&amp;hellip;else&amp;hellip; 和switch语句。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;提供给用户选择，关心的是结果，不能干预逻辑和流程，只有选择权和干预权。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;优点：
+
+&lt;ul&gt;
+&lt;li&gt;符合开闭原则；&lt;/li&gt;
+&lt;li&gt;避免使用多重条件转移原件，if&amp;hellip;else&amp;hellip;语句、switch 语句 ；&lt;/li&gt;
+&lt;li&gt;提高算法的保密性和安全性。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;缺点：
+
+&lt;ul&gt;
+&lt;li&gt;客户端必须知道所有的策略，并且自行决定使用哪一个策略类；&lt;/li&gt;
+&lt;li&gt;代码中会产生非常多策略类，增加维护难度。&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;模板模式-template-pattern-模板方法模式template-method-pattern&#34;&gt;模板模式 Template Pattern/模板方法模式Template Method Pattern&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;适用场景
+
+&lt;ul&gt;
+&lt;li&gt;一次性实现一个算法的不变部分，将可变的行为留给子类来实现；&lt;/li&gt;
+&lt;li&gt;各子类中公共的行为被提取出来并集中到一个公共的父类中，避免代码的重复。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;钩子方法：控制流程的方法，交给子类去动态控制。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;关心的是流程，对流程可进行微调，有干预权，可干预内在逻辑。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;优点：
+
+&lt;ul&gt;
+&lt;li&gt;提高代码的复用性；&lt;/li&gt;
+&lt;li&gt;提高代码的扩展性；&lt;/li&gt;
+&lt;li&gt;符合开闭原则。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;缺点：
+
+&lt;ul&gt;
+&lt;li&gt;类数目增加；&lt;/li&gt;
+&lt;li&gt;间接的增加了系统实现的复杂度；&lt;/li&gt;
+&lt;li&gt;继承关系的自身缺点，如父类添加新的抽象方法，所有子类都需要改一遍。&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;适配器模式-adapter-pattern&#34;&gt;适配器模式 Adapter Pattern&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一个类的接口转化成客户期望的另一个接口，使原本的接口不兼容（&lt;strong&gt;support&lt;/strong&gt;）的类可以一起工作。&lt;/li&gt;
+&lt;li&gt;结构型设计模式。&lt;/li&gt;
+&lt;li&gt;适用场景：
+
+&lt;ul&gt;
+&lt;li&gt;已经存在的类，它的方法和需求不匹配（方法结果相同或相似）的情况；&lt;/li&gt;
+&lt;li&gt;适配器模式不是软件设计阶段需要考虑的设计模式，是随着软件维护由于不同产品、不同厂家造成功能类似而接口不相同情况下的解决方案。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;有点类似&lt;strong&gt;静态代理&lt;/strong&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;优点：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;提高类的透明性和复用，现有的类复用但不需要改变；&lt;/li&gt;
+&lt;li&gt;目标类和适配器类解耦，提供程序的扩展性；&lt;/li&gt;
+&lt;li&gt;在很多业务场景中符合开闭原则。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;缺点：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;适配器编写过程需要全面考虑，可能会增加系统的复杂性；&lt;/li&gt;
+&lt;li&gt;增加代码的阅读难度，降低代码可读性，过度使用适配器会使系统代码变得凌乱。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;装饰器模式-decorator-pattern&#34;&gt;装饰器模式 Decorator Pattern&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;对象组合（Has-a）/聚合（Contain-a）&lt;/strong&gt;？？&lt;/li&gt;
+&lt;li&gt;比继承更具弹性&lt;/li&gt;
+&lt;li&gt;优点：
+
+&lt;ul&gt;
+&lt;li&gt;继承的有力补充，比继承灵活，不改变原有对象的情况下动态地给一个对象扩展功能，即插即用；&lt;/li&gt;
+&lt;li&gt;通过使用不同装饰类以及这些装饰类的排列组合，可以实现不同效果；&lt;/li&gt;
+&lt;li&gt;装饰者完全遵守开闭原则。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;缺点：
+
+&lt;ul&gt;
+&lt;li&gt;会出现更多的代码，更多的类，增加程序复杂性；&lt;/li&gt;
+&lt;li&gt;动态装饰时，多层装饰时会更复杂。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;装饰者与适配器对比&#34;&gt;装饰者与适配器对比&lt;/h2&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;装饰者模式Decorator&lt;/th&gt;
+&lt;th&gt;适配器模式Adapter&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;形式&lt;/td&gt;
+&lt;td&gt;有对应的层级关系，一种非常特别的适配器模式&lt;/td&gt;
+&lt;td&gt;没有层级关系&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;定义&lt;/td&gt;
+&lt;td&gt;装饰者和被装饰者都实现同一个接口，主要目的是为了扩展之后依旧保留 OOP 关系&lt;/td&gt;
+&lt;td&gt;适配器和被适配者没有必然的联系，通常是采用继承或者代理的形式进行包装&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;关系&lt;/td&gt;
+&lt;td&gt;满足 is-a 的关系&lt;/td&gt;
+&lt;td&gt;满足 has-a 的关系&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;功能&lt;/td&gt;
+&lt;td&gt;注重覆盖、扩展&lt;/td&gt;
+&lt;td&gt;注重兼容、装换&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;设计&lt;/td&gt;
+&lt;td&gt;前置考虑&lt;/td&gt;
+&lt;td&gt;后置考虑，到了一定的情况下，再去考虑“亡羊补牢”的感觉&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;观察者模式-observer-pattern-发布订阅模式-pub-sub&#34;&gt;观察者模式 Observer Pattern/发布订阅模式 Pub/Sub&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;行为型模式；&lt;/li&gt;
+&lt;li&gt;优点：
+
+&lt;ul&gt;
+&lt;li&gt;观察者 observer 和被观察者 observable之间建立了一个抽象的耦合；&lt;/li&gt;
+&lt;li&gt;观察者模式支持广播通信。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;缺点：
+
+&lt;ul&gt;
+&lt;li&gt;观察者之间有过多的细节依赖、提高时间消耗及程序的复杂度；&lt;/li&gt;
+&lt;li&gt;使用要得当，要避免循环调用。&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;各种模式的对比&#34;&gt;各种模式的对比&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;单例和工厂模式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;工厂一般会设计为单例，ApplicationContext&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;策略和工厂模式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;工厂模式包含工厂方法和抽象工厂，属于创建型模式（new）；策略模式属于行为模式（invoke）&lt;/li&gt;
+&lt;li&gt;工厂模式主要目的是封装好创建逻辑，策略模式接收工厂创建好的对象，从而实现不同的行为。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;策略和委派模式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;策略模式是委派模式内部的一种实现形式，其关注的是结果是否能相互替代；&lt;strong&gt;比如支付方式：Alipay，WechatPay，JDPay 等。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;委派模式更关注份分发和调度的过程。&lt;strong&gt;有可能采用 if&amp;hellip;else&amp;hellip;条件分支语句来分发，内部也可以使用策略模式。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;模板方法和工厂方法模式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;工厂方法是模板方法的一种特殊实现；&lt;/li&gt;
+&lt;li&gt;工厂方法只有一个步骤，是模板模式的特殊实现；&lt;/li&gt;
+&lt;li&gt;模板模式其执行流程在父类已固化，不可变动。同时，子类实现的是父类的某一个步骤，也就是说子类可能有多个对父类具体步骤的完善。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;模板和策略模式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;模板方法和策略都有封装算法；&lt;/li&gt;
+&lt;li&gt;策略是使不同算法可以相互替换，且不影响客户端应用层的使用；&lt;/li&gt;
+&lt;li&gt;模板方法是针对定义一个算法的流程，将一些有细微差异的部分交给子类实现，不可被替换；&lt;/li&gt;
+&lt;li&gt;模板模式不能改变算法流程，策略模式可以改变算法流程且可替换，策略模式通常用来代替 if&amp;hellip;else&amp;hellip;等条件分支语句。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;装饰者和静态代理模式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;装饰者模式关注点在于给对象动态扩展、添加方法，而代理更加注重控制对对象的访问；&lt;/li&gt;
+&lt;li&gt;代理模式通常会在代理类中创建被代理对象的实例，而装饰者模式通常把被装饰者作为构成参数。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;装饰者和适配器模式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;装饰者模式和适配器模式都属于包装器模式（Wrapper）；&lt;/li&gt;
+&lt;li&gt;装饰者模式可以实现被装饰者与相同的接口或者继承被装饰者作为它的子类，而适配器和呗适配者可以实现不同的接口。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;适配器和策略模式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;在适配业务复杂的情况下，利用策略模式优化动态适配逻辑。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;设计模式总结&#34;&gt;设计模式总结&lt;/h2&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;设计模式Pattern&lt;/th&gt;
+&lt;th&gt;一句话&lt;/th&gt;
+&lt;th&gt;举例&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;工厂模式Factory&lt;/td&gt;
+&lt;td&gt;只对结果负责，封装创建过程。&lt;/td&gt;
+&lt;td&gt;BeanFactory、Calendar&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;单例模式 Singleton&lt;/td&gt;
+&lt;td&gt;保证独一无二&lt;/td&gt;
+&lt;td&gt;ApplicationContext、Calendar&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;原型模式 Prototype&lt;/td&gt;
+&lt;td&gt;拔一根猴毛，吹出千万个(多例模式)&lt;/td&gt;
+&lt;td&gt;ArrayList、PrototypeBean&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;代理模式 Proxy&lt;/td&gt;
+&lt;td&gt;宅人办事，增强职责&lt;/td&gt;
+&lt;td&gt;ProxyFactoryBean、JdkDynamicAopProxy、CglibAopProxy&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;委派模式 Delegate&lt;/td&gt;
+&lt;td&gt;干活算你的（普通员工），功劳算我的（项目经理）&lt;/td&gt;
+&lt;td&gt;DIspatcherServlet、BeanDefinitionPaserDelegate&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;策略模式 Strategy&lt;/td&gt;
+&lt;td&gt;用户选择，结果统一&lt;/td&gt;
+&lt;td&gt;InstantiationStrategy&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;模板模式 Template&lt;/td&gt;
+&lt;td&gt;流程标准化、自己实现定制&lt;/td&gt;
+&lt;td&gt;JdbcTemplate、HttpServlet&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;适配器 Adapter&lt;/td&gt;
+&lt;td&gt;兼容转换头&lt;/td&gt;
+&lt;td&gt;AdvisorAdapter、HandlerAdapter&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;装饰器模式 Decorator&lt;/td&gt;
+&lt;td&gt;包装、同宗同源&lt;/td&gt;
+&lt;td&gt;BufferReader、InputStream、OutputStream、HttpHeadResponseDecorator&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;观察值模式 Observer&lt;/td&gt;
+&lt;td&gt;任务完成时通知&lt;/td&gt;
+&lt;td&gt;ContextLoaderListener&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>分布式系统/高并发系统设计原则</title>
+       <link>https://izcqi.com/posts/2019/12/02/distributed-platform-design-principles/</link>
+       <pubDate>Mon, 02 Dec 2019 21:17:29 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2019/12/02/distributed-platform-design-principles/</guid>
+       <description>
+
+&lt;h2 id=&#34;did-原则-design-implement-deploy&#34;&gt;DID 原则 : Design - Implement - Deploy&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;设计（Design）20倍的容量。&lt;/li&gt;
+&lt;li&gt;实现（Implement）3倍的容量。&lt;/li&gt;
+&lt;li&gt;部署（Deploy）1.5倍的容量。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;确保一定时间内，不会因为业务体量的变化出现对架构较大的升级调整。但尽快如此，也不能过度咯。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;1、换个思路理解 DID
+在软件建构领域，有一个原则叫DID, 通常用来保证资源和时间的最小化。&lt;/p&gt;
+
+&lt;p&gt;DID:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;设计（Design）20倍的容量。&lt;/li&gt;
+&lt;li&gt;实现（Implement）3倍的容量。&lt;/li&gt;
+&lt;li&gt;部署（Deploy）1.5倍的容量。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这个DID一般是从资源成本的更小消耗来出发，希望将更低成本的设计发挥更大的作用，对更高成本的部署更谨慎的使用。&lt;/p&gt;
+
+&lt;p&gt;换个思路，在需求开发与系统设计层面出发，也应该遵循这种规律，即在前期设计层面下足功夫，用更周到的设计来实现 方案，以便在部署上线后的改动最小。&lt;/p&gt;
+
+&lt;p&gt;但是，往往在实际开发中这个过程都是本末倒置的，从 ‘拍脑袋就做’ 到 ‘开发中发现行不通’ 到 ‘返工’，或者更严重的上线 之后才发现问题，导致更大的返工成本。&lt;/p&gt;
+
+&lt;p&gt;2、过度设计
+通常意义的过度设计包含两方面：&lt;/p&gt;
+
+&lt;p&gt;超出了需求的本意，比如我要一个一公里的代步工具你给我设计了一架飞机。
+导致系统过度复杂。
+我认为，还有一种也应该称之为过度设计，即设计出了合理的但是没人感兴趣的产品。比如所有人都买了一款可用但是有瑕疵的手机v1， 不到一个月，一款同款产品v2出现，虽然更完美，价格更低，但是基于成本没人会买单。&lt;/p&gt;
+
+&lt;p&gt;但是v2一定是推广不了的吗？也不一定，怎么推广？顺势而为。比如运营商推出5G, 只有v2支持，这叫顺势而为；国家规定，只有支持5G的手机才能使用，这也叫顺势而为。晚上做班车下班，遇到一个之前的领导，他说为什么当时order-platform可以推广，那是因为借着海外的大势…&lt;/p&gt;
+
+&lt;p&gt;3、精简精简在精简，拆分拆分在拆分。
+这个，和过度设计想对应。和成就感相挂钩。&lt;/p&gt;
+
+&lt;p&gt;帕累托法则：80%的成果源于20%的时间。如果时间有限，那么尽量把时间放在容易产生成果的事情上，有成果便有产出，才有成就感。&lt;/p&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;https://younghz.github.io/DID#id-1-%E6%8D%A2%E4%B8%AA%E6%80%9D%E8%B7%AF%E7%90%86%E8%A7%A3-did&#34;&gt;https://younghz.github.io/DID#id-1-%E6%8D%A2%E4%B8%AA%E6%80%9D%E8%B7%AF%E7%90%86%E8%A7%A3-did&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;kiss-原则-keep-it-simple-and-stupid&#34;&gt;KISS 原则 : Keep it Simple and Stupid&lt;/h2&gt;
+
+&lt;p&gt;单个接口简单易用，把一个事情搞复杂是把一件简单的事，但把一个复杂的事简单化，确实一件复杂的事。&lt;/p&gt;
+
+&lt;h2 id=&#34;dip-原则-dependence-inversion-principle&#34;&gt;DIP 原则 ： Dependence Inversion Principle&lt;/h2&gt;
+
+&lt;p&gt;根据接口业务场景分包、分类，可分为基础服务、公共服务、业务实现。&lt;/p&gt;
+
+&lt;p&gt;业务接口&amp;gt;&amp;gt;公共服务&amp;gt;&amp;gt;基础服务（约定俗成）&lt;/p&gt;
+
+&lt;h2 id=&#34;cap-原则&#34;&gt;CAP 原则&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;C&lt;/code&gt;&lt;/strong&gt;onsistency : 一致性&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;A&lt;/code&gt;&lt;/strong&gt;vailability ： 可用性&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;P&lt;/code&gt;&lt;/strong&gt;artition tolerance ： 分区容错性&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;三者不可兼得，系统如果不能在时限内达成数据一致性，就意味着发生了分区的情况，必须就当前操作在&lt;strong&gt;C&lt;/strong&gt;和&lt;strong&gt;A&lt;/strong&gt;之前做选择。也就是只有满足&lt;strong&gt;CA&lt;/strong&gt;或满足&lt;strong&gt;CP&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;在&lt;code&gt;CAP&lt;/code&gt;基础上衍生了&lt;code&gt;BASE&lt;/code&gt;原则。BASE 是指基本可用（Basically Available）、软状态（ Soft State）、最终一致性（ Eventual Consistency），核心思想是即使无法做到强一致性（CAP 的一致性就是强一致性），但应用可以采用适合的方式达到最终一致性。&lt;/p&gt;
+
+&lt;h4 id=&#34;基本可用-basically-available&#34;&gt;基本可用（Basically Available）&lt;/h4&gt;
+
+&lt;p&gt;分布式系统在出现故障时，允许损失部分可用性，即保证核心可用。
+这里的关键词是“部分”和“核心”，具体选择哪些作为可以损失的业务，哪些是必须保证的业务，是一项有挑战的工作。例如，对于一个用户管理系统来说，“登录”是核心功能，而“注册”可以算作非核心功能。因为未注册的用户本来就还没有使用系统的业务，注册不了最多就是流失一部分用户，而且这部分用户数量较少。如果用户已经注册但无法登录，那就意味用户无法使用系统。例如，充了钱的游戏不能玩了、云存储不能用了……这些会对用户造成较大损失，而且登录用户数量远远大于新注册用户，影响范围更大。&lt;/p&gt;
+
+&lt;h4 id=&#34;软状态-soft-state&#34;&gt;软状态（Soft State）&lt;/h4&gt;
+
+&lt;p&gt;允许系统存在中间状态，而该中间状态不会影响系统整体可用性。这里的中间状态就是 CAP 理论中的数据不一致。&lt;/p&gt;
+
+&lt;h3 id=&#34;最终一致性-eventual-consistency&#34;&gt;最终一致性（Eventual Consistency）&lt;/h3&gt;
+
+&lt;p&gt;系统中的所有数据副本经过一定时间后，最终能够达到一致的状态。&lt;/p&gt;
+
+&lt;p&gt;ref：&lt;a href=&#34;https://mp.weixin.qq.com/s/YVhPawEyWuWMUeNBwTuPoQ&#34;&gt;https://mp.weixin.qq.com/s/YVhPawEyWuWMUeNBwTuPoQ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;smart-原则&#34;&gt;SMART 原则&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;S&lt;/code&gt;&lt;/strong&gt;pecific : 明确性&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;M&lt;/code&gt;&lt;/strong&gt;easurable : 衡量性&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;A&lt;/code&gt;&lt;/strong&gt;ttainable : 可实现性&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;R&lt;/code&gt;&lt;/strong&gt;elevant : 相关性&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;T&lt;/code&gt;&lt;/strong&gt;ime-based : 时限性&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;TODO ： 待进一步完善&lt;/p&gt;
+
+&lt;h2 id=&#34;sla服务等级-service-level-agreement&#34;&gt;SLA服务等级 - Service Level Agreement&lt;/h2&gt;
+
+&lt;h2 id=&#34;高可用架构-会话层-接口层-存储层-基础服务层&#34;&gt;高可用架构 - 会话层&amp;gt;接口层&amp;gt;存储层&amp;gt;基础服务层&lt;/h2&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>木桶与扬长避短</title>
+       <link>https://izcqi.com/posts/2019/11/27/barrel-and-strengths-avoid-weaknesses/</link>
+       <pubDate>Wed, 27 Nov 2019 19:18:23 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2019/11/27/barrel-and-strengths-avoid-weaknesses/</guid>
+       <description>&lt;p&gt;　　木桶视盛水的多少来具体他应有的价值，所以出现了，短板决定其价值的说法。
+扬长避短，说的是要去发挥长处，避开短处。似乎与“木桶”相反了。&lt;/p&gt;
+
+&lt;p&gt;　　但，人无完人金无足赤，完人不可能存在，也就是人之短，必然存在。当对于长短如何取舍呢 ？&lt;/p&gt;
+
+&lt;p&gt;　　商业行为中，攻破短板可能是制胜之宝。比如几个人一起合伙创业，各种能力不一，但在创业这件事上，绝对都是“长长”结合，最后也实现了“有效木桶”。&lt;/p&gt;
+
+&lt;p&gt;　　但对于个人来说，既然人无完人，而且人生短短数载，我们的选择又是什么呢？ 在我来看，选择极致效果可能更大，也就是全力去发挥自己的长处。&lt;/p&gt;
+
+&lt;p&gt;　　有一种说法，一个人的某一方面有问题，那么别的方面肯定有强项，而且是非常强的强项。比如一个失聪之人，可能视力可能会非常出众；失明之人，可能听力又特长。失聪之人，如何努力也不可能把自己的“短”长些，失明之人亦是。所以发挥自己的强项，于个人而见，更优。&lt;/p&gt;
+
+&lt;p&gt;　　最近，看到一种“T”型理论，说的是T之竖向，为个人长向，T之横向，为个人之短向延伸。这样确保了，你可以成为一个“综合性人才”。&lt;/p&gt;
+
+&lt;p&gt;　　所以，完完全全的舍弃短向，自然不可取。&lt;/p&gt;
+
+&lt;p&gt;　　对于长短的合理分配，个人见解，优长次短。要想实现“扬长避短”，第一点，是要对自身各方面的优劣长短，有清晰客观的界定、描述和洞察。第二点，是在知道了“短”与“长”之后的具体操作，比如“避短”就包括多种方式，技巧性地藏拙、战略性地舍弃、主动式地攻克短处彻底提升等；比如“扬长”需要环境与时机，需要卖点与亮点，需要适量与适度。&lt;/p&gt;
+
+&lt;p&gt;　　不论木桶，长短理论，对自己的认知，才是基础，要找到自己的“长”才是最核心的前提，用有限的时间，更有效的投入到“长”上，收获可能会更多。让自己的“短”得以合适的发挥，让自己“更全面”。&lt;/p&gt;
+
+&lt;p&gt;　　世界上的事，往往知易行难，而且，越是那些对人生有重大警示与助益的道理，越是如此。而知易行难，表面上看是由于不够自律不够坚持等，其实却大多是由于没有理解透彻，没有透彻到化成自己的思维意识，对这些道理只是在人云亦云、隔靴搔痒。&lt;/p&gt;
+
+&lt;p&gt;　　比如“扬长避短”，本是一个高度凝练的、助人良多的成语，但在现实生活中，却几乎沦为一句“无实义”的套语。&lt;/p&gt;
+
+&lt;p&gt;　　要想实现“扬长避短”，第一点，是要对自身各方面的优劣长短，有清晰客观的界定、描述和洞察。&lt;/p&gt;
+
+&lt;p&gt;　　第二点，是在知道了“短”与“长”之后的具体操作，比如“避短”就包括多种方式，技巧性地藏拙、战略性地舍弃、主动式地攻克短处彻底提升等；比如“扬长”需要环境与时机，需要卖点与亮点，需要适量与适度。&lt;/p&gt;
+
+&lt;p&gt;　　关于第一点，我们在《自知之明：管理学的终极法宝》一文中有过专门论述，而第二点，则要借鉴著名的“木桶理论”来进一步细说。&lt;/p&gt;
+
+&lt;p&gt;　　“木桶理论”是由美国管理学家彼得提出的，它假定木桶的全部价值在于能够盛水，木桶由多块木板排列箍成，盛水量则由这些木板共同决定。如果其中一块木板很短，那么此木桶的盛水量就会被限制，而若要使盛水量增加，只有换掉这块短板或将其加长才行。也就是说，一个水桶无论有多高，它盛水的高度并不取决于桶壁上最高的那块木板，而恰恰取决于最短的那一块，因此人们又常将这一规律称作“短板理论”。&lt;/p&gt;
+
+&lt;p&gt;　　关于“木桶理论”还有两个推论：其一，只有桶壁上的所有木板都足够高，木桶才能装满水。其二，只要有一块木板不够高度，木桶就不可能真正装满水。&lt;/p&gt;
+
+&lt;p&gt;　　就像一个球队，无论先发主力还是板凳替补，只有每一个位置、每一个角色都具备平均水准以上的综合攻防能力，才能在面对不同特点的球队时都能有充裕的应对措施，才能获得更多胜利。而只要存在一个位置的缺陷，就有可能被针对，甚至从这一处短板引发一系列溃败。&lt;/p&gt;
+
+&lt;p&gt;　　同时，在“木桶理论”的潜台词中，“木桶”的所指并非固定的，可以是指某一企业、部门、班组，也可以指某一个员工；还可以有多个“木桶”，也就是在一个组织内部可以划分出来的相对独立的各职能部门。一个整体系统是一个大的“木桶”，系统内的各个有机板块则可以视为一个个小的“木桶”。大木桶的各个板块和小木桶的各个板块都是优劣不齐的，而劣势部分往往决定了某个“小木桶”与“大木桶”的整体竞争力。&lt;/p&gt;
+
+&lt;p&gt;　　任何企业或团体，都必有其薄弱环节，无论是人是物，还是环境与制度。这些短板会直接或间接地导致规划与决策、执行力与持续性、创新与提升等方面的失败，进一步造成人际纷争、暗沉死板、赘冗低效的生态环境，严重影响并制约着群体发展。所谓“细节决定成败”。解决短板，势在必行。&lt;/p&gt;
+
+&lt;p&gt;　　从管理学角度看，最难处理的短板当然还是“人”，但这或许才是真正要命的问题。工作系统内的人，能力欠缺是短，知识贫乏是短，性格不佳是短、品行不善也是短；而基本上，一个群体中哪怕只有一个人存在这些明显短板，都有极大可能将整个团队和事业带入泥潭。&lt;/p&gt;
+
+&lt;p&gt;　　因此，下文中提到的对于“短板”的处理方法，既是指事指物，也同样可以指人。&lt;/p&gt;
+
+&lt;p&gt;　　应对“木桶理论”提出的“短板”问题，无非三个实操方案：&lt;/p&gt;
+
+&lt;p&gt;　　第一个方案，是修补短板，使之变长变强。&lt;/p&gt;
+
+&lt;p&gt;　　所有具备某项运动锻炼经验的人，都能强烈感受到“补短板”带来的连锁反应和系统性提升：当长期限制你的某个短处被克服时，你的各项能力都会随之变强，进而发生整体实力的质变，就像断线的珠子忽然串了起来。&lt;/p&gt;
+
+&lt;p&gt;　　直面问题，苦修提升，彻底变“短”为“长”。这个过程像极了“格物致知”。要注意的是，其中必然会有一个从量变到质变的过程，需要时间的积累，正如宋明理学所说的：“至于用力之久而一旦豁然贯通，则众物之表里精粗无不到，而吾心之主体大用无不明矣！”&lt;/p&gt;
+
+&lt;p&gt;　　第二个方案，是彻底舍弃短板。&lt;/p&gt;
+
+&lt;p&gt;　　尽管原本的“木桶理论”假定了木桶的完整性是一个前提，“最短的部分”仍然是组织中一个有机构成的有用部分，不能当成烂苹果扔掉，否则就会一点水也装不了，但是，在现实生活和工作中，许多“短板”其实是可选择、可放弃的。&lt;/p&gt;
+
+&lt;p&gt;　　古代奇书《阴符经》中有一句惊世骇俗的话：“瞽者善听，聋者善视。绝利一源，用师十倍；三反昼夜，用师万倍。”对此比较普遍的解释是：耳聋者善于发扬视觉的优势，眼盲者善于发扬听觉的优势，封闭其中一处，集中于另一处，就能够产生用力十倍的功效。强调的是集中力量，发展一处，强大一处，往往是面对问题时的更佳选择。&lt;/p&gt;
+
+&lt;p&gt;　　这段逆向思维的论述，是对老子“反者道之动”理念的演化：少即多，慢即快，弃即得，原地整合即前进提升。&lt;/p&gt;
+
+&lt;p&gt;　　为了掩饰或修补某些短板，往往给我们造成了太多拖累。这些短板，对于工作系统的运作，有些是彻底的累赘与混乱之源，有些是弃之可惜但又食之无味，有些看似有用但其实是弊大于利、过大于功、损大于益。从整体目标和利益角度出发，对于这些短板，不必再浪费资源和能量，当断则断，就像下棋时弃小利而争先、弃局部而争整体。&lt;/p&gt;
+
+&lt;p&gt;　　绝利一源，一方面，是在打破“攻克短板就能大幅获利”的惯性思维，彻底放弃修补短板，腾出时间、心力、人力、物力，投放在能够更快、更多产生效能的地方。另一方面，还可以进一步指放弃那些投入产出比低下的“利”，放弃那些华而不实的“利”，放弃那些分散精力的、不合于整体规划的“利”。&lt;/p&gt;
+
+&lt;p&gt;　　第三个方案，其实和第二个方案是衔接和递进的关系，能够使得第二个方案更完整、更有效，即利用多种渠道和多方资源，有限度地、策略性地弥补短板，但将主要时间和精力集中于长板和强点的发展，使之更长更强。&lt;/p&gt;
+
+&lt;p&gt;　　相比于“短板理论”，当代的许多管理者似乎已经越来越看重“长板效应”，而且认为在时间成本占据最高权重的前提下，强化长板或许要比补充短板更重要。&lt;/p&gt;
+
+&lt;p&gt;　　对于企业来说，在知识可替代、服务可购买、资源分散化的当下，信息获取、技能获得、人才补充变得越来越简便易行。随着时代科技发展与社会分工细化，可购买交易的早已不限于物品，而是几乎可以涵盖一切人、事、物。无论企业发展所需的东西是什么，都大可以用合作共享资源、投资购买服务、聘用专业团队等方式，补足以往需要付出大量人力物力才可提升的短板。而当长板足够长时，也就有了充足的时间和力量使短板不会再短。&lt;/p&gt;
+</description>
+     </item>
+   
+ </channel>
+</rss>

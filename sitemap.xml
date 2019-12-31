@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://izcqi.com/posts/</loc>
+    <lastmod>2019-12-20T23:54:17+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/categories/</loc>
+    <lastmod>2019-12-20T23:54:17+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/tags/</loc>
+    <lastmod>2019-12-20T23:54:17+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/about/</loc>
+    <lastmod>2019-11-27T19:26:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/</loc>
+    <lastmod>2019-12-20T23:54:17+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/categories/spring/</loc>
+    <lastmod>2019-12-20T23:54:17+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/tags/springboot/</loc>
+    <lastmod>2019-12-20T23:54:17+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/posts/2019/12/20/springboot-fatjar-vs-thinjar/</loc>
+    <lastmod>2019-12-20T23:54:17+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/categories/db/</loc>
+    <lastmod>2019-12-10T14:00:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/tags/db/</loc>
+    <lastmod>2019-12-10T14:00:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/categories/mybatis/</loc>
+    <lastmod>2019-12-10T14:00:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/tags/mybatis/</loc>
+    <lastmod>2019-12-10T14:00:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/posts/2019/12/09/mybatis-plugins-principle/</loc>
+    <lastmod>2019-12-10T14:00:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/categories/env/</loc>
+    <lastmod>2019-12-08T01:02:50+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/tags/git/</loc>
+    <lastmod>2019-12-08T01:02:50+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/posts/2019/12/08/generate-gitigore-file/</loc>
+    <lastmod>2019-12-08T01:02:50+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/tags/design-patterns/</loc>
+    <lastmod>2019-12-06T11:16:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/categories/design-patterns/</loc>
+    <lastmod>2019-12-06T11:16:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/tags/design-principle/</loc>
+    <lastmod>2019-12-06T11:16:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/posts/2019/12/03/design-principles-patterns-summary/</loc>
+    <lastmod>2019-12-06T11:16:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/categories/distributed-system/</loc>
+    <lastmod>2019-12-02T21:17:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/tags/distributed-system/</loc>
+    <lastmod>2019-12-02T21:17:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/tags/principles/</loc>
+    <lastmod>2019-12-02T21:17:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/posts/2019/12/02/distributed-platform-design-principles/</loc>
+    <lastmod>2019-12-02T21:17:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/tags/thoughts/</loc>
+    <lastmod>2019-11-27T19:18:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/categories/thoughts/</loc>
+    <lastmod>2019-11-27T19:18:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/posts/2019/11/27/barrel-and-strengths-avoid-weaknesses/</loc>
+    <lastmod>2019-11-27T19:18:23+08:00</lastmod>
+  </url>
+  
+</urlset>
