@@ -43,22 +43,22 @@
   </url>
   
   <url>
-    <loc>https://izcqi.com/tags/db/</loc>
-    <lastmod>2019-12-10T14:00:43+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://izcqi.com/categories/db/</loc>
     <lastmod>2019-12-10T14:00:43+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://izcqi.com/categories/mybatis/</loc>
+    <loc>https://izcqi.com/tags/db/</loc>
     <lastmod>2019-12-10T14:00:43+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://izcqi.com/tags/mybatis/</loc>
+    <lastmod>2019-12-10T14:00:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/categories/mybatis/</loc>
     <lastmod>2019-12-10T14:00:43+08:00</lastmod>
   </url>
   
@@ -83,12 +83,12 @@
   </url>
   
   <url>
-    <loc>https://izcqi.com/categories/design-patterns/</loc>
+    <loc>https://izcqi.com/tags/design-patterns/</loc>
     <lastmod>2019-12-06T11:16:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://izcqi.com/tags/design-patterns/</loc>
+    <loc>https://izcqi.com/categories/design-patterns/</loc>
     <lastmod>2019-12-06T11:16:00+08:00</lastmod>
   </url>
   
@@ -103,12 +103,12 @@
   </url>
   
   <url>
-    <loc>https://izcqi.com/tags/distributed-system/</loc>
+    <loc>https://izcqi.com/categories/distributed-system/</loc>
     <lastmod>2019-12-02T21:17:29+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://izcqi.com/categories/distributed-system/</loc>
+    <loc>https://izcqi.com/tags/distributed-system/</loc>
     <lastmod>2019-12-02T21:17:29+08:00</lastmod>
   </url>
   
