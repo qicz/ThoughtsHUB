@@ -495,7 +495,7 @@ public class PageInterceptor implements Interceptor {
 
 &lt;h2 id=&#34;单例模式-singleton-pattern&#34;&gt;单例模式 Singleton Pattern&lt;/h2&gt;
 
-&lt;p&gt;点击查看 &amp;gt;&amp;gt; &lt;a href=&#34;https://izcqi.com/2019-12-02-design-patterns-singleton/&#34;&gt;单例模式&lt;/a&gt; &amp;lt;&amp;lt;&lt;/p&gt;
+&lt;p&gt;点击查看 &amp;gt;&amp;gt; &lt;a href=&#34;https://izcqi.com/posts/201912/02/design-patterns-singleton/&#34;&gt;单例模式&lt;/a&gt; &amp;lt;&amp;lt;&lt;/p&gt;
 
 &lt;h2 id=&#34;原型模式prototype-pattern&#34;&gt;原型模式Prototype Pattern&lt;/h2&gt;
 
