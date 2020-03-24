@@ -172,7 +172,9 @@ public class Singleton { private static Singleton instance = null; private Singl
 
     
 
-    <p>单例模式是软件设计中非常常见的模式，但真正用好也用对的好像还有很多路要走。一起来研究一下。</p>
+    
+
+<p>单例模式是软件设计中非常常见的模式，但真正用好也用对的好像还有很多路要走。一起来研究一下。</p>
 
 <p>单例，最最起码得有这些吧</p>
 
@@ -248,7 +250,7 @@ running at threadThread-0&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
 running at threadThread-1&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc</code></pre></div>
 <p>出现问题了！！！怎么在多线程下出现了不同实例了？？？是不是我们的设计有问题呢？我们在图示位置打个断点，按照 Thread 来处理</p>
 
-<p><img src="https://izcqi.com/images/singleton-point.png" alt="" /></p>
+<p><img src="https://izcqi.com/images/singleton-breakpoint.png" alt="" /></p>
 
 <p>然后 Debug 一下
 <img src="https://izcqi.com/images/singleton-breakpoint-running.png" alt="" /></p>
@@ -343,76 +345,56 @@ running at threadThread-4&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc</code>
 <p>2020.2.20更新</p>
 
 <p>在Doublecheck的第一次check的时候，<strong>代码读取到instance不为null时，instance引用的对象有可能还没有完成初始化。</strong>主要原因是<strong>重排序</strong>，<strong>所以只需要做一点小的修改（把instance声明为volatile型），就可以实现线程安全的延迟初始化。</strong>因为被volatile关键字修饰的变量是被禁止重排序的。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">&gt;</span> private static volatile Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>;
-<span style="color:#ff79c6">&gt;</span> ```
-
-## EnumSingleton 枚举方式实现的单例</code></pre></div>
-<p>java
-// Enum Singleton
-public enum EnumSingleton {</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">private static volatile Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>;</code></pre></div>
+<h2 id="enumsingleton-枚举方式实现的单例">EnumSingleton 枚举方式实现的单例</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// Enum Singleton
+</span><span style="color:#6272a4"></span>public enum EnumSingleton {
 
-<pre><code>INSTANCE;
-
-public static EnumSingleton getInstance() {
-    return INSTANCE;
-}
-</code></pre>
-
-<p>}</p>
-
-<pre><code>
-## InnerClassSingleton 内部类方式实现的单例
-</code></pre>
-
-<p>java
-// Inner class Singleton
-public class InnerSingleton {</p>
-
-<pre><code>private InnerSingleton(){
-    if (null != InnerHolder.INSTANCE) {
-        throw new RuntimeException(&quot;Just only one Instance can be create!&quot;);
+    INSTANCE;
+    
+    public static EnumSingleton getInstance() {
+        <span style="color:#ff79c6">return</span> INSTANCE;
     }
-}
+}</code></pre></div>
+<h2 id="innerclasssingleton-内部类方式实现的单例">InnerClassSingleton 内部类方式实现的单例</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// Inner class Singleton
+</span><span style="color:#6272a4"></span>public class InnerSingleton {
 
-//Serializable
-private Object readResolve() {
-    return InnerHolder.INSTANCE;
-}
-
-public static InnerSingleton getInstance() {
-    return InnerHolder.INSTANCE;
-}
-
-private static class InnerHolder {
-    private static final InnerSingleton INSTANCE = new InnerSingleton();
-}
-</code></pre>
-
-<p>}</p>
-
-<pre><code>
-## 特别说明
-
-- 为了避免序列化出现的 Singleton 实例不唯一的情况，覆盖 Object 的readResolve方法。
-</code></pre>
-
-<p>java
-private Object readResolve() {
-        return InnerHolder.INSTANCE;
-    }</p>
-
-<pre><code>
-- 为了避免，通过反射错误的使用 Singleton，在构造中做再处理
-</code></pre>
-
-<p>java
- private InnerSingleton(){
-        if (null != InnerHolder.INSTANCE) {
-            throw new RuntimeException(&ldquo;Just only one Instance can be create!&rdquo;);
+    private InnerSingleton(){
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">null</span> <span style="color:#ff79c6">!=</span> InnerHolder.<span style="color:#50fa7b">INSTANCE</span>) {
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> RuntimeException(<span style="color:#f1fa8c">&#34;Just only one Instance can be create!&#34;</span>);
         }
-}
-```</p>
+    }
+
+    <span style="color:#6272a4">//Serializable
+</span><span style="color:#6272a4"></span>    private Object readResolve() {
+        <span style="color:#ff79c6">return</span> InnerHolder.<span style="color:#50fa7b">INSTANCE</span>;
+    }
+
+    public static InnerSingleton getInstance() {
+        <span style="color:#ff79c6">return</span> InnerHolder.<span style="color:#50fa7b">INSTANCE</span>;
+    }
+
+    private static class InnerHolder {
+        private static final InnerSingleton INSTANCE <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> InnerSingleton();
+    }
+}</code></pre></div>
+<h2 id="特别说明">特别说明</h2>
+
+<ul>
+<li><p>为了避免序列化出现的 Singleton 实例不唯一的情况，覆盖 Object 的readResolve方法。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">private Object readResolve() {
+    <span style="color:#ff79c6">return</span> InnerHolder.<span style="color:#50fa7b">INSTANCE</span>;
+}</code></pre></div></li>
+
+<li><p>为了避免，通过反射错误的使用 Singleton，在构造中做再处理</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">private InnerSingleton(){
+    <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">null</span> <span style="color:#ff79c6">!=</span> InnerHolder.<span style="color:#50fa7b">INSTANCE</span>) {
+        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> RuntimeException(<span style="color:#f1fa8c">&#34;Just only one Instance can be create!&#34;</span>);
+    }
+}</code></pre></div></li>
+</ul>
 
 
 </article>

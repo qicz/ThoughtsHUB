@@ -969,7 +969,9 @@ public class PageInterceptor implements Interceptor {
        <pubDate>Mon, 02 Dec 2019 14:36:39 +0800</pubDate>
        <author>zcq#zhucongqi.cn (Qicz)</author>
        <guid>https://izcqi.com/posts/2019/12/02/design-patterns-singleton/</guid>
-       <description>&lt;p&gt;单例模式是软件设计中非常常见的模式，但真正用好也用对的好像还有很多路要走。一起来研究一下。&lt;/p&gt;
+       <description>
+
+&lt;p&gt;单例模式是软件设计中非常常见的模式，但真正用好也用对的好像还有很多路要走。一起来研究一下。&lt;/p&gt;
 
 &lt;p&gt;单例，最最起码得有这些吧&lt;/p&gt;
 
@@ -1045,7 +1047,7 @@ running at threadThread-0&amp;gt;&amp;gt;cn.zhucongqi.singleton.Singleton@b0545b
 running at threadThread-1&amp;gt;&amp;gt;cn.zhucongqi.singleton.Singleton@b0545bc&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;出现问题了！！！怎么在多线程下出现了不同实例了？？？是不是我们的设计有问题呢？我们在图示位置打个断点，按照 Thread 来处理&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/singleton-point.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;然后 Debug 一下
 &lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-running.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
@@ -1140,76 +1142,56 @@ running at threadThread-4&amp;gt;&amp;gt;cn.zhucongqi.singleton.Singleton@b0545b
 &lt;p&gt;2020.2.20更新&lt;/p&gt;
 
 &lt;p&gt;在Doublecheck的第一次check的时候，&lt;strong&gt;代码读取到instance不为null时，instance引用的对象有可能还没有完成初始化。&lt;/strong&gt;主要原因是&lt;strong&gt;重排序&lt;/strong&gt;，&lt;strong&gt;所以只需要做一点小的修改（把instance声明为volatile型），就可以实现线程安全的延迟初始化。&lt;/strong&gt;因为被volatile关键字修饰的变量是被禁止重排序的。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt; private static volatile Singleton instance &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;;
-&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt; ```
-
-## EnumSingleton 枚举方式实现的单例&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;java
-// Enum Singleton
-public enum EnumSingleton {&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;private static volatile Singleton instance &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&#34;enumsingleton-枚举方式实现的单例&#34;&gt;EnumSingleton 枚举方式实现的单例&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;// Enum Singleton
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;public enum EnumSingleton {
 
-&lt;pre&gt;&lt;code&gt;INSTANCE;
-
-public static EnumSingleton getInstance() {
-    return INSTANCE;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;}&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-## InnerClassSingleton 内部类方式实现的单例
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;java
-// Inner class Singleton
-public class InnerSingleton {&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;private InnerSingleton(){
-    if (null != InnerHolder.INSTANCE) {
-        throw new RuntimeException(&amp;quot;Just only one Instance can be create!&amp;quot;);
+    INSTANCE;
+    
+    public static EnumSingleton getInstance() {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; INSTANCE;
     }
-}
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&#34;innerclasssingleton-内部类方式实现的单例&#34;&gt;InnerClassSingleton 内部类方式实现的单例&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;// Inner class Singleton
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;public class InnerSingleton {
 
-//Serializable
-private Object readResolve() {
-    return InnerHolder.INSTANCE;
-}
-
-public static InnerSingleton getInstance() {
-    return InnerHolder.INSTANCE;
-}
-
-private static class InnerHolder {
-    private static final InnerSingleton INSTANCE = new InnerSingleton();
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;}&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-## 特别说明
-
-- 为了避免序列化出现的 Singleton 实例不唯一的情况，覆盖 Object 的readResolve方法。
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;java
-private Object readResolve() {
-        return InnerHolder.INSTANCE;
-    }&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-- 为了避免，通过反射错误的使用 Singleton，在构造中做再处理
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;java
- private InnerSingleton(){
-        if (null != InnerHolder.INSTANCE) {
-            throw new RuntimeException(&amp;ldquo;Just only one Instance can be create!&amp;rdquo;);
+    private InnerSingleton(){
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; InnerHolder.&lt;span style=&#34;color:#50fa7b&#34;&gt;INSTANCE&lt;/span&gt;) {
+            &lt;span style=&#34;color:#ff79c6&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; RuntimeException(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;Just only one Instance can be create!&amp;#34;&lt;/span&gt;);
         }
-}
-```&lt;/p&gt;
+    }
+
+    &lt;span style=&#34;color:#6272a4&#34;&gt;//Serializable
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;    private Object readResolve() {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; InnerHolder.&lt;span style=&#34;color:#50fa7b&#34;&gt;INSTANCE&lt;/span&gt;;
+    }
+
+    public static InnerSingleton getInstance() {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; InnerHolder.&lt;span style=&#34;color:#50fa7b&#34;&gt;INSTANCE&lt;/span&gt;;
+    }
+
+    private static class InnerHolder {
+        private static final InnerSingleton INSTANCE &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; InnerSingleton();
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&#34;特别说明&#34;&gt;特别说明&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;为了避免序列化出现的 Singleton 实例不唯一的情况，覆盖 Object 的readResolve方法。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;private Object readResolve() {
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; InnerHolder.&lt;span style=&#34;color:#50fa7b&#34;&gt;INSTANCE&lt;/span&gt;;
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;为了避免，通过反射错误的使用 Singleton，在构造中做再处理&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;private InnerSingleton(){
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; InnerHolder.&lt;span style=&#34;color:#50fa7b&#34;&gt;INSTANCE&lt;/span&gt;) {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; RuntimeException(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;Just only one Instance can be create!&amp;#34;&lt;/span&gt;);
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
      </item>
    
