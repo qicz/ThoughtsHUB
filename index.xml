@@ -8,10 +8,36 @@
    <managingEditor>zcq#zhucongqi.cn (Qicz)</managingEditor>
    <webMaster>zcq#zhucongqi.cn (Qicz)</webMaster>
    <copyright>&amp;copy; 2012 - </copyright>
-   <lastBuildDate>Fri, 20 Dec 2019 23:54:17 +0800</lastBuildDate>
+   <lastBuildDate>Fri, 03 Apr 2020 13:58:33 +0800</lastBuildDate>
    
        <atom:link href="https://izcqi.com/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>记在2020年的随笔</title>
+       <link>https://izcqi.com/posts/2020/04/03/an-essay-written-in-2020/</link>
+       <pubDate>Fri, 03 Apr 2020 13:58:33 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2020/04/03/an-essay-written-in-2020/</guid>
+       <description>&lt;p&gt;2020年对于世界和每个人都是及其特别的一年。&lt;/p&gt;
+
+&lt;p&gt;2019年12月开始，陆陆续续爆发的&lt;strong&gt;新型冠状病毒&lt;/strong&gt;疫情，肆虐了国内外。在国内，经过众多医护人员的舍命付出，迎来了难得的胜利之光。&lt;/p&gt;
+
+&lt;p&gt;在国内，疫情最严重的地方就是湖北武汉，而来自全国各地的专家、医护人员的付出，在春天，一起都回归了生机。每次看到出征武汉，平平安安回家的英雄们，在回到自己家乡时，都得到了最高级别的迎接礼，每每看到这画面心里有太多说不出来的激动，感慨在疫情面前，在生命面前，每一位医护人员是多么的伟大。&lt;/p&gt;
+
+&lt;p&gt;时隔3个月，国内疫情之战，到现在收获了阶段性的胜利，国内疫情已经明显得到了控制，而国外开始肆虐了。而我们国家早就已经”提醒“了国外，而他们却真的错过了非常重要的时间。致使现在国外爆发惊人。到现在全球确认人数已经超过100万之多，想想这一切多么吓人。&lt;/p&gt;
+
+&lt;p&gt;刚才又看到一个消息，在国外很多人因为疫情原因都失业了。这场影响严重的疫情，给每个人的生活也带来了巨大的改变。&lt;/p&gt;
+
+&lt;p&gt;我看到很多人，因为疫情失去了工作，很多公司因为疫情裁员，甚至就此解散。但面对这突入起来的变顾，我们应该积极的面对。在最初的时候，我觉得这一切在这个时候出现，真的让我雪上加霜了，但后来深入思考，这一切非人为，应该积极的去面对。而且，在这情况下，更应该让自己变得更强才对。&lt;/p&gt;
+
+&lt;p&gt;一直以来，给自己定位我是一个有想法有原则的人，时刻会问自己为什么的人。我觉得只有时刻保持这进步、好奇之心，我们才会变得更强。在任何困苦面前，都可以迎难而上。&lt;/p&gt;
+
+&lt;p&gt;2020年，我希望是一个艰难的开头，但是有一个完美的收官。&lt;/p&gt;
+
+&lt;p&gt;2020年，我要全力提高自身的能力，让自己软技能有大幅提升，硬实力跟强硬。我要让自己在2020年收获更多，成长更多，期待2020年的收官。&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>SpringBoot FatJar vs ThinJar&amp;SpringBoot Thin Planing</title>
