@@ -8,10 +8,100 @@
    <managingEditor>zcq#zhucongqi.cn (Qicz)</managingEditor>
    <webMaster>zcq#zhucongqi.cn (Qicz)</webMaster>
    <copyright>&amp;copy; 2012 - </copyright>
-   <lastBuildDate>Fri, 03 Apr 2020 21:43:20 +0800</lastBuildDate>
+   <lastBuildDate>Sun, 03 May 2020 10:03:52 +0800</lastBuildDate>
    
        <atom:link href="https://izcqi.com/posts/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>效率工具清单List of Efficiency Tools</title>
+       <link>https://izcqi.com/posts/2020/05/03/list-of-efficiency-tools/</link>
+       <pubDate>Sun, 03 May 2020 10:03:52 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2020/05/03/list-of-efficiency-tools/</guid>
+       <description>
+
+&lt;blockquote&gt;
+&lt;p&gt;此清单将进行不定期的修订&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;整理此清单，目的是为了参考市场的各类工具，并应用到生活、工作中，从而提供各种效率。&lt;/p&gt;
+
+&lt;h3 id=&#34;todo-list类&#34;&gt;TODO List类&lt;/h3&gt;
+
+&lt;h5 id=&#34;奇妙清单wunderlist&#34;&gt;- 奇妙清单Wunderlist&lt;/h5&gt;
+
+&lt;p&gt;很早前，就接触和使用了它。它可以非常好的管理好自己的待办。操作界面也比较简约，支持PC、Mac、移动端，方便随时的关注和管理自己的待办。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/list-of-efficiency-tools.assets/image-20200503101327924.png#mid&#34; alt=&#34;奇妙清单Wunderlist&#34; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;microsoft-to-do&#34;&gt;- Microsoft To Do&lt;/h5&gt;
+
+&lt;p&gt;早先，有去尝试过，它也是奇妙被微软收购之后的产物，相比奇妙来说，你可以根据自己的情况，把众多的清单归类到一个分组，这算是与奇妙唯一的差异。其中的区别、差异，就我的应用场景来说，目前来说没有找到特别的。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/list-of-efficiency-tools.assets/image-20200503101841362.png#mid&#34; alt=&#34;Microsoft To Do&#34; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;滴答清单&#34;&gt;- 滴答清单&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;待尝试&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;笔记类&#34;&gt;笔记类&lt;/h3&gt;
+
+&lt;h5 id=&#34;印象笔记&#34;&gt;- 印象笔记&lt;/h5&gt;
+
+&lt;p&gt;这个产品，我使用时间也笔记旧了，自己也注册了各种的账号，用途就是整理各种各样的笔记。创建不同的NoteBook，在不同的NoteBook中创建不同等Note，可以对Note加入不同的tag。&lt;/p&gt;
+
+&lt;p&gt;新版本的印象支持了Markdown，习惯用Markdown的朋友，也可以方便在里面应用。对OCR、Mindmap也有了很多的应用，不过因为我本人可能用不到这类高级功能（我可能会借助其他工具完成），所以没有购买印象的高级功能，并尝试这些高级特性。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/list-of-efficiency-tools.assets/image-20200503102412726.png#mid&#34; alt=&#34;印象笔记&#34; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;typora&#34;&gt;- Typora&lt;/h5&gt;
+
+&lt;p&gt;这个产品，是我目前为止使用过的Markdown类产品中，最爽的：简约，支持自定义很多内容，比如主题，切换交互方式：文本，源码等等。我现在写这篇文章就是用的它。日常工作中，我整理笔记也会用到它。&lt;/p&gt;
+
+&lt;p&gt;它的不足就是，它只是一个本地的文本Editor，不能将内容保存到云端。（PS：可以考虑看看有没有办法自己定制一个）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/list-of-efficiency-tools.assets/image-20200503102526047.png#mid&#34; alt=&#34;Typora&#34; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;幕布&#34;&gt;- 幕布&lt;/h5&gt;
+
+&lt;p&gt;这个产品是最近一个朋友推荐给我的。我简单使用了一下，有点Typora的感觉，不过它的更棒的地方在于，它的内容都是云端保存的，便于内容的保护，不至于丢失。&lt;/p&gt;
+
+&lt;h5 id=&#34;visual-studio-code&#34;&gt;- Visual Studio Code&lt;/h5&gt;
+
+&lt;p&gt;微软推出的一个免费的Editor，但是它加上各种plugins后，也可以是一个IDE。源码高亮，提示等，支持各种场景的源码编写，编译。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/list-of-efficiency-tools.assets/image-20200503103508331.png#mid&#34; alt=&#34;VisualStudioCode&#34; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;sublime-text&#34;&gt;- Sublime Text&lt;/h5&gt;
+
+&lt;p&gt;简称ST，老早前使用过了。因为开始用Visual Studio Code之后就用得少了。它可不是免费的哦。&lt;/p&gt;
+
+&lt;h5 id=&#34;editplus&#34;&gt;- EditPlus&lt;/h5&gt;
+
+&lt;p&gt;这个估计得从我上学那会来说了，那会用得比较多，非常老牌的Editor了。不过仅支持Windows平台，也是收费的哦。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/list-of-efficiency-tools.assets/editplus680x340.png#mid&#34; alt=&#34;EditPlus&#34; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;notepad&#34;&gt;- Notepad++&lt;/h5&gt;
+
+&lt;p&gt;这个产品，我一直没有机会去好好使用一下。主要是因为自己从很久前，就已经基本上都在Mac平台下完成各种工作了，难得用一次Windows可能也在Mac的虚拟机里了。所以未来有机会一定要尝试一下。&lt;/p&gt;
+
+&lt;h3 id=&#34;mindmap&#34;&gt;MindMap&lt;/h3&gt;
+
+&lt;h5 id=&#34;xmind&#34;&gt;- Xmind&lt;/h5&gt;
+
+&lt;h3 id=&#34;项目管理&#34;&gt;项目管理&lt;/h3&gt;
+
+&lt;h5 id=&#34;microsoft-project&#34;&gt;- Microsoft Project&lt;/h5&gt;
+
+&lt;h3 id=&#34;其他效率工具&#34;&gt;其他效率工具&lt;/h3&gt;
+
+&lt;h5 id=&#34;everything&#34;&gt;- everything&lt;/h5&gt;
+</description>
+     </item>
    
      <item>
        <title>Thought and Felling About Technology in 2020</title>
