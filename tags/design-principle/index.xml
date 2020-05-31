@@ -14,6 +14,144 @@
    
    
      <item>
+       <title>Spring动态数据源原理</title>
+       <link>https://izcqi.com/posts/2020/05/31/principle-dynamic-data-source/</link>
+       <pubDate>Sun, 31 May 2020 08:54:25 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2020/05/31/principle-dynamic-data-source/</guid>
+       <description>&lt;p&gt;提到Spring的动态数据源重点在于对&lt;code&gt;AbstractRoutingDataSource&lt;/code&gt;实现及工作原理的认知。&lt;/p&gt;
+
+&lt;p&gt;先从Spring的DataSource开始说起，而说到DataSource，用最原始的jdbc来说明可能会更容易理解了。&lt;/p&gt;
+
+&lt;p&gt;在使用jdbc时，要进行一个sql操作，我们需要这样的一个链路：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;Statement&lt;/code&gt; &amp;lt;- &lt;code&gt;Connection&lt;/code&gt; &amp;lt;- &lt;code&gt;DataSource&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;也就是根源上就是获取一个&lt;code&gt;DataSource&lt;/code&gt;，这就是关联到一个具体源的对象。那么切换源，从原理上来讲就是切换这个&lt;code&gt;DataSource&lt;/code&gt;对象了。&lt;/p&gt;
+
+&lt;p&gt;那么，下一步，来看看这个&lt;code&gt;AbstractRoutingDataSource&lt;/code&gt;的工作原理是不是就是这样的呢？这里摘取它的部分实现源码:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;@Nullable
+private Map&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;Object, Object&amp;gt; targetDataSources;
+
+@Nullable
+private Object defaultTargetDataSource;
+...
+@Override
+public void afterPropertiesSet() {
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;targetDataSources&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;) {
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; IllegalArgumentException(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;Property &amp;#39;targetDataSources&amp;#39; is required&amp;#34;&lt;/span&gt;);
+  }
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;resolvedDataSources&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt;(&lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;targetDataSources&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;size&lt;/span&gt;());
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;targetDataSources&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;forEach&lt;/span&gt;((key, value) &lt;span style=&#34;color:#ff79c6&#34;&gt;-&amp;gt;&lt;/span&gt; {
+    Object lookupKey &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; resolveSpecifiedLookupKey(key);
+    DataSource dataSource &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; resolveSpecifiedDataSource(value);
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;resolvedDataSources&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;put&lt;/span&gt;(lookupKey, dataSource);
+  });
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;defaultTargetDataSource&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;) {
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;resolvedDefaultDataSource&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; resolveSpecifiedDataSource(&lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;defaultTargetDataSource&lt;/span&gt;);
+  }
+}
+...
+@Override
+public Connection getConnection() throws SQLException {
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; determineTargetDataSource().&lt;span style=&#34;color:#50fa7b&#34;&gt;getConnection&lt;/span&gt;();
+}
+
+@Override
+public Connection getConnection(String username, String password) throws SQLException {
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; determineTargetDataSource().&lt;span style=&#34;color:#50fa7b&#34;&gt;getConnection&lt;/span&gt;(username, password);
+}
+...
+&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * Retrieve the current target DataSource. Determines the
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * {@link #determineCurrentLookupKey() current lookup key}, performs
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * a lookup in the {@link #setTargetDataSources targetDataSources} map,
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * falls back to the specified
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * {@link #setDefaultTargetDataSource default target DataSource} if necessary.
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * @see #determineCurrentLookupKey()
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; */&lt;/span&gt;
+protected DataSource determineTargetDataSource() {
+  Assert.&lt;span style=&#34;color:#50fa7b&#34;&gt;notNull&lt;/span&gt;(&lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;resolvedDataSources&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;DataSource router not initialized&amp;#34;&lt;/span&gt;);
+  Object lookupKey &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; determineCurrentLookupKey();
+  DataSource dataSource &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;resolvedDataSources&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;get&lt;/span&gt;(lookupKey);
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (dataSource &lt;span style=&#34;color:#ff79c6&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;lenientFallback&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; lookupKey &lt;span style=&#34;color:#ff79c6&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;)) {
+    dataSource &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;resolvedDefaultDataSource&lt;/span&gt;;
+  }
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (dataSource &lt;span style=&#34;color:#ff79c6&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;) {
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; IllegalStateException(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;Cannot determine target DataSource for lookup key [&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; lookupKey &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;]&amp;#34;&lt;/span&gt;);
+  }
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; dataSource;
+}
+
+&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;	 * Determine the current lookup key. This will typically be
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;	 * implemented to check a thread-bound transaction context.
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;	 * &amp;lt;p&amp;gt;Allows for arbitrary keys. The returned key needs
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;	 * to match the stored lookup key type, as resolved by the
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;	 * {@link #resolveSpecifiedLookupKey} method.
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;	 */&lt;/span&gt;
+@Nullable
+protected abstract Object determineCurrentLookupKey();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;现在来进行一一的解读。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;afterPropertiesSet&lt;/code&gt;是啥？这就不细说了。看源码就是解析&lt;code&gt;targetDataSources&lt;/code&gt;然后放到&lt;code&gt;resolvedDataSources&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;getConnection&lt;/code&gt;获取一个&lt;code&gt;Connection&lt;/code&gt;对象，这里和jdbc就是一个玩意了；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;determineTargetDataSource&lt;/code&gt;确定目标的&lt;code&gt;DataSource&lt;/code&gt;，在这个方法中有这样一行&lt;code&gt;Object lookupKey = determineCurrentLookupKey();&lt;/code&gt;，而这个就是调用了一个&lt;code&gt;determineCurrentLookupKey&lt;/code&gt;方法；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;determineCurrentLookupKey&lt;/code&gt;，一个抽象方法，返回一个当前处理的源的&lt;code&gt;id&lt;/code&gt;或者说&lt;code&gt;key&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;从源码中看出，&lt;code&gt;AbstractRoutingDataSource&lt;/code&gt;的工作原理，大致就是，从一个&lt;code&gt;Map&lt;/code&gt;的源集合中，可以一个当前处理的源&lt;code&gt;Key&lt;/code&gt;来切换选择对应的&lt;code&gt;DataSource&lt;/code&gt;，从而完成对应源的切换。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;下面，从具体实现上来做解析，首先看看&lt;code&gt;AbstractRoutingDataSource&lt;/code&gt;的定义&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;public abstract class AbstractRoutingDataSource extends AbstractDataSource implements InitializingBean&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这是一个抽象class，那么要用他，必然要实现一个实例class，如下。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;public class DynamicDataSource extends AbstractRoutingDataSource&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;那么重点就是对抽象方法&lt;code&gt;determineCurrentLookupKey&lt;/code&gt;的处理和源&lt;code&gt;Map&lt;/code&gt;的构建和操作了。&lt;/p&gt;
+
+&lt;p&gt;要知道，在实际应用中，应用都是工作在多线程环境的，那么对源的切换就变成了在多线程环境下的切换，而要保存多线程环境下的切换安全，我们自然而然想到了&lt;code&gt;ThreadLocal&lt;/code&gt;。是的，我们就是借助它，来实现和完成在不同源的&lt;code&gt;CurrentLookupKey&lt;/code&gt;的管理。&lt;/p&gt;
+
+&lt;p&gt;先看看&lt;code&gt;ThreadLocal&lt;/code&gt;的处理:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;public class DynamicDataSourceContextHolder {
+    private DynamicDataSourceContextHolder() {
+    }
+  
+    private static final ThreadLocal&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String&amp;gt; dynamicDataSourceContextHolder &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; ThreadLocal&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt;();
+
+    public static void setCurrentDataSource(String dataSourceKey) {
+        dynamicDataSourceContextHolder.&lt;span style=&#34;color:#50fa7b&#34;&gt;set&lt;/span&gt;(dataSourceKey);
+    }
+
+    public static String getCurrentDataSource() {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; dynamicDataSourceContextHolder.&lt;span style=&#34;color:#50fa7b&#34;&gt;get&lt;/span&gt;();
+    }
+
+    public static void clearCurrentDataSource() {
+        dynamicDataSourceContextHolder.&lt;span style=&#34;color:#50fa7b&#34;&gt;remove&lt;/span&gt;();
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;实现很简单，就是使用&lt;code&gt;ThreadLocal&lt;/code&gt;来管理key，这里的key是&lt;code&gt;String&lt;/code&gt;类型的。在切换时，调用&lt;code&gt;setCurrentDataSource&lt;/code&gt;，使用完成在调用&lt;code&gt;clearCurrentDataSource&lt;/code&gt;，使用&lt;code&gt;getCurrentDataSource&lt;/code&gt;来获取当前设置的key。&lt;/p&gt;
+
+&lt;p&gt;接着看在&lt;code&gt;DynamicDataSource&lt;/code&gt;中的处理:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;@Override
+protected Object determineCurrentLookupKey() {
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; DynamicDataSourceContextHolder.&lt;span style=&#34;color:#50fa7b&#34;&gt;getCurrentDataSource&lt;/span&gt;();
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这样整个都串起来了：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;实现继承&lt;code&gt;AbstractRoutingDataSource&lt;/code&gt;的类&lt;code&gt;DynamicDataSource&lt;/code&gt;，实现&lt;code&gt;determineCurrentLookupKey&lt;/code&gt;方法，这个方法从&lt;code&gt;ThreadLocal&lt;/code&gt;中拿到当前线程处理的源的key信息，在&lt;code&gt;AbstractRoutingDataSource&lt;/code&gt;的&lt;code&gt;determineTargetDataSource&lt;/code&gt;中根据这个key拿到在源&lt;code&gt;Map&lt;/code&gt;中已经配置好的源&lt;code&gt;DataSource&lt;/code&gt;，拿到了&lt;code&gt;DataSource&lt;/code&gt;，再要拿到&lt;code&gt;Connection&lt;/code&gt;还会远吗？^_^&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;剩下的就是构造一个有源&lt;code&gt;Map&lt;/code&gt;管理(put，get)的&lt;code&gt;DynamicDataSource&lt;/code&gt;并注入到&lt;code&gt;IOC&lt;/code&gt;，就ok咯。&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
        <title>效率工具清单List of Efficiency Tools</title>
        <link>https://izcqi.com/posts/2020/05/03/list-of-efficiency-tools/</link>
        <pubDate>Sun, 03 May 2020 10:03:52 +0800</pubDate>

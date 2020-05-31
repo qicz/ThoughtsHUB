@@ -1,0 +1,348 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta name="generator" content="Hugo 0.59.1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>Spring动态数据源原理 | Qicz&#39;s Thoughts HUB</title>
+  <meta property="og:title" content="Spring动态数据源原理 - Qicz&#39;s Thoughts HUB">
+  <meta property="og:type" content="article">
+      
+  <meta property="article:published_time" content="2020-05-31T08:54:25&#43;08:00">
+      
+      
+  <meta property="article:modified_time" content="2020-05-31T08:54:25&#43;08:00">
+      
+  <meta name="Keywords" content="Qicz,Jobsz,RD,technology,tech,learning,设计模式,分布式,架构设计,P6,P7,软件设计,数据库,大数据,MySQL,Zookeeper,MongoDB,redis,dubbo,ServiceMesh,SOFAMesh,Serverless,hugo,Java,Mybatis,Spring,Spring Boot,Spring Cloud,istio">
+  <meta name="description" content="Spring动态数据源原理">
+      
+  <meta name="author" content="Qicz">
+  <meta property="og:url" content="https://izcqi.com/posts/2020/05/31/principle-dynamic-data-source/">
+  
+  <link rel="shortcut icon" href="https://izcqi.com/favicon.png" />
+  
+
+  <meta property="og:title" content="Spring动态数据源原理" />
+<meta property="og:description" content="提到Spring的动态数据源重点在于对AbstractRoutingDataSource实现及工作原理的认知。
+先从Spring的DataSource开始说起，而说到DataSource，用最原始的jdbc来说明可能会更容易理解了。
+在使用jdbc时，要进行一个sql操作，我们需要这样的一个链路：
+ Statement &lt;- Connection &lt;- DataSource
+ 也就是根源上就是获取一个DataSource，这就是关联到一个具体源的对象。那么切换源，从原理上来讲就是切换这个DataSource对象了。
+那么，下一步，来看看这个AbstractRoutingDataSource的工作原理是不是就是这样的呢？这里摘取它的部分实现源码:
+@Nullable private Map&lt;Object, Object&gt; targetDataSources; @Nullable private Object defaultTargetDataSource; ... @Override public void afterPropertiesSet() { if (this.targetDataSources == null) { throw new IllegalArgumentException(&#34;Property &#39;targetDataSources&#39; is required&#34;); } this." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://izcqi.com/posts/2020/05/31/principle-dynamic-data-source/" />
+<meta property="article:published_time" content="2020-05-31T08:54:25+08:00" />
+<meta property="article:modified_time" content="2020-05-31T08:54:25+08:00" />
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Spring动态数据源原理"/>
+<meta name="twitter:description" content="提到Spring的动态数据源重点在于对AbstractRoutingDataSource实现及工作原理的认知。
+先从Spring的DataSource开始说起，而说到DataSource，用最原始的jdbc来说明可能会更容易理解了。
+在使用jdbc时，要进行一个sql操作，我们需要这样的一个链路：
+ Statement &lt;- Connection &lt;- DataSource
+ 也就是根源上就是获取一个DataSource，这就是关联到一个具体源的对象。那么切换源，从原理上来讲就是切换这个DataSource对象了。
+那么，下一步，来看看这个AbstractRoutingDataSource的工作原理是不是就是这样的呢？这里摘取它的部分实现源码:
+@Nullable private Map&lt;Object, Object&gt; targetDataSources; @Nullable private Object defaultTargetDataSource; ... @Override public void afterPropertiesSet() { if (this.targetDataSources == null) { throw new IllegalArgumentException(&#34;Property &#39;targetDataSources&#39; is required&#34;); } this."/>
+<meta name="generator" content="Hugo 0.59.1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
+  <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="https://izcqi.com/css/styles.css" />
+  
+  <link href="https://izcqi.com/css/monokai.min.css" rel="stylesheet">
+  </head>
+
+<body>
+  <div id="container">
+    <header-container>
+    <header>
+      <h1>
+        <a href="https://izcqi.com/">Qicz&rsquo;s Thoughts HUB</a>
+      </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="mailto:zcq#zhucongqi.cn" title="Email me" target="_blank">
+               <i class="fas fa-envelope fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://www.facebook.com/qiczhu" title="Facebook" target="_blank">
+               <i class="fab fa-facebook fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://github.com/qicz" title="GitHub" target="_blank">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://reddit.com/u/Qiczhu" title="Reddit" target="_blank">
+               <i class="fab fa-reddit-alien fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://weibo.com/powerlinux" title="Weibo" target="_blank">
+               <i class="fab fa-weibo fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://douban.com/people/podevor" title="Douban" target="_blank">
+               <i class="fab fa-spotify fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>The creative and technical writing. <br> Do more, challenge more, know more, be more.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://izcqi.com/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/categories/">
+                <i class="fa-li fa  fa-lg"></i><span>Categories</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/tags/">
+                <i class="fa-li fa  fa-lg"></i><span>Tags</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+  </header-container>
+    <main>
+
+
+
+
+<article>
+
+    <h1>Spring动态数据源原理</h1>
+
+    
+        <aside>
+    
+    <span class="fa fa-calendar"><time class="post-date" datetime="2020-05-31T08:54:25&#43;08:00"> May 31, 2020 08:54</time>
+    &nbsp; | &nbsp; 
+    
+    <span class="fa fa-book">
+        <em class="categories">
+            
+                
+                <a href="https://izcqi.com/categories/spring">spring</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+     
+    <span class="fa fa-tags">
+        <em class="tags">
+            
+                
+                <a href="https://izcqi.com/tags/datasource">#datasource</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+    <span class="fa fa-plane"><em> 2 minutes read</em> </span>
+</aside>
+
+
+    
+
+    <p>提到Spring的动态数据源重点在于对<code>AbstractRoutingDataSource</code>实现及工作原理的认知。</p>
+
+<p>先从Spring的DataSource开始说起，而说到DataSource，用最原始的jdbc来说明可能会更容易理解了。</p>
+
+<p>在使用jdbc时，要进行一个sql操作，我们需要这样的一个链路：</p>
+
+<blockquote>
+<p><code>Statement</code> &lt;- <code>Connection</code> &lt;- <code>DataSource</code></p>
+</blockquote>
+
+<p>也就是根源上就是获取一个<code>DataSource</code>，这就是关联到一个具体源的对象。那么切换源，从原理上来讲就是切换这个<code>DataSource</code>对象了。</p>
+
+<p>那么，下一步，来看看这个<code>AbstractRoutingDataSource</code>的工作原理是不是就是这样的呢？这里摘取它的部分实现源码:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Nullable
+private Map<span style="color:#ff79c6">&lt;</span>Object, Object&gt; targetDataSources;
+
+@Nullable
+private Object defaultTargetDataSource;
+...
+@Override
+public void afterPropertiesSet() {
+  <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">targetDataSources</span> <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span>) {
+    <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IllegalArgumentException(<span style="color:#f1fa8c">&#34;Property &#39;targetDataSources&#39; is required&#34;</span>);
+  }
+  <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">resolvedDataSources</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HashMap<span style="color:#ff79c6">&lt;&gt;</span>(<span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">targetDataSources</span>.<span style="color:#50fa7b">size</span>());
+  <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">targetDataSources</span>.<span style="color:#50fa7b">forEach</span>((key, value) <span style="color:#ff79c6">-&gt;</span> {
+    Object lookupKey <span style="color:#ff79c6">=</span> resolveSpecifiedLookupKey(key);
+    DataSource dataSource <span style="color:#ff79c6">=</span> resolveSpecifiedDataSource(value);
+    <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">resolvedDataSources</span>.<span style="color:#50fa7b">put</span>(lookupKey, dataSource);
+  });
+  <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">defaultTargetDataSource</span> <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">null</span>) {
+    <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">resolvedDefaultDataSource</span> <span style="color:#ff79c6">=</span> resolveSpecifiedDataSource(<span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">defaultTargetDataSource</span>);
+  }
+}
+...
+@Override
+public Connection getConnection() throws SQLException {
+  <span style="color:#ff79c6">return</span> determineTargetDataSource().<span style="color:#50fa7b">getConnection</span>();
+}
+
+@Override
+public Connection getConnection(String username, String password) throws SQLException {
+  <span style="color:#ff79c6">return</span> determineTargetDataSource().<span style="color:#50fa7b">getConnection</span>(username, password);
+}
+...
+<span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * Retrieve the current target DataSource. Determines the
+</span><span style="color:#6272a4"> * {@link #determineCurrentLookupKey() current lookup key}, performs
+</span><span style="color:#6272a4"> * a lookup in the {@link #setTargetDataSources targetDataSources} map,
+</span><span style="color:#6272a4"> * falls back to the specified
+</span><span style="color:#6272a4"> * {@link #setDefaultTargetDataSource default target DataSource} if necessary.
+</span><span style="color:#6272a4"> * @see #determineCurrentLookupKey()
+</span><span style="color:#6272a4"> */</span>
+protected DataSource determineTargetDataSource() {
+  Assert.<span style="color:#50fa7b">notNull</span>(<span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">resolvedDataSources</span>, <span style="color:#f1fa8c">&#34;DataSource router not initialized&#34;</span>);
+  Object lookupKey <span style="color:#ff79c6">=</span> determineCurrentLookupKey();
+  DataSource dataSource <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">resolvedDataSources</span>.<span style="color:#50fa7b">get</span>(lookupKey);
+  <span style="color:#ff79c6">if</span> (dataSource <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">&amp;&amp;</span> (<span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">lenientFallback</span> <span style="color:#ff79c6">||</span> lookupKey <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span>)) {
+    dataSource <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">resolvedDefaultDataSource</span>;
+  }
+  <span style="color:#ff79c6">if</span> (dataSource <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span>) {
+    <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IllegalStateException(<span style="color:#f1fa8c">&#34;Cannot determine target DataSource for lookup key [&#34;</span> <span style="color:#ff79c6">+</span> lookupKey <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;]&#34;</span>);
+  }
+  <span style="color:#ff79c6">return</span> dataSource;
+}
+
+<span style="color:#6272a4">/**
+</span><span style="color:#6272a4">	 * Determine the current lookup key. This will typically be
+</span><span style="color:#6272a4">	 * implemented to check a thread-bound transaction context.
+</span><span style="color:#6272a4">	 * &lt;p&gt;Allows for arbitrary keys. The returned key needs
+</span><span style="color:#6272a4">	 * to match the stored lookup key type, as resolved by the
+</span><span style="color:#6272a4">	 * {@link #resolveSpecifiedLookupKey} method.
+</span><span style="color:#6272a4">	 */</span>
+@Nullable
+protected abstract Object determineCurrentLookupKey();</code></pre></div>
+<p>现在来进行一一的解读。</p>
+
+<ul>
+<li><code>afterPropertiesSet</code>是啥？这就不细说了。看源码就是解析<code>targetDataSources</code>然后放到<code>resolvedDataSources</code>；</li>
+<li><code>getConnection</code>获取一个<code>Connection</code>对象，这里和jdbc就是一个玩意了；</li>
+<li><code>determineTargetDataSource</code>确定目标的<code>DataSource</code>，在这个方法中有这样一行<code>Object lookupKey = determineCurrentLookupKey();</code>，而这个就是调用了一个<code>determineCurrentLookupKey</code>方法；</li>
+<li><code>determineCurrentLookupKey</code>，一个抽象方法，返回一个当前处理的源的<code>id</code>或者说<code>key</code>。</li>
+</ul>
+
+<blockquote>
+<p>从源码中看出，<code>AbstractRoutingDataSource</code>的工作原理，大致就是，从一个<code>Map</code>的源集合中，可以一个当前处理的源<code>Key</code>来切换选择对应的<code>DataSource</code>，从而完成对应源的切换。</p>
+</blockquote>
+
+<p>下面，从具体实现上来做解析，首先看看<code>AbstractRoutingDataSource</code>的定义</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public abstract class AbstractRoutingDataSource extends AbstractDataSource implements InitializingBean</code></pre></div>
+<p>这是一个抽象class，那么要用他，必然要实现一个实例class，如下。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public class DynamicDataSource extends AbstractRoutingDataSource</code></pre></div>
+<p>那么重点就是对抽象方法<code>determineCurrentLookupKey</code>的处理和源<code>Map</code>的构建和操作了。</p>
+
+<p>要知道，在实际应用中，应用都是工作在多线程环境的，那么对源的切换就变成了在多线程环境下的切换，而要保存多线程环境下的切换安全，我们自然而然想到了<code>ThreadLocal</code>。是的，我们就是借助它，来实现和完成在不同源的<code>CurrentLookupKey</code>的管理。</p>
+
+<p>先看看<code>ThreadLocal</code>的处理:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public class DynamicDataSourceContextHolder {
+    private DynamicDataSourceContextHolder() {
+    }
+  
+    private static final ThreadLocal<span style="color:#ff79c6">&lt;</span>String&gt; dynamicDataSourceContextHolder <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ThreadLocal<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">&gt;</span>();
+
+    public static void setCurrentDataSource(String dataSourceKey) {
+        dynamicDataSourceContextHolder.<span style="color:#50fa7b">set</span>(dataSourceKey);
+    }
+
+    public static String getCurrentDataSource() {
+        <span style="color:#ff79c6">return</span> dynamicDataSourceContextHolder.<span style="color:#50fa7b">get</span>();
+    }
+
+    public static void clearCurrentDataSource() {
+        dynamicDataSourceContextHolder.<span style="color:#50fa7b">remove</span>();
+    }
+}</code></pre></div>
+<p>实现很简单，就是使用<code>ThreadLocal</code>来管理key，这里的key是<code>String</code>类型的。在切换时，调用<code>setCurrentDataSource</code>，使用完成在调用<code>clearCurrentDataSource</code>，使用<code>getCurrentDataSource</code>来获取当前设置的key。</p>
+
+<p>接着看在<code>DynamicDataSource</code>中的处理:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Override
+protected Object determineCurrentLookupKey() {
+    <span style="color:#ff79c6">return</span> DynamicDataSourceContextHolder.<span style="color:#50fa7b">getCurrentDataSource</span>();
+}</code></pre></div>
+<p>这样整个都串起来了：</p>
+
+<blockquote>
+<p>实现继承<code>AbstractRoutingDataSource</code>的类<code>DynamicDataSource</code>，实现<code>determineCurrentLookupKey</code>方法，这个方法从<code>ThreadLocal</code>中拿到当前线程处理的源的key信息，在<code>AbstractRoutingDataSource</code>的<code>determineTargetDataSource</code>中根据这个key拿到在源<code>Map</code>中已经配置好的源<code>DataSource</code>，拿到了<code>DataSource</code>，再要拿到<code>Connection</code>还会远吗？^_^</p>
+</blockquote>
+
+<p>剩下的就是构造一个有源<code>Map</code>管理(put，get)的<code>DynamicDataSource</code>并注入到<code>IOC</code>，就ok咯。</p>
+
+
+</article>
+
+<script src="https://utteranc.es/client.js"
+    repo="qicz/ThoughtsHUB"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://izcqi.com/posts/2020/05/03/list-of-efficiency-tools/"><i class="fa fa-chevron-circle-left"></i> 效率工具清单List of Efficiency Tools</a>
+        </li>
+        
+        
+    </ul>
+</section>
+    
+
+
+
+
+</main>
+    <footer>
+        <h6>&copy; 2012 - 2020 Qicz 
+            - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
+            | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
+            | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>
+    </footer>
+</div>
+
+<script async src="https://izcqi.com/js/busuanzi.pure.mini.js"></script>
+
+</body>
+
+</html>
+

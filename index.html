@@ -23,7 +23,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://izcqi.com/" />
 
-<meta property="og:updated_time" content="2020-05-03T10:03:52+08:00" />
+<meta property="og:updated_time" content="2020-05-31T08:54:25+08:00" />
 
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Qicz&#39;s Thoughts HUB"/>
@@ -122,6 +122,50 @@
         <ul>
           
           <li class="first">
+            <h1><a href="https://izcqi.com/posts/2020/05/31/principle-dynamic-data-source/" title="Spring动态数据源原理">Spring动态数据源原理</a></h1>
+            <aside>
+    
+    <span class="fa fa-calendar"><time class="post-date" datetime="2020-05-31T08:54:25&#43;08:00"> May 31, 2020 08:54</time>
+    &nbsp; | &nbsp; 
+    
+    <span class="fa fa-book">
+        <em class="categories">
+            
+                
+                <a href="https://izcqi.com/categories/spring">spring</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+     
+    <span class="fa fa-tags">
+        <em class="tags">
+            
+                
+                <a href="https://izcqi.com/tags/datasource">#datasource</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+    <span class="fa fa-plane"><em> 2 minutes read</em> </span>
+</aside>
+
+
+            <p>提到Spring的动态数据源重点在于对AbstractRoutingDataSource实现及工作原理的认知。
+先从Spring的DataSource开始说起，而说到DataSource，用最原始的jdbc来说明可能会更容易理解了。
+在使用jdbc时，要进行一个sql操作，我们需要这样的一个链路：
+ Statement &lt;- Connection &lt;- DataSource
+ 也就是根源上就是获取一个DataSource，这就是关联到一个具体源的对象。那么切换源，从原理上来讲就是切换这个DataSource对象了。
+那么，下一步，来看看这个AbstractRoutingDataSource的工作原理是不是就是这样的呢？这里摘取它的部分实现源码:
+@Nullable private Map&lt;Object, Object&gt; targetDataSources; @Nullable private Object defaultTargetDataSource; ... @Override public void afterPropertiesSet() { if (this.targetDataSources == null) { throw new IllegalArgumentException(&#34;Property &#39;targetDataSources&#39; is required&#34;); } this.</p>
+            
+            <a href="https://izcqi.com/posts/2020/05/31/principle-dynamic-data-source/">Read more…</a>
+            
+          </li>
+          
+          <li >
             <h1><a href="https://izcqi.com/posts/2020/05/03/list-of-efficiency-tools/" title="效率工具清单List of Efficiency Tools">效率工具清单List of Efficiency Tools</a></h1>
             <aside>
     
