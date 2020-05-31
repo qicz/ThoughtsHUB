@@ -148,7 +148,12 @@ protected Object determineCurrentLookupKey() {
 &lt;/blockquote&gt;
 
 &lt;p&gt;剩下的就是构造一个有源&lt;code&gt;Map&lt;/code&gt;管理(put，get)的&lt;code&gt;DynamicDataSource&lt;/code&gt;并注入到&lt;code&gt;IOC&lt;/code&gt;，就ok咯。&lt;/p&gt;
-</description>
+
+&lt;p&gt;最后，可以在&lt;code&gt;DynamicDataSource&lt;/code&gt;加入一个销毁&lt;code&gt;DataSource&lt;/code&gt;的方法，避免应用关闭后，仍然占用资源。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;@PreDestroy
+public void closeDataSources(){
+  &lt;span style=&#34;color:#6272a4&#34;&gt;// 从Map&amp;lt;Object, Object&amp;gt; targetDataSources遍历获取对应的DataSource并关闭
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
      </item>
    
      <item>
