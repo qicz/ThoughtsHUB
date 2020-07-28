@@ -27,7 +27,7 @@
   
 
   <meta property="og:title" content="Kong Quick Start &amp; Core Concepts (En) " />
-<meta property="og:description" content="What is Kong, technically? Kong is a Lua application running in Nginx and made possible by the lua-nginx-module. Instead of compiling Nginx with this module, Kong is distributed along with OpenResty, which already includes lua-nginx-module." />
+<meta property="og:description" content="What is Kong, technically? (https://docs.konghq.com/2.1.x/getting-started/introduction/) Kong is a Lua application running in Nginx and made possible by the lua-nginx-module. Instead of compiling Nginx with this module, Kong is distributed along with OpenResty, which already includes lua-nginx-module." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://izcqi.com/posts/2020/07/28/kong-quick-start-and-core-concepts-en/" />
 <meta property="article:published_time" content="2020-07-28T22:23:39+08:00" />
@@ -35,7 +35,7 @@
 
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Kong Quick Start &amp; Core Concepts (En) "/>
-<meta name="twitter:description" content="What is Kong, technically? Kong is a Lua application running in Nginx and made possible by the lua-nginx-module. Instead of compiling Nginx with this module, Kong is distributed along with OpenResty, which already includes lua-nginx-module."/>
+<meta name="twitter:description" content="What is Kong, technically? (https://docs.konghq.com/2.1.x/getting-started/introduction/) Kong is a Lua application running in Nginx and made possible by the lua-nginx-module. Instead of compiling Nginx with this module, Kong is distributed along with OpenResty, which already includes lua-nginx-module."/>
 <meta name="generator" content="Hugo 0.59.1" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
@@ -155,7 +155,7 @@
 
     
 
-<h3 id="what-is-kong-technically-https-docs-konghq-com-2-1-x-getting-started-introduction"><a href="https://docs.konghq.com/2.1.x/getting-started/introduction/">What is Kong, technically?</a></h3>
+<h3 id="what-is-kong-technically-https-docs-konghq-com-2-1-x-getting-started-introduction">What is Kong, technically? (<a href="https://docs.konghq.com/2.1.x/getting-started/introduction/">https://docs.konghq.com/2.1.x/getting-started/introduction/</a>)</h3>
 
 <p>Kong is a Lua application running in Nginx and made possible by the lua-nginx-module. Instead of compiling Nginx with this module, Kong is distributed along with OpenResty, which already includes lua-nginx-module. OpenResty is not a fork of Nginx, but a bundle of modules extending its capabilities.</p>
 
@@ -232,29 +232,35 @@
 
 <h3 id="plugins">Plugins</h3>
 
-<ul>
-<li><p><a href="https://docs.konghq.com/hub/kong-inc/proxy-cache/">proxy-cache</a></p>
+<h4 id="proxy-cache-plugin-https-docs-konghq-com-hub-kong-inc-proxy-cache">proxy-cache plugin (<a href="https://docs.konghq.com/hub/kong-inc/proxy-cache/">https://docs.konghq.com/hub/kong-inc/proxy-cache/</a>)</h4>
 
 <ul>
-<li>Major parameters</li>
+<li>Major parameters
+
+<ul>
 <li><code>config.content_type</code> caching with content type</li>
 <li><code>config.cache_ttl</code> default <code>300seconds</code></li>
 <li><code>config.strategy</code>  <code>memory</code></li>
 <li><code>config.request_method</code>  default <code>[&quot;GET&quot;,&quot;HEAD&quot;]</code></li>
 <li><code>config.response_code</code>  default <code>200, 301, 404</code></li>
-<li>cache status</li>
+</ul></li>
+<li>Cache status
+
+<ul>
 <li><code>Miss</code>: The request could be satisfied in cache, but an entry for the resource was not found in cache, and the request was proxied upstream.</li>
 <li><code>Hit</code>: The request was satisfied and served from cache.</li>
 <li><code>Refresh</code>: The resource was found in cache, but could not satisfy the request, due to Cache-Control behaviors or reaching its hard-coded cache_ttl threshold.</li>
 <li><code>Bypass</code>: The request could not be satisfied from cache based on plugin configuration.</li>
 </ul></li>
+</ul>
 
-<li><p><a href="https://docs.konghq.com/hub/kong-inc/key-auth/">Key Auth plugin</a></p>
+<h4 id="key-auth-plugin-https-docs-konghq-com-hub-kong-inc-key-auth">Key Auth plugin (<a href="https://docs.konghq.com/hub/kong-inc/key-auth/">https://docs.konghq.com/hub/kong-inc/key-auth/</a>)</h4>
 
 <ul>
-<li><p>Major parameters</p></li>
+<li><p>Major parameters</p>
 
-<li><p><code>config.policy</code>The rate-limiting policies to use for retrieving and incrementing the limits. Available values are <code>local</code> (counters will be stored locally in-memory on the node), <code>cluster</code> (counters are stored in the datastore and shared across the nodes), and <code>redis</code> (counters are stored on a Redis server and will be shared across the nodes). In the case of DB-less mode, at least one of <code>local</code> or <code>redis</code> must be specified. Please refer <a href="https://docs.konghq.com/hub/kong-inc/rate-limiting/#implementation-considerations">Implementation Considerations</a> for details on which policy should be used.</p></li>
+<ul>
+<li><code>config.policy</code>The rate-limiting policies to use for retrieving and incrementing the limits. Available values are <code>local</code> (counters will be stored locally in-memory on the node), <code>cluster</code> (counters are stored in the datastore and shared across the nodes), and <code>redis</code> (counters are stored on a Redis server and will be shared across the nodes). In the case of DB-less mode, at least one of <code>local</code> or <code>redis</code> must be specified. Please refer <a href="https://docs.konghq.com/hub/kong-inc/rate-limiting/#implementation-considerations">Implementation Considerations</a> for details on which policy should be used.</li>
 </ul>
 
 <blockquote>
@@ -266,28 +272,37 @@
 <ul>
 <li><code>config.</code> <code>second|minute|hour|day|month|year</code></li>
 </ul></li>
+</ul>
 
-<li><p><a href="https://docs.konghq.com/hub/kong-inc/rate-limiting/">Rote Limiting</a></p>
+<h4 id="rote-limiting-plugin-https-docs-konghq-com-hub-kong-inc-rate-limiting">Rote Limiting plugin (<a href="https://docs.konghq.com/hub/kong-inc/rate-limiting/">https://docs.konghq.com/hub/kong-inc/rate-limiting/</a>)</h4>
 
 <ul>
-<li>Major parameters</li>
+<li>Major parameters
+
+<ul>
 <li><code>config.key_names</code> default name <code>apikey</code></li>
-<li>Usage step</li>
+</ul></li>
+<li>Usage step
+
+<ul>
 <li>Create a Consumer</li>
 <li>Create a Key</li>
 <li>Using the Key</li>
 </ul></li>
+</ul>
 
-<li><p><a href="https://docs.konghq.com/getting-started-guide/2.1.x/load-balancing/">Load Balancing</a></p>
+<h4 id="load-balancing-plugin-https-docs-konghq-com-getting-started-guide-2-1-x-load-balancing">Load Balancing plugin (<a href="https://docs.konghq.com/getting-started-guide/2.1.x/load-balancing/">https://docs.konghq.com/getting-started-guide/2.1.x/load-balancing/</a>)</h4>
 
 <ul>
-<li>Concepts</li>
+<li>Concepts
+
+<ul>
 <li>Upstreams</li>
 <li>Targets</li>
 </ul></li>
 </ul>
 
-<h3 id="custom-nginx-templates-embedding-kong-https-docs-konghq-com-2-1-x-configuration"><a href="https://docs.konghq.com/2.1.x/configuration/">Custom Nginx templates &amp; embedding Kong</a></h3>
+<h3 id="custom-nginx-templates-embedding-kong-https-docs-konghq-com-2-1-x-configuration">Custom Nginx templates &amp; embedding Kong (<a href="https://docs.konghq.com/2.1.x/configuration/">https://docs.konghq.com/2.1.x/configuration/</a>)</h3>
 
 <p><code>$ kong start -c kong.conf --nginx-conf custom_nginx.template</code></p>
 
@@ -517,9 +532,9 @@ Host<span style="color:#ff79c6">:</span> example.com</code></pre></div>
 <li><code>A.created_at &lt; B.created_at</code></li>
 </ul>
 
-<h4 id="proxying-behavior-https-docs-konghq-com-2-1-x-proxy-proxying-behavior"><a href="https://docs.konghq.com/2.1.x/proxy/#proxying-behavior">Proxying behavior</a></h4>
+<h4 id="proxying-behavior-https-docs-konghq-com-2-1-x-proxy-proxying-behavior">Proxying behavior (<a href="https://docs.konghq.com/2.1.x/proxy/#proxying-behavior">https://docs.konghq.com/2.1.x/proxy/#proxying-behavior</a>)</h4>
 
-<h4 id="configuring-a-fallback-route-https-docs-konghq-com-2-1-x-proxy-configuring-a-fallback-route"><a href="https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route">Configuring a fallback Route</a></h4>
+<h4 id="configuring-a-fallback-route-https-docs-konghq-com-2-1-x-proxy-configuring-a-fallback-route">Configuring a fallback Route (<a href="https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route">https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route</a>)</h4>
 
 <p>As a practical use-case and example of the flexibility offered by Kong’s proxying capabilities, let’s try to implement a “fallback Route”, so that in order to avoid Kong responding with an HTTP <code>404</code>, “no route found”, we can catch such requests and proxy them to a special upstream service, or apply a plugin to it (such a plugin could, for example, terminate the request with a different status code or response without proxying the request).</p>
 
@@ -532,9 +547,9 @@ Host<span style="color:#ff79c6">:</span> example.com</code></pre></div>
 }</code></pre></div>
 <p>As you can guess, any HTTP request made to Kong would actually match this Route, since all URIs are prefixed by the root character <code>/</code>. As we know from the Request path section, the longest URL paths are evaluated first by Kong, so the <code>/</code> path will eventually be evaluated last by Kong, and effectively provide a “fallback” Route, only matched as a last resort. You can then send traffic to a special Service or apply any plugin you wish on this Route.</p>
 
-<h4 id="proxy-websocket-traffic-https-docs-konghq-com-2-1-x-proxy-proxy-websocket-traffic-todo"><a href="https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic">Proxy WebSocket traffic</a>(TODO)</h4>
+<h4 id="proxy-websocket-traffic-https-docs-konghq-com-2-1-x-proxy-proxy-websocket-traffic-todo">Proxy WebSocket traffic (<a href="https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic)(TODO">https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic)(TODO</a>)</h4>
 
-<h3 id="loadbalancing-reference-https-docs-konghq-com-2-1-x-loadbalancing"><a href="https://docs.konghq.com/2.1.x/loadbalancing/">Loadbalancing reference</a></h3>
+<h3 id="loadbalancing-reference-https-docs-konghq-com-2-1-x-loadbalancing">Loadbalancing reference (<a href="https://docs.konghq.com/2.1.x/loadbalancing/">https://docs.konghq.com/2.1.x/loadbalancing/</a>)</h3>
 
 <h4 id="dns-based-loadbalancing">DNS-based loadbalancing</h4>
 
@@ -546,9 +561,9 @@ Host<span style="color:#ff79c6">:</span> example.com</code></pre></div>
 
 <p>algorithm: <code>consistent-hashing</code>, <code>least-connections</code>, <code>round-robin</code></p>
 
-<h4 id="blue-green-deployments-https-docs-konghq-com-2-1-x-loadbalancing-blue-green-deployments"><a href="https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments">Blue-Green Deployments</a></h4>
+<h4 id="blue-green-deployments-https-docs-konghq-com-2-1-x-loadbalancing-blue-green-deployments">Blue-Green Deployments (<a href="https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments">https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments</a>)</h4>
 
-<p><a href="https://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/">Extension</a></p>
+<p>Extension: (<a href="https://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/">https://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/</a>)</p>
 
 <p><img src="https://izcqi.com/images/image-20200728144535998.png#mid" alt="Blue-Green Deployment" /></p>
 
@@ -606,9 +621,9 @@ $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style
 <p>Incoming requests with host header set to <code>address.mydomain.com</code> will now be proxied by Kong to the new targets; <sup>1</sup>&frasl;<sub>2</sub> of the requests will go to <code>http://192.168.34.17:80/address</code> (<code>weight=100</code>), and the other <sup>1</sup>&frasl;<sub>2</sub> will go to <code>http://192.168.34.18:80/address</code> (<code>weight=100</code>).</p>
 </blockquote>
 
-<h4 id="canary-releases-https-docs-konghq-com-2-1-x-loadbalancing-canary-releases"><a href="https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases">Canary Releases</a></h4>
+<h4 id="canary-releases-https-docs-konghq-com-2-1-x-loadbalancing-canary-releases">Canary Releases (<a href="https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases">https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases</a>)</h4>
 
-<p><a href="http://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/">Extension</a></p>
+<p>Extension: (<a href="http://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/">http://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/</a>)</p>
 
 <p>Using the ring-balancer, target weights can be adjusted granularly, allowing for a smooth, controlled canary release.</p>
 
@@ -634,7 +649,7 @@ $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style
     --data <span style="color:#f1fa8c">&#34;weight=100&#34;</span></code></pre></div>
 <p>The changes through the Kong Admin API are dynamic and will take effect immediately. No reload or restart is required, and no in progress requests will be dropped.</p>
 
-<h3 id="health-checks-and-circuit-breakers-reference-https-docs-konghq-com-2-1-x-health-checks-circuit-breakers"><a href="https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/">Health Checks and Circuit Breakers Reference</a></h3>
+<h3 id="health-checks-and-circuit-breakers-reference-https-docs-konghq-com-2-1-x-health-checks-circuit-breakers">Health Checks and Circuit Breakers Reference (<a href="https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/">https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/</a>)</h3>
 
 <h4 id="upstreams">Upstreams</h4>
 
@@ -673,7 +688,7 @@ $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style
 <li>Passive health checks (circuit breakers)</li>
 </ul>
 
-<h3 id="clustering-reference-https-docs-konghq-com-2-1-x-clustering"><a href="https://docs.konghq.com/2.1.x/clustering/">Clustering Reference</a></h3>
+<h3 id="clustering-reference-https-docs-konghq-com-2-1-x-clustering">Clustering Reference  (<a href="https://docs.konghq.com/2.1.x/clustering/">https://docs.konghq.com/2.1.x/clustering/</a>)</h3>
 
 <p>A Kong cluster allows you to scale the system horizontally by adding more machines to handle more incoming requests. They will all share the same configuration since they point to the same database. Kong nodes pointing to the <strong>same datastore</strong> will be part of the same Kong cluster.</p>
 
@@ -734,9 +749,9 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 
 <p>Setting the <code>cassandra_refresh_frequency</code> option to <code>0</code> is not advised, as a Kong restart will be required to discover any changes to the Cassandra cluster topology.</p>
 
-<h3 id="network-firewall-https-docs-konghq-com-2-1-x-network-firewall"><a href="https://docs.konghq.com/2.1.x/network/#firewall">Network Firewall</a></h3>
+<h3 id="network-firewall-https-docs-konghq-com-2-1-x-network-firewall">Network Firewall  (<a href="https://docs.konghq.com/2.1.x/network/#firewall">https://docs.konghq.com/2.1.x/network/#firewall</a>)</h3>
 
-<h4 id="transparent-proxying-https-blog-stackpath-com-transparent-proxy"><a href="https://blog.stackpath.com/transparent-proxy/">Transparent Proxying</a></h4>
+<h4 id="transparent-proxying-https-blog-stackpath-com-transparent-proxy">Transparent Proxying (<a href="https://blog.stackpath.com/transparent-proxy/">https://blog.stackpath.com/transparent-proxy/</a>)</h4>
 
 <p>For example a HTTP request with a destination address of <code>10.0.0.1</code>, and a destination port of <code>80</code> can be redirected to <code>127.0.0.1</code> at port <code>8000</code>. To make this work, you need (with Linux) to add the <code>transparent</code> listen option to Kong proxy, <code>proxy_listen=8000 transparent</code>. This allows Kong to see the original destination for the request (<code>10.0.0.1:80</code>) even when Kong didn’t actually listen to it directly. With this information, Kong can route the request correctly. The <code>transparent</code> listen option should only be used with Linux. macOS/BSDs allow transparent proxying without <code>transparent</code> listen option. With Linux you may also need to start Kong as a <code>root</code> user or set the needed capabilities for the executable.</p>
 
@@ -744,7 +759,7 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 
 <h3 id="control-kong-through-systemd">Control Kong through systemd</h3>
 
-<h5 id="customize-kong-s-nginx-instance-including-files-via-the-injected-nginx-directives-https-docs-konghq-com-2-1-x-systemd-customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives"><a href="https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives">Customize Kong’s Nginx instance including files via the injected Nginx directives</a></h5>
+<h5 id="customize-kong-s-nginx-instance-including-files-via-the-injected-nginx-directives-https-docs-konghq-com-2-1-x-systemd-customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives">Customize Kong’s Nginx instance including files via the injected Nginx directives  (<a href="https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives">https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives</a>)</h5>
 
 <h3 id="plugins-execution-order">Plugins execution order</h3>
 
