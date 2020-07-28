@@ -33,46 +33,46 @@
 
 &lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/image-20200728111142106.png#mid&#34; alt=&#34;Different architecture compare&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Kong has been built with the following leading principles:&lt;/p&gt;
+&lt;p&gt;Kong的构建遵循以下主要原则：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;High Performance&lt;/strong&gt;: Sub-millisecond processing latency to support mission critical use cases and high throughput.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Extensibility&lt;/strong&gt;: With a pluggable architecture to extend Kong in Lua or GoLang with Kong&amp;rsquo;s Plugin SDK.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Portability&lt;/strong&gt;: To run on every platform, every cloud and to natively support Kubernetes via our modern Ingress Controller.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;高性能&lt;/strong&gt;：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可扩展性&lt;/strong&gt;：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可移植性&lt;/strong&gt;：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h4 id=&#34;features&#34;&gt;Features&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Cloud-Native&lt;/strong&gt;: Platform agnostic, Kong can run on any platform - from bare metal to containers - and it can run on every cloud natively.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Kubernetes-Native&lt;/strong&gt;: Declaratively configure Kong with native Kubernetes CRDs using the official Ingress Controller to route and connect all L4 + L7 traffic.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Dynamic Load Balancing&lt;/strong&gt;: Load balance traffic across multiple upstream services.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Hash-based Load Balancing&lt;/strong&gt;: Load balance with consistent hashing/sticky sessions.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Circuit-Breaker&lt;/strong&gt;: Intelligent tracking of unhealthy upstream services.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Health Checks:&lt;/strong&gt; Active and passive monitoring of your upstream services.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Service Discovery&lt;/strong&gt;: Resolve SRV records in third-party DNS resolvers like Consul.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Serverless&lt;/strong&gt;: Invoke and secure AWS Lambda or OpenWhisk functions directly from Kong.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;WebSockets&lt;/strong&gt;: Communicate to your upstream services via WebSockets.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;gRPC&lt;/strong&gt;: Communicate to your gRPC services and observe your traffic with logging and observability plugins&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;OAuth2.0&lt;/strong&gt;: Easily add OAuth2.0 authentication to your APIs.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Logging&lt;/strong&gt;: Log requests and responses to your system over HTTP, TCP, UDP, or to disk.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Security&lt;/strong&gt;: ACL, Bot detection, allow/deny IPs, etc&amp;hellip;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Syslog&lt;/strong&gt;: Logging to System log.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;SSL&lt;/strong&gt;: Setup a Specific SSL Certificate for an underlying service or API.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Monitoring&lt;/strong&gt;: Live monitoring provides key load and performance server metrics.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Forward Proxy&lt;/strong&gt;: Make Kong connect to intermediary transparent HTTP proxies.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Authentications&lt;/strong&gt;: HMAC, JWT, Basic, and more.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Rate-limiting&lt;/strong&gt;: Block and throttle requests based on many variables.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Transformations&lt;/strong&gt;: Add, remove, or manipulate HTTP requests and responses.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Caching&lt;/strong&gt;: Cache and serve responses at the proxy layer.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;CLI&lt;/strong&gt;: Control your Kong cluster from the command line.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;REST API&lt;/strong&gt;: Kong can be operated with its RESTful API for maximum flexibility.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Geo-Replicated&lt;/strong&gt;: Configs are always up-to-date across different regions.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Failure Detection &amp;amp; Recovery&lt;/strong&gt;: Kong is unaffected if one of your Cassandra nodes goes down.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Clustering&lt;/strong&gt;: All Kong nodes auto-join the cluster keeping their config updated across nodes.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Scalability&lt;/strong&gt;: Distributed by nature, Kong scales horizontally by simply adding nodes.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Performance&lt;/strong&gt;: Kong handles load with ease by scaling and using NGINX at the core.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Plugins&lt;/strong&gt;: Extendable architecture for adding functionality to Kong and APIs.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cloud-Native&lt;/strong&gt;：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Kubernetes-Native&lt;/strong&gt;：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 + L7通信。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;动态负载平衡&lt;/strong&gt;：在多个上游服务之间平衡流量。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;基于哈希的负载平衡&lt;/strong&gt;：具有一致的哈希/粘性会话的负载平衡。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;断路器&lt;/strong&gt;：智能跟踪不健康的上游服务。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;运行状况检查：&lt;/strong&gt;主动和被动监视上游服务。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;服务发现&lt;/strong&gt;：在第三方DNS解析器（例如Consul）中解析SRV记录。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;无服务器&lt;/strong&gt;：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;WebSockets&lt;/strong&gt;：通过WebSockets与您的上游服务进行通信。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;gRPC&lt;/strong&gt;：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OAuth2.0&lt;/strong&gt;：轻松将OAuth2.0身份验证添加到您的API。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;记录&lt;/strong&gt;：通过HTTP，TCP，UDP或磁盘&lt;strong&gt;记录&lt;/strong&gt;对系统的请求和响应。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;安全性&lt;/strong&gt;：ACL，僵尸程序检测，允许/拒绝IP等&amp;hellip;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Syslog&lt;/strong&gt;:  系统日志记录.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SSL&lt;/strong&gt;：为基础服务或API设置特定的SSL证书。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;监视&lt;/strong&gt;：实时监视提供关键的负载和性能服务器指标。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;转发代理&lt;/strong&gt;：使Kong连接到透明的中介HTTP代理。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;认证&lt;/strong&gt;：HMAC，JWT，Basic等。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;速率限制&lt;/strong&gt;：基于许多变量的阻止和限制请求。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;转换&lt;/strong&gt;：添加，删除或处理HTTP请求和响应。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缓存&lt;/strong&gt;：在代理层缓存并提供响应。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CLI&lt;/strong&gt;：&lt;strong&gt;从命令行&lt;/strong&gt;控制Kong群集。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;REST API&lt;/strong&gt;：Kong可以使用其RESTful API进行操作，以实现最大的灵活性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;地理复制&lt;/strong&gt;：跨不同区域的配置始终是最新的。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;故障检测和恢复&lt;/strong&gt;：如果您的Cassandra节点之一发生&lt;strong&gt;故障，则&lt;/strong&gt; Kong不会受到影响。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;集群&lt;/strong&gt;：所有Kong节点自动加入集群，并在各个节点之间更新其配置。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可伸缩性&lt;/strong&gt;：Kong本质上分布，只需添加节点即可水平&lt;strong&gt;扩展&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;性能&lt;/strong&gt;：Kong通过扩展和使用NGINX作为核心轻松处理负载。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;插件&lt;/strong&gt;：可扩展的体系结构，用于向Kong和API添加功能。&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/image-20200727154809091.png#mid&#34; alt=&#34;Kong layer&#34; /&gt;&lt;/p&gt;
@@ -101,59 +101,59 @@
 &lt;h4 id=&#34;proxy-cache-plugin-https-docs-konghq-com-hub-kong-inc-proxy-cache&#34;&gt;proxy-cache plugin (&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/proxy-cache/&#34;&gt;https://docs.konghq.com/hub/kong-inc/proxy-cache/&lt;/a&gt;)&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Major parameters
+&lt;li&gt;主要参数
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;config.content_type&lt;/code&gt; caching with content type&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;config.cache_ttl&lt;/code&gt; default &lt;code&gt;300seconds&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;config.strategy&lt;/code&gt;  &lt;code&gt;memory&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;config.request_method&lt;/code&gt;  default &lt;code&gt;[&amp;quot;GET&amp;quot;,&amp;quot;HEAD&amp;quot;]&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;config.response_code&lt;/code&gt;  default &lt;code&gt;200, 301, 404&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.content_type&lt;/code&gt; 缓存某指定的&lt;code&gt;content_type&lt;/code&gt;类型的数据&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.cache_ttl&lt;/code&gt; 缓存存活时间，默认 &lt;code&gt;300秒&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.strategy&lt;/code&gt;  缓存策略，社区版本只支持&lt;code&gt;memory&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.request_method&lt;/code&gt;  默认取值 &lt;code&gt;[&amp;quot;GET&amp;quot;,&amp;quot;HEAD&amp;quot;]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.response_code&lt;/code&gt;  默认入职 &lt;code&gt;200, 301, 404&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Cache status
+&lt;li&gt;缓存状态
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Miss&lt;/code&gt;: The request could be satisfied in cache, but an entry for the resource was not found in cache, and the request was proxied upstream.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Hit&lt;/code&gt;: The request was satisfied and served from cache.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Refresh&lt;/code&gt;: The resource was found in cache, but could not satisfy the request, due to Cache-Control behaviors or reaching its hard-coded cache_ttl threshold.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Bypass&lt;/code&gt;: The request could not be satisfied from cache based on plugin configuration.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;key-auth-plugin-https-docs-konghq-com-hub-kong-inc-key-auth&#34;&gt;Key Auth plugin (&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/key-auth/&#34;&gt;https://docs.konghq.com/hub/kong-inc/key-auth/&lt;/a&gt;)&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Major parameters&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;config.policy&lt;/code&gt;The rate-limiting policies to use for retrieving and incrementing the limits. Available values are &lt;code&gt;local&lt;/code&gt; (counters will be stored locally in-memory on the node), &lt;code&gt;cluster&lt;/code&gt; (counters are stored in the datastore and shared across the nodes), and &lt;code&gt;redis&lt;/code&gt; (counters are stored on a Redis server and will be shared across the nodes). In the case of DB-less mode, at least one of &lt;code&gt;local&lt;/code&gt; or &lt;code&gt;redis&lt;/code&gt; must be specified. Please refer &lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/rate-limiting/#implementation-considerations&#34;&gt;Implementation Considerations&lt;/a&gt; for details on which policy should be used.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;config.policy=redis&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;using &lt;code&gt;config.redis*&lt;/code&gt; =&amp;gt;&lt;code&gt;redis_host|redis_password|redis_database|redis_timeout&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;config.&lt;/code&gt; &lt;code&gt;second|minute|hour|day|month|year&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Miss&lt;/code&gt;: 在缓存中没有找到数据，向上游服务请求以获取数据，并缓存返回数据。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Hit&lt;/code&gt;: 请求中缓存中命中数据。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Refresh&lt;/code&gt;: 由于在Cache-Control行为或达到其硬编码cache_ttl阈值，因此在缓存中找到了资源，但无法满足请求。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Bypass&lt;/code&gt;: 根据插件配置，缓存无法满足该请求。&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h4 id=&#34;rote-limiting-plugin-https-docs-konghq-com-hub-kong-inc-rate-limiting&#34;&gt;Rote Limiting plugin (&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/rate-limiting/&#34;&gt;https://docs.konghq.com/hub/kong-inc/rate-limiting/&lt;/a&gt;)&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Major parameters
+&lt;li&gt;&lt;p&gt;主要参数&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;config.key_names&lt;/code&gt; default name &lt;code&gt;apikey&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.policy&lt;/code&gt;用于检索和增加限制的速率限制策略。可用值为&lt;code&gt;local&lt;/code&gt;（计数器将存储在本地内存中的节点上），&lt;code&gt;cluster&lt;/code&gt;（计数器存储在数据存储区中并在节点上共享）和&lt;code&gt;redis&lt;/code&gt;（计数器存储在Redis服务器上并在节点之间共享）。在无DB模式下，必须至少指定&lt;code&gt;local&lt;/code&gt;或之一&lt;code&gt;redis&lt;/code&gt;。请参阅&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/rate-limiting/#implementation-considerations&#34;&gt;实施注意事项，&lt;/a&gt;以了解有关应使用哪种策略的详细信息。&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Usage step
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;config.policy=redis&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;使用 &lt;code&gt;config.redis*&lt;/code&gt; =&amp;gt;&lt;code&gt;redis_host|redis_password|redis_database|redis_timeout&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Create a Consumer&lt;/li&gt;
-&lt;li&gt;Create a Key&lt;/li&gt;
-&lt;li&gt;Using the Key&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.&lt;/code&gt; &lt;code&gt;second|minute|hour|day|month|year&lt;/code&gt; 配置对应单位时间内的请求限制数&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;key-auth-plugin-https-docs-konghq-com-hub-kong-inc-key-auth&#34;&gt;Key Auth plugin (&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/key-auth/&#34;&gt;https://docs.konghq.com/hub/kong-inc/key-auth/&lt;/a&gt;)&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;主要参数
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;config.key_names&lt;/code&gt; 默认名称 &lt;code&gt;apikey&lt;/code&gt;，可以配置修改&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;使用步骤
+
+&lt;ul&gt;
+&lt;li&gt;创建 a Consumer&lt;/li&gt;
+&lt;li&gt;创建一个  Key&lt;/li&gt;
+&lt;li&gt;然后使用 Key&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -168,11 +168,11 @@
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&#34;custom-nginx-templates-embedding-kong-https-docs-konghq-com-2-1-x-configuration&#34;&gt;Custom Nginx templates &amp;amp; embedding Kong (&lt;a href=&#34;https://docs.konghq.com/2.1.x/configuration/&#34;&gt;https://docs.konghq.com/2.1.x/configuration/&lt;/a&gt;)&lt;/h3&gt;
+&lt;h3 id=&#34;自定义nginx模板并嵌入kong-https-docs-konghq-com-2-1-x-configuration&#34;&gt;自定义Nginx模板并嵌入Kong (&lt;a href=&#34;https://docs.konghq.com/2.1.x/configuration/&#34;&gt;https://docs.konghq.com/2.1.x/configuration/&lt;/a&gt;)&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;$ kong start -c kong.conf --nginx-conf custom_nginx.template&lt;/code&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;terminology&#34;&gt;Terminology&lt;/h3&gt;
+&lt;h3 id=&#34;术语&#34;&gt;术语&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;client&lt;/code&gt;: Refers to the &lt;em&gt;downstream&lt;/em&gt; client making requests to Kong’s proxy port.&lt;/li&gt;
@@ -932,7 +932,7 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&#34;key-auth-plugin-https-docs-konghq-com-hub-kong-inc-key-auth&#34;&gt;Key Auth plugin (&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/key-auth/&#34;&gt;https://docs.konghq.com/hub/kong-inc/key-auth/&lt;/a&gt;)&lt;/h4&gt;
+&lt;h4 id=&#34;rote-limiting-plugin-https-docs-konghq-com-hub-kong-inc-rate-limiting&#34;&gt;Rote Limiting plugin (&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/rate-limiting/&#34;&gt;https://docs.konghq.com/hub/kong-inc/rate-limiting/&lt;/a&gt;)&lt;/h4&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Major parameters&lt;/p&gt;
@@ -952,7 +952,7 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&#34;rote-limiting-plugin-https-docs-konghq-com-hub-kong-inc-rate-limiting&#34;&gt;Rote Limiting plugin (&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/rate-limiting/&#34;&gt;https://docs.konghq.com/hub/kong-inc/rate-limiting/&lt;/a&gt;)&lt;/h4&gt;
+&lt;h4 id=&#34;key-auth-plugin-https-docs-konghq-com-hub-kong-inc-key-auth&#34;&gt;Key Auth plugin (&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/key-auth/&#34;&gt;https://docs.konghq.com/hub/kong-inc/key-auth/&lt;/a&gt;)&lt;/h4&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Major parameters

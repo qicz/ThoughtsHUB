@@ -30,8 +30,8 @@
 <meta property="og:description" content="从技术的角度来说，Kong是什么（因为Kong也有金刚意思）? (https://docs.konghq.com/2.1.x/getting-started/introduction/) Kong是一个运行在Nginx中的基于Lua - Nginx模块实现的Lua应用程序。Kong与OpenResty一起发布的，以此替代在Nginx中还需编译Lua - Nginx模块，OpenResty已经包含了lua- Nginx模块。OpenResty不是Nginx的一个分支，而是一组扩展其功能的模块。
 Kong是一个基于云的、快速的、可伸缩的分布式微服务抽象层(也称为API网关或API中间件)。2015年作为开源项目发布，其核心价值是高性能和可扩展性。
 为何选择Kong？ 如果您正在为web、移动或物联网构建服务，那们您可能还需要通用功能来运行您的实际软件。Kong可以充当微服务请求的网关(或侧卡)，同时通过插件提供负载平衡、日志记录、身份验证、速率限制、转换等功能。
-Kong has been built with the following leading principles:
- High Performance: Sub-millisecond processing latency to support mission critical use cases and high throughput." />
+Kong的构建遵循以下主要原则：
+ 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  Features  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 &#43; L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 运行状况检查：主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://izcqi.com/posts/2020/07/28/kong-quick-start-and-core-concepts-cn/" />
 <meta property="article:published_time" content="2020-07-28T22:23:39+08:00" />
@@ -42,8 +42,8 @@ Kong has been built with the following leading principles:
 <meta name="twitter:description" content="从技术的角度来说，Kong是什么（因为Kong也有金刚意思）? (https://docs.konghq.com/2.1.x/getting-started/introduction/) Kong是一个运行在Nginx中的基于Lua - Nginx模块实现的Lua应用程序。Kong与OpenResty一起发布的，以此替代在Nginx中还需编译Lua - Nginx模块，OpenResty已经包含了lua- Nginx模块。OpenResty不是Nginx的一个分支，而是一组扩展其功能的模块。
 Kong是一个基于云的、快速的、可伸缩的分布式微服务抽象层(也称为API网关或API中间件)。2015年作为开源项目发布，其核心价值是高性能和可扩展性。
 为何选择Kong？ 如果您正在为web、移动或物联网构建服务，那们您可能还需要通用功能来运行您的实际软件。Kong可以充当微服务请求的网关(或侧卡)，同时通过插件提供负载平衡、日志记录、身份验证、速率限制、转换等功能。
-Kong has been built with the following leading principles:
- High Performance: Sub-millisecond processing latency to support mission critical use cases and high throughput."/>
+Kong的构建遵循以下主要原则：
+ 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  Features  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 &#43; L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 运行状况检查：主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2."/>
 <meta name="generator" content="Hugo 0.59.1" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
@@ -155,7 +155,7 @@ Kong has been built with the following leading principles:
     </span>
     
     &nbsp; | &nbsp; 
-    <span class="fa fa-plane"><em> 20 minutes read</em> </span>
+    <span class="fa fa-plane"><em> 17 minutes read</em> </span>
 </aside>
 
 
@@ -175,46 +175,46 @@ Kong has been built with the following leading principles:
 
 <p><img src="https://izcqi.com/images/image-20200728111142106.png#mid" alt="Different architecture compare" /></p>
 
-<p>Kong has been built with the following leading principles:</p>
+<p>Kong的构建遵循以下主要原则：</p>
 
 <ul>
-<li><strong>High Performance</strong>: Sub-millisecond processing latency to support mission critical use cases and high throughput.</li>
-<li><strong>Extensibility</strong>: With a pluggable architecture to extend Kong in Lua or GoLang with Kong&rsquo;s Plugin SDK.</li>
-<li><strong>Portability</strong>: To run on every platform, every cloud and to natively support Kubernetes via our modern Ingress Controller.</li>
+<li><strong>高性能</strong>：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。</li>
+<li><strong>可扩展性</strong>：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。</li>
+<li><strong>可移植性</strong>：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。</li>
 </ul>
 
 <h4 id="features">Features</h4>
 
 <ul>
-<li><strong>Cloud-Native</strong>: Platform agnostic, Kong can run on any platform - from bare metal to containers - and it can run on every cloud natively.</li>
-<li><strong>Kubernetes-Native</strong>: Declaratively configure Kong with native Kubernetes CRDs using the official Ingress Controller to route and connect all L4 + L7 traffic.</li>
-<li><strong>Dynamic Load Balancing</strong>: Load balance traffic across multiple upstream services.</li>
-<li><strong>Hash-based Load Balancing</strong>: Load balance with consistent hashing/sticky sessions.</li>
-<li><strong>Circuit-Breaker</strong>: Intelligent tracking of unhealthy upstream services.</li>
-<li><strong>Health Checks:</strong> Active and passive monitoring of your upstream services.</li>
-<li><strong>Service Discovery</strong>: Resolve SRV records in third-party DNS resolvers like Consul.</li>
-<li><strong>Serverless</strong>: Invoke and secure AWS Lambda or OpenWhisk functions directly from Kong.</li>
-<li><strong>WebSockets</strong>: Communicate to your upstream services via WebSockets.</li>
-<li><strong>gRPC</strong>: Communicate to your gRPC services and observe your traffic with logging and observability plugins</li>
-<li><strong>OAuth2.0</strong>: Easily add OAuth2.0 authentication to your APIs.</li>
-<li><strong>Logging</strong>: Log requests and responses to your system over HTTP, TCP, UDP, or to disk.</li>
-<li><strong>Security</strong>: ACL, Bot detection, allow/deny IPs, etc&hellip;</li>
-<li><strong>Syslog</strong>: Logging to System log.</li>
-<li><strong>SSL</strong>: Setup a Specific SSL Certificate for an underlying service or API.</li>
-<li><strong>Monitoring</strong>: Live monitoring provides key load and performance server metrics.</li>
-<li><strong>Forward Proxy</strong>: Make Kong connect to intermediary transparent HTTP proxies.</li>
-<li><strong>Authentications</strong>: HMAC, JWT, Basic, and more.</li>
-<li><strong>Rate-limiting</strong>: Block and throttle requests based on many variables.</li>
-<li><strong>Transformations</strong>: Add, remove, or manipulate HTTP requests and responses.</li>
-<li><strong>Caching</strong>: Cache and serve responses at the proxy layer.</li>
-<li><strong>CLI</strong>: Control your Kong cluster from the command line.</li>
-<li><strong>REST API</strong>: Kong can be operated with its RESTful API for maximum flexibility.</li>
-<li><strong>Geo-Replicated</strong>: Configs are always up-to-date across different regions.</li>
-<li><strong>Failure Detection &amp; Recovery</strong>: Kong is unaffected if one of your Cassandra nodes goes down.</li>
-<li><strong>Clustering</strong>: All Kong nodes auto-join the cluster keeping their config updated across nodes.</li>
-<li><strong>Scalability</strong>: Distributed by nature, Kong scales horizontally by simply adding nodes.</li>
-<li><strong>Performance</strong>: Kong handles load with ease by scaling and using NGINX at the core.</li>
-<li><strong>Plugins</strong>: Extendable architecture for adding functionality to Kong and APIs.</li>
+<li><strong>Cloud-Native</strong>：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。</li>
+<li><strong>Kubernetes-Native</strong>：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 + L7通信。</li>
+<li><strong>动态负载平衡</strong>：在多个上游服务之间平衡流量。</li>
+<li><strong>基于哈希的负载平衡</strong>：具有一致的哈希/粘性会话的负载平衡。</li>
+<li><strong>断路器</strong>：智能跟踪不健康的上游服务。</li>
+<li><strong>运行状况检查：</strong>主动和被动监视上游服务。</li>
+<li><strong>服务发现</strong>：在第三方DNS解析器（例如Consul）中解析SRV记录。</li>
+<li><strong>无服务器</strong>：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。</li>
+<li><strong>WebSockets</strong>：通过WebSockets与您的上游服务进行通信。</li>
+<li><strong>gRPC</strong>：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量</li>
+<li><strong>OAuth2.0</strong>：轻松将OAuth2.0身份验证添加到您的API。</li>
+<li><strong>记录</strong>：通过HTTP，TCP，UDP或磁盘<strong>记录</strong>对系统的请求和响应。</li>
+<li><strong>安全性</strong>：ACL，僵尸程序检测，允许/拒绝IP等&hellip;</li>
+<li><strong>Syslog</strong>:  系统日志记录.</li>
+<li><strong>SSL</strong>：为基础服务或API设置特定的SSL证书。</li>
+<li><strong>监视</strong>：实时监视提供关键的负载和性能服务器指标。</li>
+<li><strong>转发代理</strong>：使Kong连接到透明的中介HTTP代理。</li>
+<li><strong>认证</strong>：HMAC，JWT，Basic等。</li>
+<li><strong>速率限制</strong>：基于许多变量的阻止和限制请求。</li>
+<li><strong>转换</strong>：添加，删除或处理HTTP请求和响应。</li>
+<li><strong>缓存</strong>：在代理层缓存并提供响应。</li>
+<li><strong>CLI</strong>：<strong>从命令行</strong>控制Kong群集。</li>
+<li><strong>REST API</strong>：Kong可以使用其RESTful API进行操作，以实现最大的灵活性。</li>
+<li><strong>地理复制</strong>：跨不同区域的配置始终是最新的。</li>
+<li><strong>故障检测和恢复</strong>：如果您的Cassandra节点之一发生<strong>故障，则</strong> Kong不会受到影响。</li>
+<li><strong>集群</strong>：所有Kong节点自动加入集群，并在各个节点之间更新其配置。</li>
+<li><strong>可伸缩性</strong>：Kong本质上分布，只需添加节点即可水平<strong>扩展</strong>。</li>
+<li><strong>性能</strong>：Kong通过扩展和使用NGINX作为核心轻松处理负载。</li>
+<li><strong>插件</strong>：可扩展的体系结构，用于向Kong和API添加功能。</li>
 </ul>
 
 <p><img src="https://izcqi.com/images/image-20200727154809091.png#mid" alt="Kong layer" /></p>
@@ -243,59 +243,59 @@ Kong has been built with the following leading principles:
 <h4 id="proxy-cache-plugin-https-docs-konghq-com-hub-kong-inc-proxy-cache">proxy-cache plugin (<a href="https://docs.konghq.com/hub/kong-inc/proxy-cache/">https://docs.konghq.com/hub/kong-inc/proxy-cache/</a>)</h4>
 
 <ul>
-<li>Major parameters
+<li>主要参数
 
 <ul>
-<li><code>config.content_type</code> caching with content type</li>
-<li><code>config.cache_ttl</code> default <code>300seconds</code></li>
-<li><code>config.strategy</code>  <code>memory</code></li>
-<li><code>config.request_method</code>  default <code>[&quot;GET&quot;,&quot;HEAD&quot;]</code></li>
-<li><code>config.response_code</code>  default <code>200, 301, 404</code></li>
+<li><code>config.content_type</code> 缓存某指定的<code>content_type</code>类型的数据</li>
+<li><code>config.cache_ttl</code> 缓存存活时间，默认 <code>300秒</code></li>
+<li><code>config.strategy</code>  缓存策略，社区版本只支持<code>memory</code></li>
+<li><code>config.request_method</code>  默认取值 <code>[&quot;GET&quot;,&quot;HEAD&quot;]</code></li>
+<li><code>config.response_code</code>  默认入职 <code>200, 301, 404</code></li>
 </ul></li>
-<li>Cache status
+<li>缓存状态
 
 <ul>
-<li><code>Miss</code>: The request could be satisfied in cache, but an entry for the resource was not found in cache, and the request was proxied upstream.</li>
-<li><code>Hit</code>: The request was satisfied and served from cache.</li>
-<li><code>Refresh</code>: The resource was found in cache, but could not satisfy the request, due to Cache-Control behaviors or reaching its hard-coded cache_ttl threshold.</li>
-<li><code>Bypass</code>: The request could not be satisfied from cache based on plugin configuration.</li>
-</ul></li>
-</ul>
-
-<h4 id="key-auth-plugin-https-docs-konghq-com-hub-kong-inc-key-auth">Key Auth plugin (<a href="https://docs.konghq.com/hub/kong-inc/key-auth/">https://docs.konghq.com/hub/kong-inc/key-auth/</a>)</h4>
-
-<ul>
-<li><p>Major parameters</p>
-
-<ul>
-<li><code>config.policy</code>The rate-limiting policies to use for retrieving and incrementing the limits. Available values are <code>local</code> (counters will be stored locally in-memory on the node), <code>cluster</code> (counters are stored in the datastore and shared across the nodes), and <code>redis</code> (counters are stored on a Redis server and will be shared across the nodes). In the case of DB-less mode, at least one of <code>local</code> or <code>redis</code> must be specified. Please refer <a href="https://docs.konghq.com/hub/kong-inc/rate-limiting/#implementation-considerations">Implementation Considerations</a> for details on which policy should be used.</li>
-</ul>
-
-<blockquote>
-<p><code>config.policy=redis</code></p>
-
-<p>using <code>config.redis*</code> =&gt;<code>redis_host|redis_password|redis_database|redis_timeout</code></p>
-</blockquote>
-
-<ul>
-<li><code>config.</code> <code>second|minute|hour|day|month|year</code></li>
+<li><code>Miss</code>: 在缓存中没有找到数据，向上游服务请求以获取数据，并缓存返回数据。</li>
+<li><code>Hit</code>: 请求中缓存中命中数据。</li>
+<li><code>Refresh</code>: 由于在Cache-Control行为或达到其硬编码cache_ttl阈值，因此在缓存中找到了资源，但无法满足请求。</li>
+<li><code>Bypass</code>: 根据插件配置，缓存无法满足该请求。</li>
 </ul></li>
 </ul>
 
 <h4 id="rote-limiting-plugin-https-docs-konghq-com-hub-kong-inc-rate-limiting">Rote Limiting plugin (<a href="https://docs.konghq.com/hub/kong-inc/rate-limiting/">https://docs.konghq.com/hub/kong-inc/rate-limiting/</a>)</h4>
 
 <ul>
-<li>Major parameters
+<li><p>主要参数</p>
 
 <ul>
-<li><code>config.key_names</code> default name <code>apikey</code></li>
+<li><code>config.policy</code>用于检索和增加限制的速率限制策略。可用值为<code>local</code>（计数器将存储在本地内存中的节点上），<code>cluster</code>（计数器存储在数据存储区中并在节点上共享）和<code>redis</code>（计数器存储在Redis服务器上并在节点之间共享）。在无DB模式下，必须至少指定<code>local</code>或之一<code>redis</code>。请参阅<a href="https://docs.konghq.com/hub/kong-inc/rate-limiting/#implementation-considerations">实施注意事项，</a>以了解有关应使用哪种策略的详细信息。</li>
 </ul></li>
-<li>Usage step
+</ul>
+
+<blockquote>
+<p><code>config.policy=redis</code></p>
+
+<p>使用 <code>config.redis*</code> =&gt;<code>redis_host|redis_password|redis_database|redis_timeout</code></p>
+</blockquote>
 
 <ul>
-<li>Create a Consumer</li>
-<li>Create a Key</li>
-<li>Using the Key</li>
+<li><code>config.</code> <code>second|minute|hour|day|month|year</code> 配置对应单位时间内的请求限制数</li>
+</ul>
+
+<h4 id="key-auth-plugin-https-docs-konghq-com-hub-kong-inc-key-auth">Key Auth plugin (<a href="https://docs.konghq.com/hub/kong-inc/key-auth/">https://docs.konghq.com/hub/kong-inc/key-auth/</a>)</h4>
+
+<ul>
+<li>主要参数
+
+<ul>
+<li><code>config.key_names</code> 默认名称 <code>apikey</code>，可以配置修改</li>
+</ul></li>
+<li>使用步骤
+
+<ul>
+<li>创建 a Consumer</li>
+<li>创建一个  Key</li>
+<li>然后使用 Key</li>
 </ul></li>
 </ul>
 
@@ -310,11 +310,11 @@ Kong has been built with the following leading principles:
 </ul></li>
 </ul>
 
-<h3 id="custom-nginx-templates-embedding-kong-https-docs-konghq-com-2-1-x-configuration">Custom Nginx templates &amp; embedding Kong (<a href="https://docs.konghq.com/2.1.x/configuration/">https://docs.konghq.com/2.1.x/configuration/</a>)</h3>
+<h3 id="自定义nginx模板并嵌入kong-https-docs-konghq-com-2-1-x-configuration">自定义Nginx模板并嵌入Kong (<a href="https://docs.konghq.com/2.1.x/configuration/">https://docs.konghq.com/2.1.x/configuration/</a>)</h3>
 
 <p><code>$ kong start -c kong.conf --nginx-conf custom_nginx.template</code></p>
 
-<h3 id="terminology">Terminology</h3>
+<h3 id="术语">术语</h3>
 
 <ul>
 <li><code>client</code>: Refers to the <em>downstream</em> client making requests to Kong’s proxy port.</li>
