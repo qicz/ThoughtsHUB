@@ -33,6 +33,11 @@
   </url>
   
   <url>
+    <loc>https://izcqi.com/posts/2020/07/28/kong-quick-start-and-core-concepts-cn/</loc>
+    <lastmod>2020-07-28T22:23:39+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://izcqi.com/posts/2020/07/28/kong-quick-start-and-core-concepts-en/</loc>
     <lastmod>2020-07-28T22:23:39+08:00</lastmod>
   </url>
@@ -48,12 +53,12 @@
   </url>
   
   <url>
-    <loc>https://izcqi.com/categories/thoughts/</loc>
+    <loc>https://izcqi.com/tags/thoughts/</loc>
     <lastmod>2020-06-27T09:38:21+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://izcqi.com/tags/thoughts/</loc>
+    <loc>https://izcqi.com/categories/thoughts/</loc>
     <lastmod>2020-06-27T09:38:21+08:00</lastmod>
   </url>
   
@@ -153,12 +158,12 @@
   </url>
   
   <url>
-    <loc>https://izcqi.com/tags/design-patterns/</loc>
+    <loc>https://izcqi.com/categories/design-patterns/</loc>
     <lastmod>2019-12-06T11:16:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://izcqi.com/categories/design-patterns/</loc>
+    <loc>https://izcqi.com/tags/design-patterns/</loc>
     <lastmod>2019-12-06T11:16:00+08:00</lastmod>
   </url>
   
