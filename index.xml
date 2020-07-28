@@ -8,10 +8,807 @@
    <managingEditor>zcq#zhucongqi.cn (Qicz)</managingEditor>
    <webMaster>zcq#zhucongqi.cn (Qicz)</webMaster>
    <copyright>&amp;copy; 2012 - </copyright>
-   <lastBuildDate>Sat, 27 Jun 2020 09:38:21 +0800</lastBuildDate>
+   <lastBuildDate>Tue, 28 Jul 2020 22:23:39 +0800</lastBuildDate>
    
        <atom:link href="https://izcqi.com/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Kong Quick Start &amp; Core Concepts (En) </title>
+       <link>https://izcqi.com/posts/2020/07/28/kong-quick-start-and-core-concepts-en/</link>
+       <pubDate>Tue, 28 Jul 2020 22:23:39 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2020/07/28/kong-quick-start-and-core-concepts-en/</guid>
+       <description>
+
+&lt;h3 id=&#34;what-is-kong-technically-https-docs-konghq-com-2-1-x-getting-started-introduction&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/getting-started/introduction/&#34;&gt;What is Kong, technically?&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Kong is a Lua application running in Nginx and made possible by the lua-nginx-module. Instead of compiling Nginx with this module, Kong is distributed along with OpenResty, which already includes lua-nginx-module. OpenResty is not a fork of Nginx, but a bundle of modules extending its capabilities.&lt;/p&gt;
+
+&lt;p&gt;Kong is a cloud-native, fast, scalable, and distributed Microservice Abstraction Layer &lt;em&gt;(also known as an API Gateway or API Middleware)&lt;/em&gt;. Made available as an open-source project in 2015, its core values are high performance and extensibility.&lt;/p&gt;
+
+&lt;h4 id=&#34;why-kong&#34;&gt;Why Kong?&lt;/h4&gt;
+
+&lt;p&gt;If you are building for the web, mobile, or IoT (Internet of Things) you will likely end up needing common functionality to run your actual software. Kong can help by acting as a gateway (or a sidecar) for microservices requests while providing load balancing, logging, authentication, rate-limiting, transformations, and more through plugins.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/image-20200728111142106.png#mid&#34; alt=&#34;Different architecture compare&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Kong has been built with the following leading principles:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;High Performance&lt;/strong&gt;: Sub-millisecond processing latency to support mission critical use cases and high throughput.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Extensibility&lt;/strong&gt;: With a pluggable architecture to extend Kong in Lua or GoLang with Kong&amp;rsquo;s Plugin SDK.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Portability&lt;/strong&gt;: To run on every platform, every cloud and to natively support Kubernetes via our modern Ingress Controller.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;features&#34;&gt;Features&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cloud-Native&lt;/strong&gt;: Platform agnostic, Kong can run on any platform - from bare metal to containers - and it can run on every cloud natively.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Kubernetes-Native&lt;/strong&gt;: Declaratively configure Kong with native Kubernetes CRDs using the official Ingress Controller to route and connect all L4 + L7 traffic.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Dynamic Load Balancing&lt;/strong&gt;: Load balance traffic across multiple upstream services.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hash-based Load Balancing&lt;/strong&gt;: Load balance with consistent hashing/sticky sessions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Circuit-Breaker&lt;/strong&gt;: Intelligent tracking of unhealthy upstream services.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Health Checks:&lt;/strong&gt; Active and passive monitoring of your upstream services.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Service Discovery&lt;/strong&gt;: Resolve SRV records in third-party DNS resolvers like Consul.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Serverless&lt;/strong&gt;: Invoke and secure AWS Lambda or OpenWhisk functions directly from Kong.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;WebSockets&lt;/strong&gt;: Communicate to your upstream services via WebSockets.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;gRPC&lt;/strong&gt;: Communicate to your gRPC services and observe your traffic with logging and observability plugins&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OAuth2.0&lt;/strong&gt;: Easily add OAuth2.0 authentication to your APIs.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Logging&lt;/strong&gt;: Log requests and responses to your system over HTTP, TCP, UDP, or to disk.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Security&lt;/strong&gt;: ACL, Bot detection, allow/deny IPs, etc&amp;hellip;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Syslog&lt;/strong&gt;: Logging to System log.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SSL&lt;/strong&gt;: Setup a Specific SSL Certificate for an underlying service or API.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Monitoring&lt;/strong&gt;: Live monitoring provides key load and performance server metrics.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Forward Proxy&lt;/strong&gt;: Make Kong connect to intermediary transparent HTTP proxies.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Authentications&lt;/strong&gt;: HMAC, JWT, Basic, and more.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Rate-limiting&lt;/strong&gt;: Block and throttle requests based on many variables.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Transformations&lt;/strong&gt;: Add, remove, or manipulate HTTP requests and responses.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Caching&lt;/strong&gt;: Cache and serve responses at the proxy layer.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CLI&lt;/strong&gt;: Control your Kong cluster from the command line.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;REST API&lt;/strong&gt;: Kong can be operated with its RESTful API for maximum flexibility.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Geo-Replicated&lt;/strong&gt;: Configs are always up-to-date across different regions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Failure Detection &amp;amp; Recovery&lt;/strong&gt;: Kong is unaffected if one of your Cassandra nodes goes down.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Clustering&lt;/strong&gt;: All Kong nodes auto-join the cluster keeping their config updated across nodes.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Scalability&lt;/strong&gt;: Distributed by nature, Kong scales horizontally by simply adding nodes.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Performance&lt;/strong&gt;: Kong handles load with ease by scaling and using NGINX at the core.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Plugins&lt;/strong&gt;: Extendable architecture for adding functionality to Kong and APIs.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/image-20200727154809091.png#mid&#34; alt=&#34;Kong layer&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;concepts&#34;&gt;Concepts&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Services&lt;/li&gt;
+&lt;li&gt;Routes&lt;/li&gt;
+&lt;li&gt;Upstreams&lt;/li&gt;
+&lt;li&gt;Targets&lt;/li&gt;
+&lt;li&gt;Tags&lt;/li&gt;
+&lt;li&gt;Consumers&lt;/li&gt;
+&lt;li&gt;Plugins&lt;/li&gt;
+&lt;li&gt;Others
+
+&lt;ul&gt;
+&lt;li&gt;Certificate Object&lt;/li&gt;
+&lt;li&gt;CA Certificate Object&lt;/li&gt;
+&lt;li&gt;SNI Object&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;plugins&#34;&gt;Plugins&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/proxy-cache/&#34;&gt;proxy-cache&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Major parameters&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.content_type&lt;/code&gt; caching with content type&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.cache_ttl&lt;/code&gt; default &lt;code&gt;300seconds&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.strategy&lt;/code&gt;  &lt;code&gt;memory&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.request_method&lt;/code&gt;  default &lt;code&gt;[&amp;quot;GET&amp;quot;,&amp;quot;HEAD&amp;quot;]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.response_code&lt;/code&gt;  default &lt;code&gt;200, 301, 404&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;cache status&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Miss&lt;/code&gt;: The request could be satisfied in cache, but an entry for the resource was not found in cache, and the request was proxied upstream.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Hit&lt;/code&gt;: The request was satisfied and served from cache.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Refresh&lt;/code&gt;: The resource was found in cache, but could not satisfy the request, due to Cache-Control behaviors or reaching its hard-coded cache_ttl threshold.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Bypass&lt;/code&gt;: The request could not be satisfied from cache based on plugin configuration.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/key-auth/&#34;&gt;Key Auth plugin&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Major parameters&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;code&gt;config.policy&lt;/code&gt;The rate-limiting policies to use for retrieving and incrementing the limits. Available values are &lt;code&gt;local&lt;/code&gt; (counters will be stored locally in-memory on the node), &lt;code&gt;cluster&lt;/code&gt; (counters are stored in the datastore and shared across the nodes), and &lt;code&gt;redis&lt;/code&gt; (counters are stored on a Redis server and will be shared across the nodes). In the case of DB-less mode, at least one of &lt;code&gt;local&lt;/code&gt; or &lt;code&gt;redis&lt;/code&gt; must be specified. Please refer &lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/rate-limiting/#implementation-considerations&#34;&gt;Implementation Considerations&lt;/a&gt; for details on which policy should be used.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;config.policy=redis&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;using &lt;code&gt;config.redis*&lt;/code&gt; =&amp;gt;&lt;code&gt;redis_host|redis_password|redis_database|redis_timeout&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;config.&lt;/code&gt; &lt;code&gt;second|minute|hour|day|month|year&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://docs.konghq.com/hub/kong-inc/rate-limiting/&#34;&gt;Rote Limiting&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Major parameters&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.key_names&lt;/code&gt; default name &lt;code&gt;apikey&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Usage step&lt;/li&gt;
+&lt;li&gt;Create a Consumer&lt;/li&gt;
+&lt;li&gt;Create a Key&lt;/li&gt;
+&lt;li&gt;Using the Key&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://docs.konghq.com/getting-started-guide/2.1.x/load-balancing/&#34;&gt;Load Balancing&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Concepts&lt;/li&gt;
+&lt;li&gt;Upstreams&lt;/li&gt;
+&lt;li&gt;Targets&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;custom-nginx-templates-embedding-kong-https-docs-konghq-com-2-1-x-configuration&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/configuration/&#34;&gt;Custom Nginx templates &amp;amp; embedding Kong&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ kong start -c kong.conf --nginx-conf custom_nginx.template&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;terminology&#34;&gt;Terminology&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;client&lt;/code&gt;: Refers to the &lt;em&gt;downstream&lt;/em&gt; client making requests to Kong’s proxy port.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;upstream service&lt;/code&gt;: Refers to your own API/service sitting behind Kong, to which client requests/connections are forwarded.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Service&lt;/code&gt;: Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Route&lt;/code&gt;: This refers to the Kong Routes entity. Routes are entrypoints into Kong, and defining rules for a request to be matched, and routed to a given Service.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Plugin&lt;/code&gt;: This refers to Kong “plugins”, which are pieces of business logic that run in the proxying lifecycle. Plugins can be configured through the Admin API - either globally (all incoming traffic) or on specific Routes and Services.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ports&#34;&gt;Ports&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;proxy：&lt;code&gt;8000&lt;/code&gt;，&lt;code&gt;8443&lt;/code&gt; for https&lt;/li&gt;
+&lt;li&gt;admin：&lt;code&gt;8001&lt;/code&gt;，&lt;code&gt;8444&lt;/code&gt; for https&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;routes-and-matching-capabilities&#34;&gt;Routes and matching capabilities&lt;/h3&gt;
+
+&lt;p&gt;Kong supports native proxying of HTTP/HTTPS, TCL/TLS, and GRPC/GRPCS protocols; as mentioned earlier, each of these protocols accept a different set of routing attributes:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;http&lt;/code&gt;: &lt;code&gt;methods&lt;/code&gt;, &lt;code&gt;hosts&lt;/code&gt;, &lt;code&gt;headers&lt;/code&gt;, &lt;code&gt;paths&lt;/code&gt; (and &lt;code&gt;snis&lt;/code&gt;, if &lt;code&gt;https&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tcp&lt;/code&gt;: &lt;code&gt;sources&lt;/code&gt;, &lt;code&gt;destinations&lt;/code&gt; (and &lt;code&gt;snis&lt;/code&gt;, if &lt;code&gt;tls&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;grpc&lt;/code&gt;: &lt;code&gt;hosts&lt;/code&gt;, &lt;code&gt;headers&lt;/code&gt;, &lt;code&gt;paths&lt;/code&gt; (and &lt;code&gt;snis&lt;/code&gt;, if &lt;code&gt;grpcs&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Note that all three of these fields are &lt;strong&gt;optional&lt;/strong&gt;, but at least &lt;strong&gt;one of them&lt;/strong&gt; must be specified.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;For a request to match a Route:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The request &lt;strong&gt;must&lt;/strong&gt; include &lt;strong&gt;all&lt;/strong&gt; of the configured fields&lt;/li&gt;
+&lt;li&gt;The values of the fields in the request &lt;strong&gt;must&lt;/strong&gt; match at least one of the configured values (While the field configurations accepts one or more values, a request needs only one of the values to be considered a match)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let’s go through a few examples. Consider a Route configured like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;hosts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;example.com&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;foo-service.com&amp;#34;&lt;/span&gt;],
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;paths&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/foo&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/bar&amp;#34;&lt;/span&gt;],
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;methods&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;GET&amp;#34;&lt;/span&gt;]
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Some of the possible requests matching this Route would look like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /foo &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /bar &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; foo-service.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /foo/hello/world &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;All three of these requests satisfy all the conditions set in the Route definition.&lt;/p&gt;
+
+&lt;p&gt;However, the following requests would &lt;strong&gt;not&lt;/strong&gt; match the configured conditions:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;path not match.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;POST&lt;/span&gt; /foo &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;method not match.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /foo &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; foo.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;url not match.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;All three of these requests satisfy only two of configured conditions. The first request’s path is not a match for any of the configured &lt;code&gt;paths&lt;/code&gt;, same for the second request’s HTTP method, and the third request’s Host header.&lt;/p&gt;
+
+&lt;p&gt;Now that we understand how the routing properties work together, let’s explore each property individually.&lt;/p&gt;
+
+&lt;h4 id=&#34;the-preserve-host-property&#34;&gt;The &lt;code&gt;preserve_host&lt;/code&gt; property&lt;/h4&gt;
+
+&lt;p&gt;When proxying, Kong’s default behavior is to set the upstream request’s Host header to the hostname specified in the Service’s &lt;code&gt;host&lt;/code&gt;. The &lt;code&gt;preserve_host&lt;/code&gt; field accepts a boolean flag instructing Kong not to do so.&lt;/p&gt;
+
+&lt;p&gt;For example, when the &lt;code&gt;preserve_host&lt;/code&gt; property is not changed and a Route is configured like so:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;hosts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service.com&amp;#34;&lt;/span&gt;],
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
+        &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;A possible request from a client to Kong could be:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; service.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Kong would extract the Host header value from the Service’s &lt;code&gt;host&lt;/code&gt; property, , and would send the following upstream request:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &amp;lt;my-service-host.com&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;However, by explicitly configuring a Route with &lt;code&gt;preserve_host=true&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;hosts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service.com&amp;#34;&lt;/span&gt;],
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;preserve_host&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;,
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
+        &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And assuming the same request from the client:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; service.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Kong would preserve the Host on the client request and would send the following upstream request instead:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; service.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id=&#34;request-headers-except-host&#34;&gt;Request headers (except Host)&lt;/h4&gt;
+
+&lt;p&gt;Since Kong 1.3.0, it is possible to route request by other headers besides &lt;code&gt;Host&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To do this, use the &lt;code&gt;headers&lt;/code&gt; property in your Route:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;headers&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; { &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;v1&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;v2&amp;#34;&lt;/span&gt;] },
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
+        &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Given a request with a header such as:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+version&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; v1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This request will be routed through to the Service. The same will happen with this one:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+version&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; v2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;But this request will not be routed to the Service:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+version&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; v3&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: The &lt;code&gt;headers&lt;/code&gt; keys are a logical &lt;code&gt;AND&lt;/code&gt; and their values a logical &lt;code&gt;OR&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;request-path&#34;&gt;Request path&lt;/h4&gt;
+
+&lt;p&gt;Another way for a Route to be matched is via request paths. To satisfy this routing condition, a client request’s path &lt;strong&gt;must&lt;/strong&gt; be prefixed with one of the values of the &lt;code&gt;paths&lt;/code&gt; attribute.&lt;/p&gt;
+
+&lt;p&gt;For example, with a Route configured like so:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;{
+    &amp;#34;paths&amp;#34;: [&amp;#34;/service&amp;#34;, &amp;#34;/hello/world&amp;#34;]
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The following requests would be matched:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /service &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /service/resource?param=value &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /hello/world/resource &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; anything.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;For each of these requests, Kong detects that their URL path is prefixed with one of the Routes’s &lt;code&gt;paths&lt;/code&gt; values. By default, Kong would then proxy the request upstream without changing the URL path.&lt;/p&gt;
+
+&lt;p&gt;When proxying with path prefixes, &lt;strong&gt;the longest paths get evaluated first&lt;/strong&gt;. This allow you to define two Routes with two paths: &lt;code&gt;/service&lt;/code&gt; and &lt;code&gt;/service/resource&lt;/code&gt;, and ensure that the former does not “shadow” the latter.&lt;/p&gt;
+
+&lt;h4 id=&#34;using-regexes-in-paths&#34;&gt;Using regexes in paths&lt;/h4&gt;
+
+&lt;p&gt;Kong supports regular expression pattern matching for an Route’s &lt;code&gt;paths&lt;/code&gt; field via &lt;a href=&#34;http://pcre.org/&#34;&gt;PCRE&lt;/a&gt; (Perl Compatible Regular Expression). You can assign paths as both prefixes and regexes to a Route at the same time.&lt;/p&gt;
+
+&lt;p&gt;For example, if we consider the following Route:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;paths&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/users/\d+/profile&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/following&amp;#34;&lt;/span&gt;]
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The following requests would be matched by this Route:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /following &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /users/123/profile &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The provided regexes are evaluated with the &lt;code&gt;a&lt;/code&gt; PCRE flag (&lt;code&gt;PCRE_ANCHORED&lt;/code&gt;), meaning that they will be constrained to match at the first matching point in the path (the root &lt;code&gt;/&lt;/code&gt; character).&lt;/p&gt;
+
+&lt;h4 id=&#34;the-strip-path-property&#34;&gt;The &lt;code&gt;strip_path&lt;/code&gt; property&lt;/h4&gt;
+
+&lt;p&gt;It may be desirable to specify a path prefix to match a Route, but not include it in the upstream request. To do so, use the &lt;code&gt;strip_path&lt;/code&gt; boolean property by configuring a Route like so:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;paths&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/service&amp;#34;&lt;/span&gt;],
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;strip_path&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;,
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
+        &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Enabling this flag instructs Kong that when matching this Route, and proceeding with the proxying to a Service, it should &lt;strong&gt;not&lt;/strong&gt; include the matched part of the URL path in the upstream request’s URL. For example, the following client’s request to the above Route:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /service/path/to/resource &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Will cause Kong to send the following upstream request:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /path/to/resource &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The same way, if a regex path is defined on a Route that has &lt;code&gt;strip_path&lt;/code&gt; enabled, the entirety of the request URL matching sequence will be stripped. Example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;paths&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/version/\d+/service&amp;#34;&lt;/span&gt;],
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;strip_path&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;,
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
+        &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The following HTTP request matching the provided regex path:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /version/1/service/path/to/resource &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Will be proxied upstream by Kong as:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /path/to/resource &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id=&#34;matching-priorities&#34;&gt;Matching priorities&lt;/h4&gt;
+
+&lt;p&gt;A Route may define matching rules based on its &lt;code&gt;headers&lt;/code&gt;, &lt;code&gt;hosts&lt;/code&gt;, &lt;code&gt;paths&lt;/code&gt;, and &lt;code&gt;methods&lt;/code&gt; (plus &lt;code&gt;snis&lt;/code&gt; for secure routes - &lt;code&gt;&amp;quot;https&amp;quot;&lt;/code&gt;, &lt;code&gt;&amp;quot;grpcs&amp;quot;&lt;/code&gt;, &lt;code&gt;&amp;quot;tls&amp;quot;&lt;/code&gt;) fields. For Kong to match an incoming request to a Route, all existing fields must be satisfied. However, Kong allows for quite some flexibility by allowing two or more Routes to be configured with fields containing the same values - when this occurs, Kong applies a priority rule.&lt;/p&gt;
+
+&lt;p&gt;The rule is: &lt;strong&gt;when evaluating a request, Kong will first try to match the Routes with the most rules&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;For example, if two Routes are configured like so:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;hosts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;example.com&amp;#34;&lt;/span&gt;],
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
+        &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
+    }
+},
+{
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;hosts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;example.com&amp;#34;&lt;/span&gt;],
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;methods&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;POST&amp;#34;&lt;/span&gt;],
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
+        &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The second Route has a &lt;code&gt;hosts&lt;/code&gt; field &lt;strong&gt;and&lt;/strong&gt; a &lt;code&gt;methods&lt;/code&gt; field, so it will be evaluated first by Kong. By doing so, we avoid the first Route “shadowing” calls intended for the second one.&lt;/p&gt;
+
+&lt;p&gt;Thus, this request will match the first Route&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And this request will match the second one:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;POST&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
+Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Following this logic, if a third Route was to be configured with a &lt;code&gt;hosts&lt;/code&gt; field, a &lt;code&gt;methods&lt;/code&gt; field, and a &lt;code&gt;uris&lt;/code&gt; field, it would be evaluated first by Kong.&lt;/p&gt;
+
+&lt;p&gt;If the rule count for the given request is the same in two Routes &lt;code&gt;A&lt;/code&gt; and &lt;code&gt;B&lt;/code&gt;, then the following tiebreaker rules will be applied in the order they are listed. Route &lt;code&gt;A&lt;/code&gt; will be selected over &lt;code&gt;B&lt;/code&gt; if:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;A&lt;/code&gt; has only “plain” Host headers and &lt;code&gt;B&lt;/code&gt; has has one or more “wildcard” host headers&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;A&lt;/code&gt; has more non-Host headers than &lt;code&gt;B&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;A&lt;/code&gt; has at least one “regex” paths and &lt;code&gt;B&lt;/code&gt; has only “plain” paths.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;A&lt;/code&gt;’s longer path is longer than &lt;code&gt;B&lt;/code&gt;’s longer path.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;A.created_at &amp;lt; B.created_at&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;proxying-behavior-https-docs-konghq-com-2-1-x-proxy-proxying-behavior&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/proxy/#proxying-behavior&#34;&gt;Proxying behavior&lt;/a&gt;&lt;/h4&gt;
+
+&lt;h4 id=&#34;configuring-a-fallback-route-https-docs-konghq-com-2-1-x-proxy-configuring-a-fallback-route&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route&#34;&gt;Configuring a fallback Route&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;As a practical use-case and example of the flexibility offered by Kong’s proxying capabilities, let’s try to implement a “fallback Route”, so that in order to avoid Kong responding with an HTTP &lt;code&gt;404&lt;/code&gt;, “no route found”, we can catch such requests and proxy them to a special upstream service, or apply a plugin to it (such a plugin could, for example, terminate the request with a different status code or response without proxying the request).&lt;/p&gt;
+
+&lt;p&gt;Here is an example of such a fallback Route:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;paths&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/&amp;#34;&lt;/span&gt;],
+    &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
+        &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;As you can guess, any HTTP request made to Kong would actually match this Route, since all URIs are prefixed by the root character &lt;code&gt;/&lt;/code&gt;. As we know from the Request path section, the longest URL paths are evaluated first by Kong, so the &lt;code&gt;/&lt;/code&gt; path will eventually be evaluated last by Kong, and effectively provide a “fallback” Route, only matched as a last resort. You can then send traffic to a special Service or apply any plugin you wish on this Route.&lt;/p&gt;
+
+&lt;h4 id=&#34;proxy-websocket-traffic-https-docs-konghq-com-2-1-x-proxy-proxy-websocket-traffic-todo&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic&#34;&gt;Proxy WebSocket traffic&lt;/a&gt;(TODO)&lt;/h4&gt;
+
+&lt;h3 id=&#34;loadbalancing-reference-https-docs-konghq-com-2-1-x-loadbalancing&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/loadbalancing/&#34;&gt;Loadbalancing reference&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h4 id=&#34;dns-based-loadbalancing&#34;&gt;DNS-based loadbalancing&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;the registration of the backend services is done outside of Kong&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&#34;ring-balancer&#34;&gt;Ring-balancer&lt;/h4&gt;
+
+&lt;p&gt;algorithm: &lt;code&gt;consistent-hashing&lt;/code&gt;, &lt;code&gt;least-connections&lt;/code&gt;, &lt;code&gt;round-robin&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;blue-green-deployments-https-docs-konghq-com-2-1-x-loadbalancing-blue-green-deployments&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments&#34;&gt;Blue-Green Deployments&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/&#34;&gt;Extension&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/image-20200728144535998.png#mid&#34; alt=&#34;Blue-Green Deployment&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Using the ring-balancer a blue-green deployment can be easily orchestrated for a Service. Switching target infrastructure only requires a &lt;code&gt;PATCH&lt;/code&gt; request on a Service, to change its &lt;code&gt;host&lt;/code&gt; value.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Set up the “Blue” environment, running version 1 of the address service:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;# create an upstream&lt;/span&gt;
+$ curl -X POST http://kong:8001/upstreams &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;name=address.v1.service&amp;#34;&lt;/span&gt;
+  
+&lt;span style=&#34;color:#6272a4&#34;&gt;# add two targets to the upstream&lt;/span&gt;
+$ curl -X POST http://kong:8001/upstreams/address.v1.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.15:80&amp;#34;&lt;/span&gt;
+  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;weight=100&amp;#34;&lt;/span&gt;
+$ curl -X POST http://kong:8001/upstreams/address.v1.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.16:80&amp;#34;&lt;/span&gt;
+  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;weight=50&amp;#34;&lt;/span&gt;
+  
+&lt;span style=&#34;color:#6272a4&#34;&gt;# create a Service targeting the Blue upstream&lt;/span&gt;
+$ curl -X POST http://kong:8001/services/ &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;name=address-service&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;host=address.v1.service&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;path=/address&amp;#34;&lt;/span&gt;
+  
+&lt;span style=&#34;color:#6272a4&#34;&gt;# finally, add a Route as an entry-point into the Service&lt;/span&gt;
+$ curl -X POST http://kong:8001/services/address-service/routes/ &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;hosts[]=address.mydomain.com&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Requests with host header set to &lt;code&gt;address.mydomain.com&lt;/code&gt; will now be proxied by Kong to the two defined targets; &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; of the requests will go to &lt;code&gt;http://192.168.34.15:80/address&lt;/code&gt; (&lt;code&gt;weight=100&lt;/code&gt;), and &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; will go to &lt;code&gt;http://192.168.34.16:80/address&lt;/code&gt; (&lt;code&gt;weight=50&lt;/code&gt;).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Before deploying version 2 of the address service, set up the “Green” environment:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;# create a new Green upstream for address service v2&lt;/span&gt;
+$ curl -X POST http://kong:8001/upstreams &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;name=address.v2.service&amp;#34;&lt;/span&gt;
+  
+&lt;span style=&#34;color:#6272a4&#34;&gt;# add targets to the upstream&lt;/span&gt;
+$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.17:80&amp;#34;&lt;/span&gt;
+  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;weight=100&amp;#34;&lt;/span&gt;
+$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.18:80&amp;#34;&lt;/span&gt;
+  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;weight=100&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To activate the Blue/Green switch, we now only need to update the Service:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;  &lt;span style=&#34;color:#6272a4&#34;&gt;# Switch the Service from Blue to Green upstream, v1 -&amp;gt; v2&lt;/span&gt;
+  $ curl -X PATCH http://kong:8001/services/address-service &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;      --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;host=address.v2.service&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Incoming requests with host header set to &lt;code&gt;address.mydomain.com&lt;/code&gt; will now be proxied by Kong to the new targets; &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; of the requests will go to &lt;code&gt;http://192.168.34.17:80/address&lt;/code&gt; (&lt;code&gt;weight=100&lt;/code&gt;), and the other &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; will go to &lt;code&gt;http://192.168.34.18:80/address&lt;/code&gt; (&lt;code&gt;weight=100&lt;/code&gt;).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&#34;canary-releases-https-docs-konghq-com-2-1-x-loadbalancing-canary-releases&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases&#34;&gt;Canary Releases&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/&#34;&gt;Extension&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Using the ring-balancer, target weights can be adjusted granularly, allowing for a smooth, controlled canary release.&lt;/p&gt;
+
+&lt;p&gt;Using a very simple 2 target example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;# first target at 1000&lt;/span&gt;
+$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.17:80&amp;#34;&lt;/span&gt;
+    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;weight=1000&amp;#34;&lt;/span&gt;
+
+&lt;span style=&#34;color:#6272a4&#34;&gt;# second target at 0&lt;/span&gt;
+$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.18:80&amp;#34;&lt;/span&gt;
+    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;weight=0&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;By repeating the requests, but altering the weights each time, traffic will slowly be routed towards the other target. For example, set it at 10%:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;# first target at 900&lt;/span&gt;
+$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.17:80&amp;#34;&lt;/span&gt;
+    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;weight=900&amp;#34;&lt;/span&gt;
+
+&lt;span style=&#34;color:#6272a4&#34;&gt;# second target at 100&lt;/span&gt;
+$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.18:80&amp;#34;&lt;/span&gt;
+    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;weight=100&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The changes through the Kong Admin API are dynamic and will take effect immediately. No reload or restart is required, and no in progress requests will be dropped.&lt;/p&gt;
+
+&lt;h3 id=&#34;health-checks-and-circuit-breakers-reference-https-docs-konghq-com-2-1-x-health-checks-circuit-breakers&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/&#34;&gt;Health Checks and Circuit Breakers Reference&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h4 id=&#34;upstreams&#34;&gt;Upstreams&lt;/h4&gt;
+
+&lt;p&gt;Along with health check functionality on individual targets, Upstreams also have a notion of health. The health of an Upstream is determined based on the status of its Targets.&lt;/p&gt;
+
+&lt;p&gt;Configuration of the Upstream’s health is done though the property &lt;code&gt;healthchecks.threshold&lt;/code&gt;. This is a percentage of minimum available target “weight” (capacity) for the Upstream to be considered healthy.&lt;/p&gt;
+
+&lt;p&gt;Here is a simple example:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Assume an Upstream configured with &lt;code&gt;healthchecks.threshold=55&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;It has 5 targets, each with &lt;code&gt;weight=100&lt;/code&gt;, so the total weight in the ring-balancer is 500.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;When failures start to occur, the circuit-breaker for the first target trips. It is now considered unhealthy. This means that in the ring-balancer, 20% of the capacity is now unhealthy (100 weight out of 500). This is still above the threshold of 55, so the remaining targets will serve the traffic of the failed one.&lt;/p&gt;
+
+&lt;p&gt;When a second failure occurs, another target fails, and another 100 weight is lost as unhealthy. Now the ring-balancer operates at 60% of its capacity, but still within the configured threshold.&lt;/p&gt;
+
+&lt;p&gt;If we assume that the 2 failures occured due to a system overload, we can now assume that the remaining 60% will also not be able to cope with the full load and soon a third node will fail, reducing healthy capacity to 40%. At this point, the Upstream health will be less than its threshold, and it will be marked as unhealthy itself.&lt;/p&gt;
+
+&lt;p&gt;Once it enters an unhealthy state, the Upstream will only return errors. This lets the targets/services recover from the cascading failure they were experiencing.&lt;/p&gt;
+
+&lt;p&gt;Once the Targets start recovering and the Upstream’s available capacity passes the threshold again, the health status of the ring-balancer will automatically be updated.&lt;/p&gt;
+
+&lt;h4 id=&#34;types-of-health-checks&#34;&gt;Types of health checks&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Active health checks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Active health checks, as the name implies, actively probe targets for their health. When active health checks are enabled in an upstream entity, Kong will periodically issue HTTP or HTTPS requests to a configured path at each target of the upstream. This allows Kong to automatically enable and disable targets in the balancer based on the probe results.&lt;/p&gt;
+
+&lt;p&gt;The periodicity of active health checks can be configured separately for when a target is healthy or unhealthy. If the &lt;code&gt;interval&lt;/code&gt; value for either is set to zero, the checking is disabled at the corresponding scenario. When both are zero, active health checks are disabled altogether.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Passive health checks (circuit breakers)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;clustering-reference-https-docs-konghq-com-2-1-x-clustering&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/clustering/&#34;&gt;Clustering Reference&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;A Kong cluster allows you to scale the system horizontally by adding more machines to handle more incoming requests. They will all share the same configuration since they point to the same database. Kong nodes pointing to the &lt;strong&gt;same datastore&lt;/strong&gt; will be part of the same Kong cluster.&lt;/p&gt;
+
+&lt;p&gt;You need a load-balancer in front of your Kong cluster to distribute traffic across your available nodes.&lt;/p&gt;
+
+&lt;h4 id=&#34;multiple-nodes-kong-clusters&#34;&gt;Multiple nodes Kong clusters&lt;/h4&gt;
+
+&lt;p&gt;Every &lt;code&gt;db_update_frequency&lt;/code&gt; seconds, all running Kong nodes will poll the database for any update, and will purge the relevant entities from their cache if necessary.&lt;/p&gt;
+
+&lt;p&gt;If we delete a Service from node &lt;code&gt;A&lt;/code&gt;, this change will not be effective in node &lt;code&gt;B&lt;/code&gt; until node &lt;code&gt;B&lt;/code&gt;s next database poll, which will occur up to &lt;code&gt;db_update_frequency&lt;/code&gt; seconds later (though it could happen sooner).&lt;/p&gt;
+
+&lt;h4 id=&#34;what-is-being-cached&#34;&gt;What is being cached?&lt;/h4&gt;
+
+&lt;p&gt;All of the core entities such as Services, Routes, Plugins, Consumers, Credentials are cached in memory by Kong and depend on their invalidation via the polling mechanism to be updated.&lt;/p&gt;
+
+&lt;h4 id=&#34;how-to-configure-database-caching&#34;&gt;How to configure database caching?&lt;/h4&gt;
+
+&lt;p&gt;You can configure 3 properties in the Kong configuration file, the most important one being db_update_frequency, which determine where your Kong nodes stand on the performance vs consistency trade off.&lt;/p&gt;
+
+&lt;p&gt;Kong comes with default values tuned for consistency, in order to let you experiment with its clustering capabilities while avoiding “surprises”. As you prepare a production setup, you should consider tuning those values to ensure that your performance constraints are respected.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;db_update_frequency&lt;/code&gt; (default: 5s)
+This value determines the frequency at which your Kong nodes will be polling the database for invalidation events. A lower value will mean that the polling job will be executed more frequently, but that your Kong nodes will keep up with changes you apply. A higher value will mean that your Kong nodes will spend less time running the polling jobs, and will focus on proxying your traffic.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Note: changes propagate through the cluster in up to db_update_frequency seconds.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;db_update_propagation&lt;/code&gt; (default: 0s)
+If your database itself is eventually consistent (ie: Cassandra), you must configure this value. It is to ensure that the change has time to propagate across your database nodes. When set, Kong nodes receiving invalidation events from their polling jobs will delay the purging of their cache for db_update_propagation seconds.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If a Kong node connected to an eventual consistent database was not delaying the event handling, it could purge its cache, only to cache the non-updated value again (because the change hasn’t propagated through the database yet)!&lt;/p&gt;
+
+&lt;p&gt;You should set this value to an estimate of the amount of time your database cluster takes to propagate changes.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Note: when this value is set, changes propagate through the cluster in up to db_update_frequency + db_update_propagation seconds.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;db_cache_ttl&lt;/code&gt; (default: 0s)
+The time (in seconds) for which Kong will cache database entities (both hits and misses). This Time-To-Live value acts as a safeguard in case a Kong node misses an invalidation event, to avoid it from running on stale data for too long. When the TTL is reached, the value will be purged from its cache, and the next database result will be cached again.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;By default no data is invalidated based on this TTL (the default value is 0). This is usually fine: Kong nodes rely on invalidation events, which are handled at the db store level (Cassandra/PosgreSQL). If you are concerned that a Kong node might miss invalidation event for any reason, you should set a TTL. Otherwise the node might run with a stale value in its cache for an undefined amount of time, until the cache is manually purged, or the node is restarted.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;When using Cassandra&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you use Cassandra as your Kong database, you &lt;strong&gt;must&lt;/strong&gt; set &lt;code&gt;db_update_propagation&lt;/code&gt; to a non-zero value. Since Cassandra is eventually consistent by nature, this will ensure that Kong nodes do not prematurely invalidate their cache, only to fetch and catch a not up-to-date entity again. Kong will present you a warning logs if you did not configure this value when using Cassandra.&lt;/p&gt;
+
+&lt;p&gt;Additionally, you might want to configure &lt;code&gt;cassandra_consistency&lt;/code&gt; to a value like &lt;code&gt;QUORUM&lt;/code&gt; or &lt;code&gt;LOCAL_QUORUM&lt;/code&gt;, to ensure that values being cached by your Kong nodes are up-to-date values from your database.&lt;/p&gt;
+
+&lt;p&gt;Setting the &lt;code&gt;cassandra_refresh_frequency&lt;/code&gt; option to &lt;code&gt;0&lt;/code&gt; is not advised, as a Kong restart will be required to discover any changes to the Cassandra cluster topology.&lt;/p&gt;
+
+&lt;h3 id=&#34;network-firewall-https-docs-konghq-com-2-1-x-network-firewall&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/network/#firewall&#34;&gt;Network Firewall&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h4 id=&#34;transparent-proxying-https-blog-stackpath-com-transparent-proxy&#34;&gt;&lt;a href=&#34;https://blog.stackpath.com/transparent-proxy/&#34;&gt;Transparent Proxying&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;For example a HTTP request with a destination address of &lt;code&gt;10.0.0.1&lt;/code&gt;, and a destination port of &lt;code&gt;80&lt;/code&gt; can be redirected to &lt;code&gt;127.0.0.1&lt;/code&gt; at port &lt;code&gt;8000&lt;/code&gt;. To make this work, you need (with Linux) to add the &lt;code&gt;transparent&lt;/code&gt; listen option to Kong proxy, &lt;code&gt;proxy_listen=8000 transparent&lt;/code&gt;. This allows Kong to see the original destination for the request (&lt;code&gt;10.0.0.1:80&lt;/code&gt;) even when Kong didn’t actually listen to it directly. With this information, Kong can route the request correctly. The &lt;code&gt;transparent&lt;/code&gt; listen option should only be used with Linux. macOS/BSDs allow transparent proxying without &lt;code&gt;transparent&lt;/code&gt; listen option. With Linux you may also need to start Kong as a &lt;code&gt;root&lt;/code&gt; user or set the needed capabilities for the executable.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/image-20200728094209364.png#mid&#34; alt=&#34;Transparent Proxy&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;control-kong-through-systemd&#34;&gt;Control Kong through systemd&lt;/h3&gt;
+
+&lt;h5 id=&#34;customize-kong-s-nginx-instance-including-files-via-the-injected-nginx-directives-https-docs-konghq-com-2-1-x-systemd-customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives&#34;&gt;&lt;a href=&#34;https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives&#34;&gt;Customize Kong’s Nginx instance including files via the injected Nginx directives&lt;/a&gt;&lt;/h5&gt;
+
+&lt;h3 id=&#34;plugins-execution-order&#34;&gt;Plugins execution order&lt;/h3&gt;
+
+&lt;p&gt;The current order of execution for the bundled plugins is:&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;Plugin&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Priority&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;pre-function&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;code&gt;+inf&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;zipkin&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;100000&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;ip-restriction&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;3000&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;bot-detection&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2500&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;cors&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2000&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;session&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1900&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;kubernetes-sidecar-injector&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1006&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;jwt&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1005&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;oauth2&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1004&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;key-auth&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1003&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;ldap-auth&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1002&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;basic-auth&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1001&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;hmac-auth&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1000&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;request-size-limiting&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;951&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;acl&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;950&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;rate-limiting&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;901&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;response-ratelimiting&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;900&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;request-transformer&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;801&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;response-transformer&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;800&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;aws-lambda&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;750&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;azure-functions&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;749&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;prometheus&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;13&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;http-log&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;12&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;statsd&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;11&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;datadog&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;10&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;file-log&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;9&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;udp-log&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;8&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;tcp-log&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;7&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;loggly&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;6&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;syslog&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;request-termination&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;correlation-id&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;post-function&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;-1000&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;importment-settings&#34;&gt;Importment Settings&lt;/h3&gt;
+
+&lt;h4 id=&#34;upstreams-1&#34;&gt;Upstreams&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;healthchecks.active.healthy.interval&lt;/code&gt; default and set to &lt;code&gt;0&lt;/code&gt; that active probes for &lt;code&gt;healthy targets&lt;/code&gt; should not be performed.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;healthchecks.active.unhealthy.interval&lt;/code&gt; default and set to  &lt;code&gt;0&lt;/code&gt; that active probes for &lt;code&gt;unhealthy targets&lt;/code&gt; should not be performed.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;kong-config&#34;&gt;kong.config&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;healthchecks.active.healthy.interval&lt;/code&gt; cannot set &lt;code&gt;0&lt;/code&gt; that active probes for healthy targets should not be performed.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;healthchecks.active.unhealthy.interval&lt;/code&gt; cannot set to  &lt;code&gt;0&lt;/code&gt; that active probes for unhealthy targets should not be performed.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+     </item>
    
      <item>
        <title>阅读致以轻松，阅读聊以蔚然</title>
