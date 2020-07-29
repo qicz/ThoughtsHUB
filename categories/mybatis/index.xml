@@ -21,6 +21,10 @@
        <guid>https://izcqi.com/posts/2020/07/28/kong-quick-start-and-core-concepts-cn/</guid>
        <description>
 
+&lt;blockquote&gt;
+&lt;p&gt;说明：作者Qicz将有可能随时的修订本文的内容，为了保证内容的一致性和严谨性，作者Qicz保留本文的所有权利。未经作者Qicz本人同意，不得转载或者以其他方式使用这些内容。&lt;/p&gt;
+&lt;/blockquote&gt;
+
 &lt;h3 id=&#34;从技术的角度来说-kong是什么-因为kong也有金刚意思-https-docs-konghq-com-2-1-x-getting-started-introduction&#34;&gt;从技术的角度来说，Kong是什么（因为Kong也有金刚意思）? (&lt;a href=&#34;https://docs.konghq.com/2.1.x/getting-started/introduction/&#34;&gt;https://docs.konghq.com/2.1.x/getting-started/introduction/&lt;/a&gt;)&lt;/h3&gt;
 
 &lt;p&gt;Kong是一个运行在Nginx中的基于Lua - Nginx模块实现的Lua应用程序。Kong与OpenResty一起发布的，以此替代在Nginx中还需编译Lua - Nginx模块，OpenResty已经包含了lua- Nginx模块。OpenResty不是Nginx的一个分支，而是一组扩展其功能的模块。&lt;/p&gt;
@@ -867,6 +871,10 @@ Kong将缓存数据库实体（命中和未命中）的时间（以秒为单位�
        <author>zcq#zhucongqi.cn (Qicz)</author>
        <guid>https://izcqi.com/posts/2020/07/28/kong-quick-start-and-core-concepts-en/</guid>
        <description>
+
+&lt;blockquote&gt;
+&lt;p&gt;Note: Author Qicz may revise the content of this article from time to time. In order to guarantee the consistency and rigor of the content, author Qicz reserves all rights of this article. No reprint or other use of the content is allowed without the permission of Qicz.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;h3 id=&#34;what-is-kong-technically-https-docs-konghq-com-2-1-x-getting-started-introduction&#34;&gt;What is Kong, technically? (&lt;a href=&#34;https://docs.konghq.com/2.1.x/getting-started/introduction/&#34;&gt;https://docs.konghq.com/2.1.x/getting-started/introduction/&lt;/a&gt;)&lt;/h3&gt;
 
