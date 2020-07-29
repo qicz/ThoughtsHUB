@@ -490,9 +490,7 @@ $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span st
   $ curl -X PATCH http://kong:8001/services/address-service &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
 &lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;      --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;host=address.v2.service&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;blockquote&gt;
-&lt;blockquote&gt;
 &lt;p&gt;主机头设置为的传入请求&lt;code&gt;address.mydomain.com&lt;/code&gt;将由Kong代理到新目标；1 / 2的请求将去&lt;code&gt;http://192.168.34.17:80/address&lt;/code&gt;（&lt;code&gt;weight=100&lt;/code&gt;），以及其它1 / 2将去&lt;code&gt;http://192.168.34.18:80/address&lt;/code&gt;（&lt;code&gt;weight=100&lt;/code&gt;）。&lt;/p&gt;
-&lt;/blockquote&gt;
 &lt;/blockquote&gt;
 
 &lt;h4 id=&#34;金丝雀版本发布-https-docs-konghq-com-2-1-x-loadbalancing-canary-releases&#34;&gt;金丝雀版本发布 (&lt;a href=&#34;https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases&#34;&gt;https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases&lt;/a&gt;)&lt;/h4&gt;

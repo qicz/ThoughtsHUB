@@ -632,9 +632,7 @@ $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style
   $ curl -X PATCH http://kong:8001/services/address-service <span style="color:#f1fa8c">\
 </span><span style="color:#f1fa8c"></span>      --data <span style="color:#f1fa8c">&#34;host=address.v2.service&#34;</span></code></pre></div>
 <blockquote>
-<blockquote>
 <p>主机头设置为的传入请求<code>address.mydomain.com</code>将由Kong代理到新目标；1 / 2的请求将去<code>http://192.168.34.17:80/address</code>（<code>weight=100</code>），以及其它1 / 2将去<code>http://192.168.34.18:80/address</code>（<code>weight=100</code>）。</p>
-</blockquote>
 </blockquote>
 
 <h4 id="金丝雀版本发布-https-docs-konghq-com-2-1-x-loadbalancing-canary-releases">金丝雀版本发布 (<a href="https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases">https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases</a>)</h4>
