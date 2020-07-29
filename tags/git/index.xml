@@ -108,7 +108,7 @@
 &lt;li&gt;&lt;code&gt;config.cache_ttl&lt;/code&gt; 缓存存活时间，默认 &lt;code&gt;300秒&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;config.strategy&lt;/code&gt;  缓存策略，社区版本只支持&lt;code&gt;memory&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;config.request_method&lt;/code&gt;  默认取值 &lt;code&gt;[&amp;quot;GET&amp;quot;,&amp;quot;HEAD&amp;quot;]&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;config.response_code&lt;/code&gt;  默认入职 &lt;code&gt;200, 301, 404&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.response_code&lt;/code&gt;  默认取值 &lt;code&gt;200, 301, 404&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;缓存状态
 
@@ -175,23 +175,27 @@
 &lt;h3 id=&#34;术语&#34;&gt;术语&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;client&lt;/code&gt;: Refers to the &lt;em&gt;downstream&lt;/em&gt; client making requests to Kong’s proxy port.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;upstream service&lt;/code&gt;: Refers to your own API/service sitting behind Kong, to which client requests/connections are forwarded.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Service&lt;/code&gt;: Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Route&lt;/code&gt;: This refers to the Kong Routes entity. Routes are entrypoints into Kong, and defining rules for a request to be matched, and routed to a given Service.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Plugin&lt;/code&gt;: This refers to Kong “plugins”, which are pieces of business logic that run in the proxying lifecycle. Plugins can be configured through the Admin API - either globally (all incoming traffic) or on specific Routes and Services.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;client&lt;/code&gt;:  向Kong的代理接口发起请求的下游客户端。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;upstream service&lt;/code&gt;:  Kong代理的上游服务，也就是具体的业务服务。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Service&lt;/code&gt;:  Kong对上游服务在Kong内部的抽象。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Route&lt;/code&gt;:  client进入Kong的入口，定义对应的匹配规则，并将匹配的路由到对应的上游服务。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Plugin&lt;/code&gt;:  Kong“插件”，它们是在代理生命周期中运行的业务逻辑。可以通过Admin API配置插件-全局（所有传入流量）或特定的路由和服务上。&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&#34;ports&#34;&gt;Ports&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;proxy：&lt;code&gt;8000&lt;/code&gt;，&lt;code&gt;8443&lt;/code&gt; for https&lt;/li&gt;
-&lt;li&gt;admin：&lt;code&gt;8001&lt;/code&gt;，&lt;code&gt;8444&lt;/code&gt; for https&lt;/li&gt;
+&lt;li&gt;proxy：默认http端口&lt;code&gt;8000&lt;/code&gt;，https端口&lt;code&gt;8443&lt;/code&gt; ，下游的服务经过此接口进入Kong。&lt;/li&gt;
+&lt;li&gt;admin：默认http端口&lt;code&gt;8001&lt;/code&gt;，https端口&lt;code&gt;8444&lt;/code&gt; ，对Kong的动态配置的RestfulApi&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&#34;routes-and-matching-capabilities&#34;&gt;Routes and matching capabilities&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;均可通过 &lt;code&gt;/etc/kong/kong.conf&lt;/code&gt;进行修改。&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;Kong supports native proxying of HTTP/HTTPS, TCL/TLS, and GRPC/GRPCS protocols; as mentioned earlier, each of these protocols accept a different set of routing attributes:&lt;/p&gt;
+&lt;h3 id=&#34;路由及其匹配&#34;&gt;路由及其匹配&lt;/h3&gt;
+
+&lt;p&gt;Kong支持HTTP / HTTPS，TCL / TLS和GRPC / GRPCS协议的本机代理；如前所述，这些协议中的每一个都接受一组不同的路由属性：&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;http&lt;/code&gt;: &lt;code&gt;methods&lt;/code&gt;, &lt;code&gt;hosts&lt;/code&gt;, &lt;code&gt;headers&lt;/code&gt;, &lt;code&gt;paths&lt;/code&gt; (and &lt;code&gt;snis&lt;/code&gt;, if &lt;code&gt;https&lt;/code&gt;)&lt;/li&gt;
@@ -200,68 +204,68 @@
 &lt;/ul&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Note that all three of these fields are &lt;strong&gt;optional&lt;/strong&gt;, but at least &lt;strong&gt;one of them&lt;/strong&gt; must be specified.&lt;/p&gt;
+&lt;p&gt;请注意，这三个字段都是&lt;strong&gt;可选&lt;/strong&gt;字段，但必须至少指定&lt;strong&gt;其中一个&lt;/strong&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;For a request to match a Route:&lt;/p&gt;
+&lt;p&gt;一个可以被匹配的请求，需满足:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;The request &lt;strong&gt;must&lt;/strong&gt; include &lt;strong&gt;all&lt;/strong&gt; of the configured fields&lt;/li&gt;
-&lt;li&gt;The values of the fields in the request &lt;strong&gt;must&lt;/strong&gt; match at least one of the configured values (While the field configurations accepts one or more values, a request needs only one of the values to be considered a match)&lt;/li&gt;
+&lt;li&gt;该请求&lt;strong&gt;必须&lt;/strong&gt;包含&lt;strong&gt;所有&lt;/strong&gt;已配置的字段。&lt;/li&gt;
+&lt;li&gt;请求中字段的值&lt;strong&gt;必须&lt;/strong&gt;至少与配置的值之一匹配（虽然字段配置接受一个或多个值，但请求仅需要将其中一个值视为匹配项）。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Let’s go through a few examples. Consider a Route configured like this:&lt;/p&gt;
+&lt;p&gt;举例说明：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;hosts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;example.com&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;foo-service.com&amp;#34;&lt;/span&gt;],
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;paths&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/foo&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/bar&amp;#34;&lt;/span&gt;],
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;methods&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;GET&amp;#34;&lt;/span&gt;]
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Some of the possible requests matching this Route would look like:&lt;/p&gt;
+&lt;p&gt;与此路由匹配的一些可能请求如下所示:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /foo &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /bar &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; foo-service.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /foo/hello/world &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;All three of these requests satisfy all the conditions set in the Route definition.&lt;/p&gt;
+&lt;p&gt;所有这三个请求都满足“路由定义”中设置的所有条件。&lt;/p&gt;
 
-&lt;p&gt;However, the following requests would &lt;strong&gt;not&lt;/strong&gt; match the configured conditions:&lt;/p&gt;
+&lt;p&gt;但是，以下请求将&lt;strong&gt;不&lt;/strong&gt;符合配置的条件：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;blockquote&gt;
-&lt;p&gt;path not match.&lt;/p&gt;
+&lt;p&gt;路径未匹配。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;POST&lt;/span&gt; /foo &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;blockquote&gt;
-&lt;p&gt;method not match.&lt;/p&gt;
+&lt;p&gt;请求方法未匹配。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /foo &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; foo.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;blockquote&gt;
-&lt;p&gt;url not match.&lt;/p&gt;
+&lt;p&gt;URL未匹配。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;All three of these requests satisfy only two of configured conditions. The first request’s path is not a match for any of the configured &lt;code&gt;paths&lt;/code&gt;, same for the second request’s HTTP method, and the third request’s Host header.&lt;/p&gt;
+&lt;p&gt;所有这三个请求仅满足两个已配置的条件。第一个请求的路径与任何已配置的都不匹配，&lt;code&gt;paths&lt;/code&gt;第二个请求的HTTP方法与第三个请求的Host标头相同。&lt;/p&gt;
 
-&lt;p&gt;Now that we understand how the routing properties work together, let’s explore each property individually.&lt;/p&gt;
+&lt;p&gt;现在我们了解了路由属性如何协同工作，让我们分别探讨每个属性。&lt;/p&gt;
 
-&lt;h4 id=&#34;the-preserve-host-property&#34;&gt;The &lt;code&gt;preserve_host&lt;/code&gt; property&lt;/h4&gt;
+&lt;h4 id=&#34;preserve-host-属性&#34;&gt;&lt;code&gt;preserve_host&lt;/code&gt; 属性&lt;/h4&gt;
 
-&lt;p&gt;When proxying, Kong’s default behavior is to set the upstream request’s Host header to the hostname specified in the Service’s &lt;code&gt;host&lt;/code&gt;. The &lt;code&gt;preserve_host&lt;/code&gt; field accepts a boolean flag instructing Kong not to do so.&lt;/p&gt;
+&lt;p&gt;代理时，Kong的默认行为是将上游请求的Host标头设置为Service的中指定的主机名&lt;code&gt;host&lt;/code&gt;。该&lt;code&gt;preserve_host&lt;/code&gt;字段接受一个布尔型标志，指示Kong不这样做。&lt;/p&gt;
 
-&lt;p&gt;For example, when the &lt;code&gt;preserve_host&lt;/code&gt; property is not changed and a Route is configured like so:&lt;/p&gt;
+&lt;p&gt;例如，当&lt;code&gt;preserve_host&lt;/code&gt;属性未更改且路由配置如下时：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;hosts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service.com&amp;#34;&lt;/span&gt;],
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
         &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
     }
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;A possible request from a client to Kong could be:&lt;/p&gt;
+&lt;p&gt;客户对Kong的可能请求可能是：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; service.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Kong would extract the Host header value from the Service’s &lt;code&gt;host&lt;/code&gt; property, , and would send the following upstream request:&lt;/p&gt;
+&lt;p&gt;Kong将从Service的&lt;code&gt;host&lt;/code&gt;属性中提取Host标头值，并将发送以下上游请求：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &amp;lt;my-service-host.com&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;However, by explicitly configuring a Route with &lt;code&gt;preserve_host=true&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;但是，通过显式配置Route &lt;code&gt;preserve_host=true&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;hosts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service.com&amp;#34;&lt;/span&gt;],
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;preserve_host&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;,
@@ -269,68 +273,68 @@ Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &amp;lt;my-service-
         &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
     }
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And assuming the same request from the client:&lt;/p&gt;
+&lt;p&gt;并假设来自客户端的相同请求：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; service.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Kong would preserve the Host on the client request and would send the following upstream request instead:&lt;/p&gt;
+&lt;p&gt;Kong将保留客户端请求上的主机，并改为发送以下上游请求：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; service.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h4 id=&#34;request-headers-except-host&#34;&gt;Request headers (except Host)&lt;/h4&gt;
+&lt;h4 id=&#34;扩展request-headers-except-host&#34;&gt;扩展Request headers (except Host)&lt;/h4&gt;
 
-&lt;p&gt;Since Kong 1.3.0, it is possible to route request by other headers besides &lt;code&gt;Host&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;从Kong 1.3.0开始，可以通过以外的其他报头来路由请求&lt;code&gt;Host&lt;/code&gt;。&lt;/p&gt;
 
-&lt;p&gt;To do this, use the &lt;code&gt;headers&lt;/code&gt; property in your Route:&lt;/p&gt;
+&lt;p&gt;为此，可以通过&lt;code&gt;headers&lt;/code&gt;来配置扩展的信息，如下扩展了&lt;code&gt;version&lt;/code&gt;信息：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;headers&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; { &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;v1&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;v2&amp;#34;&lt;/span&gt;] },
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
         &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
     }
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Given a request with a header such as:&lt;/p&gt;
+&lt;p&gt;给定带有扩展header的请求，例如：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 version&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; v1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This request will be routed through to the Service. The same will happen with this one:&lt;/p&gt;
+&lt;p&gt;如下的请求也将被路由到服务：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 version&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; v2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;But this request will not be routed to the Service:&lt;/p&gt;
+&lt;p&gt;但是，如下的请求不会路由到服务：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 version&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; v3&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: The &lt;code&gt;headers&lt;/code&gt; keys are a logical &lt;code&gt;AND&lt;/code&gt; and their values a logical &lt;code&gt;OR&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：&lt;code&gt;headers&lt;/code&gt;键是逻辑&lt;code&gt;AND&lt;/code&gt;关系，其值是逻辑&lt;code&gt;OR&lt;/code&gt;关系。&lt;/p&gt;
 
-&lt;h4 id=&#34;request-path&#34;&gt;Request path&lt;/h4&gt;
+&lt;h4 id=&#34;请求路径paths&#34;&gt;请求路径paths&lt;/h4&gt;
 
-&lt;p&gt;Another way for a Route to be matched is via request paths. To satisfy this routing condition, a client request’s path &lt;strong&gt;must&lt;/strong&gt; be prefixed with one of the values of the &lt;code&gt;paths&lt;/code&gt; attribute.&lt;/p&gt;
+&lt;p&gt;路由匹配的另一种方法是通过请求路径。为了满足此路由条件，客户端请求的路径&lt;strong&gt;必须&lt;/strong&gt;以&lt;code&gt;paths&lt;/code&gt;属性值之一为前缀。&lt;/p&gt;
 
-&lt;p&gt;For example, with a Route configured like so:&lt;/p&gt;
+&lt;p&gt;例如，使用如下配置的路由：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;{
     &amp;#34;paths&amp;#34;: [&amp;#34;/service&amp;#34;, &amp;#34;/hello/world&amp;#34;]
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The following requests would be matched:&lt;/p&gt;
+&lt;p&gt;以下请求将被匹配：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /service &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /service/resource?param=value &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /hello/world/resource &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; anything.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;For each of these requests, Kong detects that their URL path is prefixed with one of the Routes’s &lt;code&gt;paths&lt;/code&gt; values. By default, Kong would then proxy the request upstream without changing the URL path.&lt;/p&gt;
+&lt;p&gt;对于这些请求中的每一个，Kong都会检测到其URL路径以 &lt;code&gt;paths&lt;/code&gt;值之一为前缀。默认情况下，Kong然后将在不更改URL路径的情况下向上游代理请求。&lt;/p&gt;
 
-&lt;p&gt;When proxying with path prefixes, &lt;strong&gt;the longest paths get evaluated first&lt;/strong&gt;. This allow you to define two Routes with two paths: &lt;code&gt;/service&lt;/code&gt; and &lt;code&gt;/service/resource&lt;/code&gt;, and ensure that the former does not “shadow” the latter.&lt;/p&gt;
+&lt;p&gt;使用路径前缀代理时，&lt;strong&gt;最长的路径将首先被评估&lt;/strong&gt;。也就是这样的两个路径：&lt;code&gt;/service&lt;/code&gt;和&lt;code&gt;/service/resource&lt;/code&gt;，前者并不会“覆盖”后者。&lt;/p&gt;
 
-&lt;h4 id=&#34;using-regexes-in-paths&#34;&gt;Using regexes in paths&lt;/h4&gt;
+&lt;h4 id=&#34;在-paths-中使用正则表达式&#34;&gt;在&lt;code&gt;paths&lt;/code&gt;中使用正则表达式&lt;/h4&gt;
 
-&lt;p&gt;Kong supports regular expression pattern matching for an Route’s &lt;code&gt;paths&lt;/code&gt; field via &lt;a href=&#34;http://pcre.org/&#34;&gt;PCRE&lt;/a&gt; (Perl Compatible Regular Expression). You can assign paths as both prefixes and regexes to a Route at the same time.&lt;/p&gt;
+&lt;p&gt;Kong &lt;code&gt;paths&lt;/code&gt;通过&lt;a href=&#34;http://pcre.org/&#34;&gt;PCRE&lt;/a&gt;（Perl兼容正则表达式）支持路由字段的正则表达式模式匹配。您可以同时将路径作为前缀和正则表达式分配给路由。&lt;/p&gt;
 
-&lt;p&gt;For example, if we consider the following Route:&lt;/p&gt;
+&lt;p&gt;例如，如下的&lt;code&gt;paths&lt;/code&gt;配置：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;paths&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/users/\d+/profile&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/following&amp;#34;&lt;/span&gt;]
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The following requests would be matched by this Route:&lt;/p&gt;
+&lt;p&gt;下列的请求将被匹配：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /following &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /users/123/profile &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The provided regexes are evaluated with the &lt;code&gt;a&lt;/code&gt; PCRE flag (&lt;code&gt;PCRE_ANCHORED&lt;/code&gt;), meaning that they will be constrained to match at the first matching point in the path (the root &lt;code&gt;/&lt;/code&gt; character).&lt;/p&gt;
+&lt;p&gt;所提供的正则表达式使用&lt;code&gt;a&lt;/code&gt;PCRE标志（&lt;code&gt;PCRE_ANCHORED&lt;/code&gt;）进行评估，也就是它们将被约束为在路径的第一个匹配点（根&lt;code&gt;/&lt;/code&gt;字符）匹配。&lt;/p&gt;
 
-&lt;h4 id=&#34;the-strip-path-property&#34;&gt;The &lt;code&gt;strip_path&lt;/code&gt; property&lt;/h4&gt;
+&lt;h4 id=&#34;strip-path-属性&#34;&gt;&lt;code&gt;strip_path&lt;/code&gt; 属性&lt;/h4&gt;
 
-&lt;p&gt;It may be desirable to specify a path prefix to match a Route, but not include it in the upstream request. To do so, use the &lt;code&gt;strip_path&lt;/code&gt; boolean property by configuring a Route like so:&lt;/p&gt;
+&lt;p&gt;在配置路由时，指定了对应的路径前缀，但又不希望其包括在上游请求中。为此，可&lt;code&gt;strip_path&lt;/code&gt;通过配置Route来使用boolean属性，如下所示：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;paths&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/service&amp;#34;&lt;/span&gt;],
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;strip_path&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;,
@@ -338,13 +342,15 @@ Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt
         &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
     }
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Enabling this flag instructs Kong that when matching this Route, and proceeding with the proxying to a Service, it should &lt;strong&gt;not&lt;/strong&gt; include the matched part of the URL path in the upstream request’s URL. For example, the following client’s request to the above Route:&lt;/p&gt;
+&lt;p&gt;启用此标志指示Kong所匹配的路由&lt;code&gt;paths&lt;/code&gt;信息，在代理处理时它&lt;strong&gt;不&lt;/strong&gt;应该包括在上游请求的URL的URL路径的匹配部分。&lt;/p&gt;
+
+&lt;p&gt;例如，如下的请求：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /service/path/to/resource &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Will cause Kong to send the following upstream request:&lt;/p&gt;
+&lt;p&gt;Kong将发送以下上游请求：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /path/to/resource &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The same way, if a regex path is defined on a Route that has &lt;code&gt;strip_path&lt;/code&gt; enabled, the entirety of the request URL matching sequence will be stripped. Example:&lt;/p&gt;
+&lt;p&gt;同样，如果在已&lt;code&gt;strip_path&lt;/code&gt;启用的Route上定义了正则表达式路径，则将剥离请求URL匹配序列的全部。例：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;paths&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/version/\d+/service&amp;#34;&lt;/span&gt;],
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;strip_path&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;,
@@ -352,19 +358,19 @@ Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt
         &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
     }
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The following HTTP request matching the provided regex path:&lt;/p&gt;
+&lt;p&gt;以下HTTP请求与提供的正则表达式路径匹配：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /version/1/service/path/to/resource &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Will be proxied upstream by Kong as:&lt;/p&gt;
+&lt;p&gt;Kong将在上游代理为：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; /path/to/resource &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h4 id=&#34;matching-priorities&#34;&gt;Matching priorities&lt;/h4&gt;
+&lt;h4 id=&#34;匹配优先级规则&#34;&gt;匹配优先级规则&lt;/h4&gt;
 
-&lt;p&gt;A Route may define matching rules based on its &lt;code&gt;headers&lt;/code&gt;, &lt;code&gt;hosts&lt;/code&gt;, &lt;code&gt;paths&lt;/code&gt;, and &lt;code&gt;methods&lt;/code&gt; (plus &lt;code&gt;snis&lt;/code&gt; for secure routes - &lt;code&gt;&amp;quot;https&amp;quot;&lt;/code&gt;, &lt;code&gt;&amp;quot;grpcs&amp;quot;&lt;/code&gt;, &lt;code&gt;&amp;quot;tls&amp;quot;&lt;/code&gt;) fields. For Kong to match an incoming request to a Route, all existing fields must be satisfied. However, Kong allows for quite some flexibility by allowing two or more Routes to be configured with fields containing the same values - when this occurs, Kong applies a priority rule.&lt;/p&gt;
+&lt;p&gt;一条路线可以基于其定义匹配规则&lt;code&gt;headers&lt;/code&gt;，&lt;code&gt;hosts&lt;/code&gt;，&lt;code&gt;paths&lt;/code&gt;，和&lt;code&gt;methods&lt;/code&gt;（加&lt;code&gt;snis&lt;/code&gt;-用于安全的路线&lt;code&gt;&amp;quot;https&amp;quot;&lt;/code&gt;，&lt;code&gt;&amp;quot;grpcs&amp;quot;&lt;/code&gt;，&lt;code&gt;&amp;quot;tls&amp;quot;&lt;/code&gt;字段）。为了使Kong将传入请求匹配到Route，必须满足所有现有字段。但是，Kong允许通过使用包含相同值的字段配置两个或更多路由来提供相当大的灵活性-发生这种情况时，Kong将应用优先级规则。&lt;/p&gt;
 
-&lt;p&gt;The rule is: &lt;strong&gt;when evaluating a request, Kong will first try to match the Routes with the most rules&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;规则是：&lt;strong&gt;在匹配评估请求时，Kong首先会尝试将规则最多的路线进行匹配&lt;/strong&gt;。&lt;/p&gt;
 
-&lt;p&gt;For example, if two Routes are configured like so:&lt;/p&gt;
+&lt;p&gt;例如，有两个路由配置如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;hosts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;example.com&amp;#34;&lt;/span&gt;],
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
@@ -378,65 +384,65 @@ Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; ...&lt;/code&gt;&lt
         &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
     }
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The second Route has a &lt;code&gt;hosts&lt;/code&gt; field &lt;strong&gt;and&lt;/strong&gt; a &lt;code&gt;methods&lt;/code&gt; field, so it will be evaluated first by Kong. By doing so, we avoid the first Route “shadowing” calls intended for the second one.&lt;/p&gt;
+&lt;p&gt;第二条路线有一个&lt;code&gt;hosts&lt;/code&gt;字段&lt;strong&gt;和&lt;/strong&gt;一个&lt;code&gt;methods&lt;/code&gt;字段，因此它将首先由Kong进行匹配评估。这样，我们避免了针对第二个路线的第一个路线“影子”调用。&lt;/p&gt;
 
-&lt;p&gt;Thus, this request will match the first Route&lt;/p&gt;
+&lt;p&gt;如下请求将匹配第一个路线&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;GET&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And this request will match the second one:&lt;/p&gt;
+&lt;p&gt;如下请求将匹配第二个请求：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;POST&lt;/span&gt; / &lt;span style=&#34;color:#ff79c6&#34;&gt;HTTP&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#bd93f9&#34;&gt;1.1&lt;/span&gt;
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Following this logic, if a third Route was to be configured with a &lt;code&gt;hosts&lt;/code&gt; field, a &lt;code&gt;methods&lt;/code&gt; field, and a &lt;code&gt;uris&lt;/code&gt; field, it would be evaluated first by Kong.&lt;/p&gt;
+&lt;p&gt;按照此逻辑，如果要为第三条路线配置一个&lt;code&gt;hosts&lt;/code&gt;字段，一个&lt;code&gt;methods&lt;/code&gt;字段和一个&lt;code&gt;uris&lt;/code&gt;字段，则Kong将首先对其进行评估。&lt;/p&gt;
 
-&lt;p&gt;If the rule count for the given request is the same in two Routes &lt;code&gt;A&lt;/code&gt; and &lt;code&gt;B&lt;/code&gt;, then the following tiebreaker rules will be applied in the order they are listed. Route &lt;code&gt;A&lt;/code&gt; will be selected over &lt;code&gt;B&lt;/code&gt; if:&lt;/p&gt;
+&lt;p&gt;[TODO]如果给定请求的规则数在&lt;code&gt;A&lt;/code&gt;和&lt;code&gt;B&lt;/code&gt;两个路由相同，则以下所列规则将按照列出的顺序匹配。如果满足以下条件，&lt;code&gt;B&lt;/code&gt;将优先于&lt;code&gt;A&lt;/code&gt;：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;A&lt;/code&gt; has only “plain” Host headers and &lt;code&gt;B&lt;/code&gt; has has one or more “wildcard” host headers&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;A&lt;/code&gt; has more non-Host headers than &lt;code&gt;B&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;A&lt;/code&gt; has at least one “regex” paths and &lt;code&gt;B&lt;/code&gt; has only “plain” paths.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;A&lt;/code&gt;’s longer path is longer than &lt;code&gt;B&lt;/code&gt;’s longer path.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;A&lt;/code&gt;仅具有“普通”header配置，&lt;code&gt;B&lt;/code&gt;并且具有一个或多个“通配符”header配置。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;A&lt;/code&gt; 比 &lt;code&gt;B&lt;/code&gt;有更多的非&lt;code&gt;hosts&lt;/code&gt;的属性.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;A&lt;/code&gt;具有至少一个“正则表达式”路径，&lt;code&gt;B&lt;/code&gt;而只有“纯”路径。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;A&lt;/code&gt;的更长路径比&lt;code&gt;B&lt;/code&gt;更长的路径更长。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;A.created_at &amp;lt; B.created_at&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&#34;proxying-behavior-https-docs-konghq-com-2-1-x-proxy-proxying-behavior&#34;&gt;Proxying behavior (&lt;a href=&#34;https://docs.konghq.com/2.1.x/proxy/#proxying-behavior&#34;&gt;https://docs.konghq.com/2.1.x/proxy/#proxying-behavior&lt;/a&gt;)&lt;/h4&gt;
+&lt;h4 id=&#34;代理行为-https-docs-konghq-com-2-1-x-proxy-proxying-behavior&#34;&gt;代理行为 (&lt;a href=&#34;https://docs.konghq.com/2.1.x/proxy/#proxying-behavior&#34;&gt;https://docs.konghq.com/2.1.x/proxy/#proxying-behavior&lt;/a&gt;)&lt;/h4&gt;
 
-&lt;h4 id=&#34;configuring-a-fallback-route-https-docs-konghq-com-2-1-x-proxy-configuring-a-fallback-route&#34;&gt;Configuring a fallback Route (&lt;a href=&#34;https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route&#34;&gt;https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route&lt;/a&gt;)&lt;/h4&gt;
+&lt;h4 id=&#34;配置一个备用路由-https-docs-konghq-com-2-1-x-proxy-configuring-a-fallback-route&#34;&gt;配置一个备用路由 (&lt;a href=&#34;https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route&#34;&gt;https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route&lt;/a&gt;)&lt;/h4&gt;
 
-&lt;p&gt;As a practical use-case and example of the flexibility offered by Kong’s proxying capabilities, let’s try to implement a “fallback Route”, so that in order to avoid Kong responding with an HTTP &lt;code&gt;404&lt;/code&gt;, “no route found”, we can catch such requests and proxy them to a special upstream service, or apply a plugin to it (such a plugin could, for example, terminate the request with a different status code or response without proxying the request).&lt;/p&gt;
+&lt;p&gt;实现“后备路由”，可以避免Kong在HTTP响应&lt;code&gt;404&lt;/code&gt;时出现“找不到路由”，我们可以捕获此类请求并将其代理到特殊的上游服务，或对其应用插件（例如，该插件可以使用其他状态代码或响应终止请求，而无需代理请求）。&lt;/p&gt;
 
-&lt;p&gt;Here is an example of such a fallback Route:&lt;/p&gt;
+&lt;p&gt;一个后备路由的示例：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;{
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;paths&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/&amp;#34;&lt;/span&gt;],
     &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;service&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; {
         &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;...&amp;#34;&lt;/span&gt;
     }
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;As you can guess, any HTTP request made to Kong would actually match this Route, since all URIs are prefixed by the root character &lt;code&gt;/&lt;/code&gt;. As we know from the Request path section, the longest URL paths are evaluated first by Kong, so the &lt;code&gt;/&lt;/code&gt; path will eventually be evaluated last by Kong, and effectively provide a “fallback” Route, only matched as a last resort. You can then send traffic to a special Service or apply any plugin you wish on this Route.&lt;/p&gt;
+&lt;p&gt;当向Kong发出的任何HTTP请求实际上都将与此路由匹配，因为所有URI都以根字符为前缀&lt;code&gt;/&lt;/code&gt;。从“请求路径”部分我们知道，最长的URL路径首先由Kong评估，因此该&lt;code&gt;/&lt;/code&gt;路径最终将最终由Kong评估，并有效地提供了“后备”路线，仅在万不得已时才进行匹配。然后，您可以将流量发送到特殊服务，或在此路线上应用您希望的任何插件。&lt;/p&gt;
 
-&lt;h4 id=&#34;proxy-websocket-traffic-https-docs-konghq-com-2-1-x-proxy-proxy-websocket-traffic-todo&#34;&gt;Proxy WebSocket traffic (&lt;a href=&#34;https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic)(TODO&#34;&gt;https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic)(TODO&lt;/a&gt;)&lt;/h4&gt;
+&lt;h4 id=&#34;websocket-代理-https-docs-konghq-com-2-1-x-proxy-proxy-websocket-traffic-todo&#34;&gt;WebSocket 代理 (&lt;a href=&#34;https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic)(TODO&#34;&gt;https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic)(TODO&lt;/a&gt;)&lt;/h4&gt;
 
-&lt;h3 id=&#34;loadbalancing-reference-https-docs-konghq-com-2-1-x-loadbalancing&#34;&gt;Loadbalancing reference (&lt;a href=&#34;https://docs.konghq.com/2.1.x/loadbalancing/&#34;&gt;https://docs.konghq.com/2.1.x/loadbalancing/&lt;/a&gt;)&lt;/h3&gt;
+&lt;h3 id=&#34;负载均衡-https-docs-konghq-com-2-1-x-loadbalancing&#34;&gt;负载均衡 (&lt;a href=&#34;https://docs.konghq.com/2.1.x/loadbalancing/&#34;&gt;https://docs.konghq.com/2.1.x/loadbalancing/&lt;/a&gt;)&lt;/h3&gt;
 
-&lt;h4 id=&#34;dns-based-loadbalancing&#34;&gt;DNS-based loadbalancing&lt;/h4&gt;
+&lt;h4 id=&#34;基于dns的负载平衡&#34;&gt;基于DNS的负载平衡&lt;/h4&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;the registration of the backend services is done outside of Kong&lt;/p&gt;
+&lt;p&gt;后端服务的注册是在Kong之外进行的。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h4 id=&#34;ring-balancer&#34;&gt;Ring-balancer&lt;/h4&gt;
 
-&lt;p&gt;algorithm: &lt;code&gt;consistent-hashing&lt;/code&gt;, &lt;code&gt;least-connections&lt;/code&gt;, &lt;code&gt;round-robin&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;算法选择: &lt;code&gt;consistent-hashing&lt;/code&gt;, &lt;code&gt;least-connections&lt;/code&gt;, &lt;code&gt;round-robin&lt;/code&gt;&lt;/p&gt;
 
-&lt;h4 id=&#34;blue-green-deployments-https-docs-konghq-com-2-1-x-loadbalancing-blue-green-deployments&#34;&gt;Blue-Green Deployments (&lt;a href=&#34;https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments&#34;&gt;https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments&lt;/a&gt;)&lt;/h4&gt;
+&lt;h4 id=&#34;blue-green-发布-https-docs-konghq-com-2-1-x-loadbalancing-blue-green-deployments&#34;&gt;Blue-Green 发布 (&lt;a href=&#34;https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments&#34;&gt;https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments&lt;/a&gt;)&lt;/h4&gt;
 
-&lt;p&gt;Extension: (&lt;a href=&#34;https://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/&#34;&gt;https://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;扩展: (&lt;a href=&#34;https://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/&#34;&gt;https://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/&lt;/a&gt;)&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/image-20200728144535998.png#mid&#34; alt=&#34;Blue-Green Deployment&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Using the ring-balancer a blue-green deployment can be easily orchestrated for a Service. Switching target infrastructure only requires a &lt;code&gt;PATCH&lt;/code&gt; request on a Service, to change its &lt;code&gt;host&lt;/code&gt; value.&lt;/p&gt;
+&lt;p&gt;使用 ring-balance，可以轻松地为服务编排蓝绿色部署。切换目标基础架构仅需要&lt;code&gt;PATCH&lt;/code&gt;对服务的请求即可更改其&lt;code&gt;host&lt;/code&gt;价值。&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Set up the “Blue” environment, running version 1 of the address service:&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;设置“Blue”环境，运行地址服务的版本1：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;# create an upstream&lt;/span&gt;
 $ curl -X POST http://kong:8001/upstreams &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
 &lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;name=address.v1.service&amp;#34;&lt;/span&gt;
@@ -461,11 +467,11 @@ $ curl -X POST http://kong:8001/services/address-service/routes/ &lt;span style=
 &lt;/ul&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Requests with host header set to &lt;code&gt;address.mydomain.com&lt;/code&gt; will now be proxied by Kong to the two defined targets; &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; of the requests will go to &lt;code&gt;http://192.168.34.15:80/address&lt;/code&gt; (&lt;code&gt;weight=100&lt;/code&gt;), and &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; will go to &lt;code&gt;http://192.168.34.16:80/address&lt;/code&gt; (&lt;code&gt;weight=50&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;主机头设置为的请求&lt;code&gt;address.mydomain.com&lt;/code&gt;将由Kong代理到两个已定义的目标；2 / 3的请求将去&lt;code&gt;http://192.168.34.15:80/address&lt;/code&gt;（&lt;code&gt;weight=100&lt;/code&gt;），和1 / 3将去&lt;code&gt;http://192.168.34.16:80/address&lt;/code&gt;（&lt;code&gt;weight=50&lt;/code&gt;）。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Before deploying version 2 of the address service, set up the “Green” environment:&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;在部署地址服务的版本2之前，请设置“Green”环境：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;# create a new Green upstream for address service v2&lt;/span&gt;
 $ curl -X POST http://kong:8001/upstreams &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
 &lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;  --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;name=address.v2.service&amp;#34;&lt;/span&gt;
@@ -479,12 +485,14 @@ $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span st
   --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;weight=100&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;To activate the Blue/Green switch, we now only need to update the Service:&lt;/p&gt;
+&lt;p&gt;要激活Blue/Green 开关，我们现在只需要更新服务：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;  &lt;span style=&#34;color:#6272a4&#34;&gt;# Switch the Service from Blue to Green upstream, v1 -&amp;gt; v2&lt;/span&gt;
   $ curl -X PATCH http://kong:8001/services/address-service &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
 &lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;      --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;host=address.v2.service&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Incoming requests with host header set to &lt;code&gt;address.mydomain.com&lt;/code&gt; will now be proxied by Kong to the new targets; &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; of the requests will go to &lt;code&gt;http://192.168.34.17:80/address&lt;/code&gt; (&lt;code&gt;weight=100&lt;/code&gt;), and the other &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; will go to &lt;code&gt;http://192.168.34.18:80/address&lt;/code&gt; (&lt;code&gt;weight=100&lt;/code&gt;).&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;主机头设置为的传入请求&lt;code&gt;address.mydomain.com&lt;/code&gt;将由Kong代理到新目标；1 / 2的请求将去&lt;code&gt;http://192.168.34.17:80/address&lt;/code&gt;（&lt;code&gt;weight=100&lt;/code&gt;），以及其它1 / 2将去&lt;code&gt;http://192.168.34.18:80/address&lt;/code&gt;（&lt;code&gt;weight=100&lt;/code&gt;）。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;/blockquote&gt;
 
 &lt;h4 id=&#34;canary-releases-https-docs-konghq-com-2-1-x-loadbalancing-canary-releases&#34;&gt;Canary Releases (&lt;a href=&#34;https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases&#34;&gt;https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases&lt;/a&gt;)&lt;/h4&gt;
