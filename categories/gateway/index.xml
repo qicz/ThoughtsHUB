@@ -394,7 +394,7 @@ Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/cod
 Host&lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;按照此逻辑，如果要为第三条路线配置一个&lt;code&gt;hosts&lt;/code&gt;字段，一个&lt;code&gt;methods&lt;/code&gt;字段和一个&lt;code&gt;uris&lt;/code&gt;字段，则Kong将首先对其进行评估。&lt;/p&gt;
 
-&lt;p&gt;[TODO]如果给定请求的规则数在&lt;code&gt;A&lt;/code&gt;和&lt;code&gt;B&lt;/code&gt;两个路由相同，则以下所列规则将按照列出的顺序匹配。如果满足以下条件，&lt;code&gt;B&lt;/code&gt;将优先于&lt;code&gt;A&lt;/code&gt;：&lt;/p&gt;
+&lt;p&gt;如果给定请求的规则数在&lt;code&gt;A&lt;/code&gt;和&lt;code&gt;B&lt;/code&gt;两个路由相同，则以下所列规则将按照列出的顺序匹配。如果满足以下条件，&lt;code&gt;A&lt;/code&gt;将优先于&lt;code&gt;B&lt;/code&gt;：&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;A&lt;/code&gt;仅具有“普通”header配置，&lt;code&gt;B&lt;/code&gt;并且具有一个或多个“通配符”header配置。&lt;/li&gt;
@@ -495,13 +495,13 @@ $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span st
 &lt;/blockquote&gt;
 &lt;/blockquote&gt;
 
-&lt;h4 id=&#34;canary-releases-https-docs-konghq-com-2-1-x-loadbalancing-canary-releases&#34;&gt;Canary Releases (&lt;a href=&#34;https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases&#34;&gt;https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases&lt;/a&gt;)&lt;/h4&gt;
+&lt;h4 id=&#34;金丝雀版本发布-https-docs-konghq-com-2-1-x-loadbalancing-canary-releases&#34;&gt;金丝雀版本发布 (&lt;a href=&#34;https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases&#34;&gt;https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases&lt;/a&gt;)&lt;/h4&gt;
 
-&lt;p&gt;Extension: (&lt;a href=&#34;http://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/&#34;&gt;http://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;扩展: (&lt;a href=&#34;http://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/&#34;&gt;http://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/&lt;/a&gt;)&lt;/p&gt;
 
-&lt;p&gt;Using the ring-balancer, target weights can be adjusted granularly, allowing for a smooth, controlled canary release.&lt;/p&gt;
+&lt;p&gt;使用ring-balancer，可以精确调整目标权重实现平稳，控制的金丝雀版本的发布。&lt;/p&gt;
 
-&lt;p&gt;Using a very simple 2 target example:&lt;/p&gt;
+&lt;p&gt;一个非常简单2个目标的示例：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;# first target at 1000&lt;/span&gt;
 $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
 &lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.17:80&amp;#34;&lt;/span&gt;
@@ -511,7 +511,7 @@ $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span st
 $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
 &lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.18:80&amp;#34;&lt;/span&gt;
     --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;weight=0&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;By repeating the requests, but altering the weights each time, traffic will slowly be routed towards the other target. For example, set it at 10%:&lt;/p&gt;
+&lt;p&gt;通过重复请求，但每次更改权重，流量将缓慢地路由到另一个目标。例如，将其设置为10％：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;# first target at 900&lt;/span&gt;
 $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
 &lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.17:80&amp;#34;&lt;/span&gt;
@@ -521,123 +521,152 @@ $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span st
 $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span style=&#34;color:#f1fa8c&#34;&gt;\
 &lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&lt;/span&gt;    --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;target=192.168.34.18:80&amp;#34;&lt;/span&gt;
     --data &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;weight=100&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The changes through the Kong Admin API are dynamic and will take effect immediately. No reload or restart is required, and no in progress requests will be dropped.&lt;/p&gt;
+&lt;p&gt;通过Kong Admin API进行的更改是动态的，将立即生效。无需重新加载或重启，也不会丢弃任何进行中的请求。&lt;/p&gt;
 
-&lt;h3 id=&#34;health-checks-and-circuit-breakers-reference-https-docs-konghq-com-2-1-x-health-checks-circuit-breakers&#34;&gt;Health Checks and Circuit Breakers Reference (&lt;a href=&#34;https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/&#34;&gt;https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/&lt;/a&gt;)&lt;/h3&gt;
+&lt;h3 id=&#34;健康检查和断路器-https-docs-konghq-com-2-1-x-health-checks-circuit-breakers&#34;&gt;健康检查和断路器 (&lt;a href=&#34;https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/&#34;&gt;https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/&lt;/a&gt;)&lt;/h3&gt;
 
-&lt;h4 id=&#34;upstreams&#34;&gt;Upstreams&lt;/h4&gt;
+&lt;h4 id=&#34;upstreams上游服务&#34;&gt;Upstreams上游服务&lt;/h4&gt;
 
-&lt;p&gt;Along with health check functionality on individual targets, Upstreams also have a notion of health. The health of an Upstream is determined based on the status of its Targets.&lt;/p&gt;
+&lt;p&gt;除了针对单个目标的运行状况检查功能之外，上游还具有运行状况概念。上游的运行状况取决于其目标的状态。&lt;/p&gt;
 
-&lt;p&gt;Configuration of the Upstream’s health is done though the property &lt;code&gt;healthchecks.threshold&lt;/code&gt;. This is a percentage of minimum available target “weight” (capacity) for the Upstream to be considered healthy.&lt;/p&gt;
+&lt;p&gt;通过属性可以配置上游的运行状况&lt;code&gt;healthchecks.threshold&lt;/code&gt;。这是被认为是健康的上游最小可用目标“权重”（容量）的百分比。&lt;/p&gt;
 
-&lt;p&gt;Here is a simple example:&lt;/p&gt;
+&lt;p&gt;一个简单示例：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Assume an Upstream configured with &lt;code&gt;healthchecks.threshold=55&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;It has 5 targets, each with &lt;code&gt;weight=100&lt;/code&gt;, so the total weight in the ring-balancer is 500.&lt;/li&gt;
+&lt;li&gt;假设配置了的上游&lt;code&gt;healthchecks.threshold=55&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;它有5个目标，每个目标都有&lt;code&gt;weight=100&lt;/code&gt;，因此ring-balancer的总权重为500。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;When failures start to occur, the circuit-breaker for the first target trips. It is now considered unhealthy. This means that in the ring-balancer, 20% of the capacity is now unhealthy (100 weight out of 500). This is still above the threshold of 55, so the remaining targets will serve the traffic of the failed one.&lt;/p&gt;
+&lt;p&gt;当故障开始发生时，第一个目标的断路器跳闸。现在认为它不健康。这意味着在ring-balancer中，现在有20％的容量不正常（500权重中有100权重）。该阈值仍高于55的阈值，因此其余目标将为失败目标的流量提供服务。&lt;/p&gt;
 
-&lt;p&gt;When a second failure occurs, another target fails, and another 100 weight is lost as unhealthy. Now the ring-balancer operates at 60% of its capacity, but still within the configured threshold.&lt;/p&gt;
+&lt;p&gt;当第二次失败发生时，另一个目标失败，另外100权重的服务作为不健康服务而丢失。现在，ring-balancer以其容量的60％运行，但仍在配置的阈值内。&lt;/p&gt;
 
-&lt;p&gt;If we assume that the 2 failures occured due to a system overload, we can now assume that the remaining 60% will also not be able to cope with the full load and soon a third node will fail, reducing healthy capacity to 40%. At this point, the Upstream health will be less than its threshold, and it will be marked as unhealthy itself.&lt;/p&gt;
+&lt;p&gt;如果我们假设这2个故障是由于系统过载而发生的，那么现在我们可以假设剩余的60％也将无法应付满负荷，并且很快第三个节点将发生故障，从而将正常容量减少到40％。此时，上游健康状况将小于其阈值，并且自身将被标记为不健康。&lt;/p&gt;
 
-&lt;p&gt;Once it enters an unhealthy state, the Upstream will only return errors. This lets the targets/services recover from the cascading failure they were experiencing.&lt;/p&gt;
+&lt;p&gt;一旦进入不正常状态，上游只会返回错误。这可使目标/服务从遇到的级联故障中恢复。&lt;/p&gt;
 
-&lt;p&gt;Once the Targets start recovering and the Upstream’s available capacity passes the threshold again, the health status of the ring-balancer will automatically be updated.&lt;/p&gt;
+&lt;p&gt;一旦目标开始恢复并且上游的可用容量再次超过阈值，则ring-balancer 的运行状况将自动更新。&lt;/p&gt;
 
-&lt;h4 id=&#34;types-of-health-checks&#34;&gt;Types of health checks&lt;/h4&gt;
+&lt;h4 id=&#34;健康检查类型&#34;&gt;健康检查类型&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Active health checks&lt;/li&gt;
+&lt;li&gt;主动健康检查&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Active health checks, as the name implies, actively probe targets for their health. When active health checks are enabled in an upstream entity, Kong will periodically issue HTTP or HTTPS requests to a configured path at each target of the upstream. This allows Kong to automatically enable and disable targets in the balancer based on the probe results.&lt;/p&gt;
+&lt;p&gt;顾名思义，主动健康检查会主动探测其健康目标。在上游实体中启用主动健康检查后，Kong会定期向上游的每个目标处的已配置路径发出HTTP或HTTPS请求。这样，Kong可以根据探测结果自动启用和禁用平衡器中的目标。&lt;/p&gt;
 
-&lt;p&gt;The periodicity of active health checks can be configured separately for when a target is healthy or unhealthy. If the &lt;code&gt;interval&lt;/code&gt; value for either is set to zero, the checking is disabled at the corresponding scenario. When both are zero, active health checks are disabled altogether.&lt;/p&gt;
+&lt;p&gt;可以针对目标健康或不健康分别配置主动健康检查的周期。如果将&lt;code&gt;interval&lt;/code&gt;其中一个的值设置为零，则在相应的情况下将禁用检查。当两者均为零时，将完全禁用活动的健康检查。&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Passive health checks (circuit breakers)&lt;/li&gt;
+&lt;li&gt;被动健康检查（断路器）&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&#34;clustering-reference-https-docs-konghq-com-2-1-x-clustering&#34;&gt;Clustering Reference  (&lt;a href=&#34;https://docs.konghq.com/2.1.x/clustering/&#34;&gt;https://docs.konghq.com/2.1.x/clustering/&lt;/a&gt;)&lt;/h3&gt;
+&lt;p&gt;被动健康检查（也称为断路器）是根据Kong（HTTP / HTTPS / TCP）代理的请求执行的检查，不会生成其他流量。当目标变得无响应时，被动健康检查器将检测到该目标并将其标记为不健康。ring-balancer将开始跳过此目标，因此不再有流量路由到该目标。&lt;/p&gt;
 
-&lt;p&gt;A Kong cluster allows you to scale the system horizontally by adding more machines to handle more incoming requests. They will all share the same configuration since they point to the same database. Kong nodes pointing to the &lt;strong&gt;same datastore&lt;/strong&gt; will be part of the same Kong cluster.&lt;/p&gt;
+&lt;p&gt;解决目标问题并准备再次接收流量后，Kong管理员可以通过Admin API端点手动通知运行状况检查器应再次启用目标：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;  $ curl -i -X POST http://localhost:8001/upstreams/my_upstream/targets/10.1.2.3:1234/healthy
+  HTTP/1.1 &lt;span style=&#34;color:#bd93f9&#34;&gt;204&lt;/span&gt; No Content&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;此命令将广播整个群集的消息，以便将“健康”状态传播到整个&lt;a href=&#34;https://docs.konghq.com/2.1.x/clustering&#34;&gt;Kong集群&lt;/a&gt;。这将导致Kong节点重置在Kong节点的所有工作程序中运行的运行状况检查器的运行状况计数器，从而允许环形平衡器再次将流量路由到目标。&lt;/p&gt;
 
-&lt;p&gt;You need a load-balancer in front of your Kong cluster to distribute traffic across your available nodes.&lt;/p&gt;
+&lt;p&gt;被动运行状况检查的优点是不会产生额外的流量，但是它们无法自动将目标再次标记为运行状况良好：“电路已断开”，系统管理员需要重新启用目标。&lt;/p&gt;
 
-&lt;h4 id=&#34;multiple-nodes-kong-clusters&#34;&gt;Multiple nodes Kong clusters&lt;/h4&gt;
+&lt;h3 id=&#34;集群-https-docs-konghq-com-2-1-x-clustering&#34;&gt;集群  (&lt;a href=&#34;https://docs.konghq.com/2.1.x/clustering/&#34;&gt;https://docs.konghq.com/2.1.x/clustering/&lt;/a&gt;)&lt;/h3&gt;
 
-&lt;p&gt;Every &lt;code&gt;db_update_frequency&lt;/code&gt; seconds, all running Kong nodes will poll the database for any update, and will purge the relevant entities from their cache if necessary.&lt;/p&gt;
+&lt;p&gt;Kong群集允许您通过添加更多计算机来处理更多传入请求来水平扩展系统。它们都指向相同的数据库，因此它们将共享相同的配置。指向&lt;strong&gt;同一数据存储的&lt;/strong&gt; Kong节点将属于同一Kong集群。&lt;/p&gt;
 
-&lt;p&gt;If we delete a Service from node &lt;code&gt;A&lt;/code&gt;, this change will not be effective in node &lt;code&gt;B&lt;/code&gt; until node &lt;code&gt;B&lt;/code&gt;s next database poll, which will occur up to &lt;code&gt;db_update_frequency&lt;/code&gt; seconds later (though it could happen sooner).&lt;/p&gt;
+&lt;p&gt;您需要在Kong群集前面安装一个负载平衡器，以在可用节点之间分配流量。&lt;/p&gt;
 
-&lt;h4 id=&#34;what-is-being-cached&#34;&gt;What is being cached?&lt;/h4&gt;
+&lt;h4 id=&#34;多节点kong集群&#34;&gt;多节点Kong集群&lt;/h4&gt;
 
-&lt;p&gt;All of the core entities such as Services, Routes, Plugins, Consumers, Credentials are cached in memory by Kong and depend on their invalidation via the polling mechanism to be updated.&lt;/p&gt;
+&lt;p&gt;每&lt;code&gt;db_update_frequency&lt;/code&gt;秒钟，所有运行中的Kong节点将轮询数据库是否有更新，并在必要时从其缓存中清除相关实体。&lt;/p&gt;
 
-&lt;h4 id=&#34;how-to-configure-database-caching&#34;&gt;How to configure database caching?&lt;/h4&gt;
+&lt;p&gt;如果我们从&lt;code&gt;A&lt;/code&gt;节点删除了一个服务，这个变化在节点&lt;code&gt;B&lt;/code&gt;轮训数据库变化前，不会在节点&lt;code&gt;B&lt;/code&gt;上生效。该轮询可能会在&lt;code&gt;db_update_frequency&lt;/code&gt;几秒钟后发生（尽管可能会更快发生）。&lt;/p&gt;
 
-&lt;p&gt;You can configure 3 properties in the Kong configuration file, the most important one being db_update_frequency, which determine where your Kong nodes stand on the performance vs consistency trade off.&lt;/p&gt;
+&lt;h4 id=&#34;哪些内容将被缓存&#34;&gt;哪些内容将被缓存?&lt;/h4&gt;
 
-&lt;p&gt;Kong comes with default values tuned for consistency, in order to let you experiment with its clustering capabilities while avoiding “surprises”. As you prepare a production setup, you should consider tuning those values to ensure that your performance constraints are respected.&lt;/p&gt;
+&lt;p&gt;所有核心实体（如服务，路由，插件，使用者，凭证）都由Kong缓存在内存中，并依赖于它们通过要更新的轮询机制的失效。&lt;/p&gt;
+
+&lt;h4 id=&#34;怎样配置数据库缓存&#34;&gt;怎样配置数据库缓存?&lt;/h4&gt;
+
+&lt;p&gt;您可以在Kong配置文件中配置3个属性，其中最重要的是&lt;code&gt;db_update_frequency&lt;/code&gt;，它确定您的Kong节点在性能与一致性之间的权衡。&lt;/p&gt;
+
+&lt;p&gt;Kong带有为一致性而调整的默认值，以便让您尝试其群集功能同时避免“意外”。在准备生产设置时，应考虑调整这些值，以确保遵守性能约束。&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;db_update_frequency&lt;/code&gt; (default: 5s)
-This value determines the frequency at which your Kong nodes will be polling the database for invalidation events. A lower value will mean that the polling job will be executed more frequently, but that your Kong nodes will keep up with changes you apply. A higher value will mean that your Kong nodes will spend less time running the polling jobs, and will focus on proxying your traffic.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;db_update_frequency&lt;/code&gt; (默认: 5s)
+这个值确定您的Kong节点将轮询数据库中的无效事件的频率。较低的值表示轮询作业将更频繁地执行，但是Kong节点将跟上您应用的更改。较高的值表示您的Kong节点将花费较少的时间来运行轮询作业，并将专注于代理您的流量。&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Note: changes propagate through the cluster in up to db_update_frequency seconds.&lt;/p&gt;
+&lt;p&gt;注意：更改最多在db_update_frequency秒内在整个群集中传播。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;db_update_propagation&lt;/code&gt; (default: 0s)
-If your database itself is eventually consistent (ie: Cassandra), you must configure this value. It is to ensure that the change has time to propagate across your database nodes. When set, Kong nodes receiving invalidation events from their polling jobs will delay the purging of their cache for db_update_propagation seconds.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;db_update_propagation&lt;/code&gt; (默认: 0s)
+如果数据库本身最终是一致的（即：Cassandra），则必须配置该值。这是为了确保更改有时间在数据库节点之间传播。设置后，从轮询作业接收到无效事件的Kong节点将使清除其缓存的时间延迟&lt;code&gt;db_update_propagation&lt;/code&gt;秒。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;If a Kong node connected to an eventual consistent database was not delaying the event handling, it could purge its cache, only to cache the non-updated value again (because the change hasn’t propagated through the database yet)!&lt;/p&gt;
+&lt;p&gt;如果连接到最终一致数据库的Kong节点没有延迟事件处理，则它可以清除其缓存，仅再次缓存未更新的值（因为更改尚未在数据库中传播）！&lt;/p&gt;
 
-&lt;p&gt;You should set this value to an estimate of the amount of time your database cluster takes to propagate changes.&lt;/p&gt;
+&lt;p&gt;您应该将此值设置为数据库集群传播更改所花费的时间的估计值。&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Note: when this value is set, changes propagate through the cluster in up to db_update_frequency + db_update_propagation seconds.&lt;/p&gt;
+&lt;p&gt;注意：设置此值后，更改将在整个db_update_frequency + db_update_propagation秒内传播。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;db_cache_ttl&lt;/code&gt; (default: 0s)
-The time (in seconds) for which Kong will cache database entities (both hits and misses). This Time-To-Live value acts as a safeguard in case a Kong node misses an invalidation event, to avoid it from running on stale data for too long. When the TTL is reached, the value will be purged from its cache, and the next database result will be cached again.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;db_cache_ttl&lt;/code&gt; (默认: 0s)
+Kong将缓存数据库实体（命中和未命中）的时间（以秒为单位）。此生存时间值可作为安全措施，以防Kong节点错过失效事件，从而避免其在陈旧数据上运行太长时间。当达到TTL时，将从其缓存中清除该值，并再次缓存下一个数据库结果（其实就是上游服务返回的结果）。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;By default no data is invalidated based on this TTL (the default value is 0). This is usually fine: Kong nodes rely on invalidation events, which are handled at the db store level (Cassandra/PosgreSQL). If you are concerned that a Kong node might miss invalidation event for any reason, you should set a TTL. Otherwise the node might run with a stale value in its cache for an undefined amount of time, until the cache is manually purged, or the node is restarted.&lt;/p&gt;
+&lt;p&gt;默认情况下，没有数据基于此TTL无效（默认值为0）。通常这是一个很好选择：Kong节点依赖于无效事件，这些事件在数据库存储级别（Cassandra / PosgreSQL）处理。如果您担心Kong节点可能因任何原因错过失效事件，则应设置TTL。否则，节点可能会在其缓存中以陈旧值运行不确定的时间，直到手动清除缓存或重新启动节点为止。即就是允许一定时间范围内的数据不一致性。&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;When using Cassandra&lt;/li&gt;
+&lt;li&gt;使用Cassandra时&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;If you use Cassandra as your Kong database, you &lt;strong&gt;must&lt;/strong&gt; set &lt;code&gt;db_update_propagation&lt;/code&gt; to a non-zero value. Since Cassandra is eventually consistent by nature, this will ensure that Kong nodes do not prematurely invalidate their cache, only to fetch and catch a not up-to-date entity again. Kong will present you a warning logs if you did not configure this value when using Cassandra.&lt;/p&gt;
+&lt;p&gt;如果将Cassandra用作Kong数据库，则&lt;strong&gt;必须&lt;/strong&gt;设置&lt;code&gt;db_update_propagation&lt;/code&gt;为非零值。由于Cassandra最终在本质上是一致的，因此这将确保Kong节点不会过早地使它们的缓存失效，而只是再次获取并捕获不最新的实体。如果您在使用Cassandra时未配置此值，则Kong将向您显示警告日志。&lt;/p&gt;
 
-&lt;p&gt;Additionally, you might want to configure &lt;code&gt;cassandra_consistency&lt;/code&gt; to a value like &lt;code&gt;QUORUM&lt;/code&gt; or &lt;code&gt;LOCAL_QUORUM&lt;/code&gt;, to ensure that values being cached by your Kong nodes are up-to-date values from your database.&lt;/p&gt;
+&lt;p&gt;此外，您可能需要配置&lt;code&gt;cassandra_consistency&lt;/code&gt;为&lt;code&gt;QUORUM&lt;/code&gt;或&lt;code&gt;LOCAL_QUORUM&lt;/code&gt;，以确保Kong节点缓存的值是数据库中的最新值。&lt;/p&gt;
 
-&lt;p&gt;Setting the &lt;code&gt;cassandra_refresh_frequency&lt;/code&gt; option to &lt;code&gt;0&lt;/code&gt; is not advised, as a Kong restart will be required to discover any changes to the Cassandra cluster topology.&lt;/p&gt;
+&lt;p&gt;建议不要将&lt;code&gt;cassandra_refresh_frequency&lt;/code&gt;选项设置&lt;code&gt;0&lt;/code&gt;为，因为需要重启Kong才能发现对Cassandra群集拓扑的任何更改。&lt;/p&gt;
 
-&lt;h3 id=&#34;network-firewall-https-docs-konghq-com-2-1-x-network-firewall&#34;&gt;Network Firewall  (&lt;a href=&#34;https://docs.konghq.com/2.1.x/network/#firewall&#34;&gt;https://docs.konghq.com/2.1.x/network/#firewall&lt;/a&gt;)&lt;/h3&gt;
+&lt;h3 id=&#34;防火墙-https-docs-konghq-com-2-1-x-network-firewall&#34;&gt;防火墙  (&lt;a href=&#34;https://docs.konghq.com/2.1.x/network/#firewall&#34;&gt;https://docs.konghq.com/2.1.x/network/#firewall&lt;/a&gt;)&lt;/h3&gt;
 
-&lt;h4 id=&#34;transparent-proxying-https-blog-stackpath-com-transparent-proxy&#34;&gt;Transparent Proxying (&lt;a href=&#34;https://blog.stackpath.com/transparent-proxy/&#34;&gt;https://blog.stackpath.com/transparent-proxy/&lt;/a&gt;)&lt;/h4&gt;
+&lt;h4 id=&#34;透明代理-https-blog-stackpath-com-transparent-proxy&#34;&gt;透明代理  (&lt;a href=&#34;https://blog.stackpath.com/transparent-proxy/&#34;&gt;https://blog.stackpath.com/transparent-proxy/&lt;/a&gt;)&lt;/h4&gt;
 
-&lt;p&gt;For example a HTTP request with a destination address of &lt;code&gt;10.0.0.1&lt;/code&gt;, and a destination port of &lt;code&gt;80&lt;/code&gt; can be redirected to &lt;code&gt;127.0.0.1&lt;/code&gt; at port &lt;code&gt;8000&lt;/code&gt;. To make this work, you need (with Linux) to add the &lt;code&gt;transparent&lt;/code&gt; listen option to Kong proxy, &lt;code&gt;proxy_listen=8000 transparent&lt;/code&gt;. This allows Kong to see the original destination for the request (&lt;code&gt;10.0.0.1:80&lt;/code&gt;) even when Kong didn’t actually listen to it directly. With this information, Kong can route the request correctly. The &lt;code&gt;transparent&lt;/code&gt; listen option should only be used with Linux. macOS/BSDs allow transparent proxying without &lt;code&gt;transparent&lt;/code&gt; listen option. With Linux you may also need to start Kong as a &lt;code&gt;root&lt;/code&gt; user or set the needed capabilities for the executable.&lt;/p&gt;
+&lt;p&gt;例如一个HTTP请求目的地址&lt;code&gt;10.0.0.1&lt;/code&gt;端口&lt;code&gt;80&lt;/code&gt;需要能跳转到&lt;code&gt;127.0.0.1&lt;/code&gt;端口为&lt;code&gt;8000&lt;/code&gt;。要实现这样的网络，您需要（对于Linux）将&lt;code&gt;transparent&lt;/code&gt;侦听选项添加到Kong代理&lt;code&gt;proxy_listen=8000 transparent&lt;/code&gt;。这使Kong可以看到请求（&lt;code&gt;10.0.0.1:80&lt;/code&gt;）的原始目的地，即使Kong并未实际直接收听它。有了这些信息，Kong可以正确地路由请求。在&lt;code&gt;transparent&lt;/code&gt;听取选项只能在Linux中使用。macOS / BSD允许没有&lt;code&gt;transparent&lt;/code&gt;侦听选项的透明代理。使用Linux，您可能还需要以&lt;code&gt;root&lt;/code&gt;用户身份启动Kong 或为可执行文件设置所需的功能。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/image-20200728094209364.png#mid&#34; alt=&#34;Transparent Proxy&#34; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;control-kong-through-systemd&#34;&gt;Control Kong through systemd&lt;/h3&gt;
+&lt;h3 id=&#34;通过systemd管理kong&#34;&gt;通过systemd管理Kong&lt;/h3&gt;
 
-&lt;h5 id=&#34;customize-kong-s-nginx-instance-including-files-via-the-injected-nginx-directives-https-docs-konghq-com-2-1-x-systemd-customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives&#34;&gt;Customize Kong’s Nginx instance including files via the injected Nginx directives  (&lt;a href=&#34;https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives&#34;&gt;https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives&lt;/a&gt;)&lt;/h5&gt;
+&lt;h5 id=&#34;start-kong&#34;&gt;Start Kong&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl start kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h5 id=&#34;stop-kong&#34;&gt;Stop Kong&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl stop kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h5 id=&#34;随系统一起启动&#34;&gt;随系统一起启动&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;enable&lt;/span&gt; kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h5 id=&#34;关闭随系统启动&#34;&gt;关闭随系统启动&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl disable kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h5 id=&#34;restart-kong&#34;&gt;Restart Kong&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl restart kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h5 id=&#34;查看kong状态&#34;&gt;查看Kong状态&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl status kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h5 id=&#34;通过包含的nginx指令的文件来自定义kong的nginx实例-https-docs-konghq-com-2-1-x-systemd-customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives&#34;&gt;通过包含的Nginx指令的文件来自定义Kong的Nginx实例  (&lt;a href=&#34;https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives&#34;&gt;https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives&lt;/a&gt;)&lt;/h5&gt;
 
-&lt;h3 id=&#34;plugins-execution-order&#34;&gt;Plugins execution order&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;在&lt;code&gt;/etc/systemd/system/kong.service&lt;/code&gt;文件中定义&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;Environment=KONG_NGINX_HTTP_INCLUDE=/path/to/your/my-server.kong.conf&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 
-&lt;p&gt;The current order of execution for the bundled plugins is:&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;在&lt;code&gt;/etc/kong/kong.config&lt;/code&gt;中定义&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-properties&#34; data-lang=&#34;properties&#34;&gt;nginx_http_include=/path/to/your/my-server.kong.config&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;插件的执行顺序&#34;&gt;插件的执行顺序&lt;/h3&gt;
+
+&lt;p&gt;内置插件的顺序为:&lt;/p&gt;
 
 &lt;table&gt;
 &lt;thead&gt;
@@ -815,20 +844,20 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;h3 id=&#34;importment-settings&#34;&gt;Importment Settings&lt;/h3&gt;
+&lt;h3 id=&#34;重要的配置&#34;&gt;重要的配置&lt;/h3&gt;
 
-&lt;h4 id=&#34;upstreams-1&#34;&gt;Upstreams&lt;/h4&gt;
+&lt;h4 id=&#34;upstreams&#34;&gt;Upstreams&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;healthchecks.active.healthy.interval&lt;/code&gt; default and set to &lt;code&gt;0&lt;/code&gt; that active probes for &lt;code&gt;healthy targets&lt;/code&gt; should not be performed.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;healthchecks.active.unhealthy.interval&lt;/code&gt; default and set to  &lt;code&gt;0&lt;/code&gt; that active probes for &lt;code&gt;unhealthy targets&lt;/code&gt; should not be performed.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;healthchecks.active.healthy.interval&lt;/code&gt; 默认和设置为 &lt;code&gt;0&lt;/code&gt;时， 不会进行健康目标的探测。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;healthchecks.active.unhealthy.interval&lt;/code&gt; 默认和设置为 &lt;code&gt;0&lt;/code&gt;时， 不会进行不健康目标的探测。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&#34;kong-config&#34;&gt;kong.config&lt;/h4&gt;
+&lt;h4 id=&#34;kong-config-todo&#34;&gt;kong.config[TODO]&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;healthchecks.active.healthy.interval&lt;/code&gt; cannot set &lt;code&gt;0&lt;/code&gt; that active probes for healthy targets should not be performed.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;healthchecks.active.unhealthy.interval&lt;/code&gt; cannot set to  &lt;code&gt;0&lt;/code&gt; that active probes for unhealthy targets should not be performed.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;healthchecks.active.healthy.interval&lt;/code&gt; 不能设置为 &lt;code&gt;0&lt;/code&gt;，设置为&lt;code&gt;0&lt;/code&gt;将不会进行健康目标的探测。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;healthchecks.active.unhealthy.interval&lt;/code&gt; 不能设置为 &lt;code&gt;0&lt;/code&gt;，设置为&lt;code&gt;0&lt;/code&gt;将不会进行不健康目标的探测。&lt;/li&gt;
 &lt;/ul&gt;
 </description>
      </item>
@@ -1374,6 +1403,15 @@ $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets &lt;span st
 &lt;li&gt;Passive health checks (circuit breakers)&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;p&gt;Passive health checks, also known as circuit breakers, are checks performed based on the requests being proxied by Kong (HTTP/HTTPS/TCP), with no additional traffic being generated. When a target becomes unresponsive, the passive health checker will detect that and mark the target as unhealthy. The ring-balancer will start skipping this target, so no more traffic will be routed to it.&lt;/p&gt;
+
+&lt;p&gt;Once the problem with a target is solved and it is ready to receive traffic again, the Kong administrator can manually inform the health checker that the target should be enabled again, via an Admin API endpoint:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;  $ curl -i -X POST http://localhost:8001/upstreams/my_upstream/targets/10.1.2.3:1234/healthy
+  HTTP/1.1 &lt;span style=&#34;color:#bd93f9&#34;&gt;204&lt;/span&gt; No Content&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This command will broadcast a cluster-wide message so that the “healthy” status is propagated to the whole &lt;a href=&#34;https://docs.konghq.com/2.1.x/clustering&#34;&gt;Kong cluster&lt;/a&gt;. This will cause Kong nodes to reset the health counters of the health checkers running in all workers of the Kong node, allowing the ring-balancer to route traffic to the target again.&lt;/p&gt;
+
+&lt;p&gt;Passive health checks have the advantage of not producing extra traffic, but they are unable to automatically mark a target as healthy again: the “circuit is broken”, and the target needs to be re-enabled again by the system administrator.&lt;/p&gt;
+
 &lt;h3 id=&#34;clustering-reference-https-docs-konghq-com-2-1-x-clustering&#34;&gt;Clustering Reference  (&lt;a href=&#34;https://docs.konghq.com/2.1.x/clustering/&#34;&gt;https://docs.konghq.com/2.1.x/clustering/&lt;/a&gt;)&lt;/h3&gt;
 
 &lt;p&gt;A Kong cluster allows you to scale the system horizontally by adding more machines to handle more incoming requests. They will all share the same configuration since they point to the same database. Kong nodes pointing to the &lt;strong&gt;same datastore&lt;/strong&gt; will be part of the same Kong cluster.&lt;/p&gt;
@@ -1445,6 +1483,20 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 
 &lt;h3 id=&#34;control-kong-through-systemd&#34;&gt;Control Kong through systemd&lt;/h3&gt;
 
+&lt;h5 id=&#34;start-kong&#34;&gt;Start Kong&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl start kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h5 id=&#34;stop-kong&#34;&gt;Stop Kong&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl stop kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h5 id=&#34;start-kong-automatically-at-system-boot&#34;&gt;Start Kong automatically at system boot&lt;/h5&gt;
+
+&lt;p&gt;To enable Kong to automatically start at system boot:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;enable&lt;/span&gt; kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To disable Kong from automatically starting at system boot:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl disable kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h5 id=&#34;restart-kong&#34;&gt;Restart Kong&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl restart kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h5 id=&#34;query-kong-status&#34;&gt;Query Kong status&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ sudo systemctl status kong&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h5 id=&#34;customize-kong-s-nginx-instance-including-files-via-the-injected-nginx-directives-https-docs-konghq-com-2-1-x-systemd-customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives&#34;&gt;Customize Kong’s Nginx instance including files via the injected Nginx directives  (&lt;a href=&#34;https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives&#34;&gt;https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives&lt;/a&gt;)&lt;/h5&gt;
 
 &lt;h3 id=&#34;plugins-execution-order&#34;&gt;Plugins execution order&lt;/h3&gt;
@@ -1636,7 +1688,7 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 &lt;li&gt;&lt;code&gt;healthchecks.active.unhealthy.interval&lt;/code&gt; default and set to  &lt;code&gt;0&lt;/code&gt; that active probes for &lt;code&gt;unhealthy targets&lt;/code&gt; should not be performed.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&#34;kong-config&#34;&gt;kong.config&lt;/h4&gt;
+&lt;h4 id=&#34;kong-config-todo&#34;&gt;kong.config[TODO]&lt;/h4&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;healthchecks.active.healthy.interval&lt;/code&gt; cannot set &lt;code&gt;0&lt;/code&gt; that active probes for healthy targets should not be performed.&lt;/li&gt;

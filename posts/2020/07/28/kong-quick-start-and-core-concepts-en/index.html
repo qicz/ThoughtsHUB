@@ -147,7 +147,7 @@
     </span>
     
     &nbsp; | &nbsp; 
-    <span class="fa fa-plane"><em> 20 minutes read</em> </span>
+    <span class="fa fa-plane"><em> 21 minutes read</em> </span>
 </aside>
 
 
@@ -688,6 +688,15 @@ $ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style
 <li>Passive health checks (circuit breakers)</li>
 </ul>
 
+<p>Passive health checks, also known as circuit breakers, are checks performed based on the requests being proxied by Kong (HTTP/HTTPS/TCP), with no additional traffic being generated. When a target becomes unresponsive, the passive health checker will detect that and mark the target as unhealthy. The ring-balancer will start skipping this target, so no more traffic will be routed to it.</p>
+
+<p>Once the problem with a target is solved and it is ready to receive traffic again, the Kong administrator can manually inform the health checker that the target should be enabled again, via an Admin API endpoint:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  $ curl -i -X POST http://localhost:8001/upstreams/my_upstream/targets/10.1.2.3:1234/healthy
+  HTTP/1.1 <span style="color:#bd93f9">204</span> No Content</code></pre></div>
+<p>This command will broadcast a cluster-wide message so that the “healthy” status is propagated to the whole <a href="https://docs.konghq.com/2.1.x/clustering">Kong cluster</a>. This will cause Kong nodes to reset the health counters of the health checkers running in all workers of the Kong node, allowing the ring-balancer to route traffic to the target again.</p>
+
+<p>Passive health checks have the advantage of not producing extra traffic, but they are unable to automatically mark a target as healthy again: the “circuit is broken”, and the target needs to be re-enabled again by the system administrator.</p>
+
 <h3 id="clustering-reference-https-docs-konghq-com-2-1-x-clustering">Clustering Reference  (<a href="https://docs.konghq.com/2.1.x/clustering/">https://docs.konghq.com/2.1.x/clustering/</a>)</h3>
 
 <p>A Kong cluster allows you to scale the system horizontally by adding more machines to handle more incoming requests. They will all share the same configuration since they point to the same database. Kong nodes pointing to the <strong>same datastore</strong> will be part of the same Kong cluster.</p>
@@ -759,6 +768,20 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 
 <h3 id="control-kong-through-systemd">Control Kong through systemd</h3>
 
+<h5 id="start-kong">Start Kong</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl start kong</code></pre></div>
+<h5 id="stop-kong">Stop Kong</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl stop kong</code></pre></div>
+<h5 id="start-kong-automatically-at-system-boot">Start Kong automatically at system boot</h5>
+
+<p>To enable Kong to automatically start at system boot:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl <span style="color:#8be9fd;font-style:italic">enable</span> kong</code></pre></div>
+<p>To disable Kong from automatically starting at system boot:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl disable kong</code></pre></div>
+<h5 id="restart-kong">Restart Kong</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl restart kong</code></pre></div>
+<h5 id="query-kong-status">Query Kong status</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl status kong</code></pre></div>
 <h5 id="customize-kong-s-nginx-instance-including-files-via-the-injected-nginx-directives-https-docs-konghq-com-2-1-x-systemd-customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives">Customize Kong’s Nginx instance including files via the injected Nginx directives  (<a href="https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives">https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives</a>)</h5>
 
 <h3 id="plugins-execution-order">Plugins execution order</h3>
@@ -950,7 +973,7 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 <li><code>healthchecks.active.unhealthy.interval</code> default and set to  <code>0</code> that active probes for <code>unhealthy targets</code> should not be performed.</li>
 </ul>
 
-<h4 id="kong-config">kong.config</h4>
+<h4 id="kong-config-todo">kong.config[TODO]</h4>
 
 <ul>
 <li><code>healthchecks.active.healthy.interval</code> cannot set <code>0</code> that active probes for healthy targets should not be performed.</li>
