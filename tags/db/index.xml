@@ -854,13 +854,6 @@ Kong将缓存数据库实体（命中和未命中）的时间（以秒为单位�
 &lt;li&gt;&lt;code&gt;healthchecks.active.healthy.interval&lt;/code&gt; 默认和设置为 &lt;code&gt;0&lt;/code&gt;时， 不会进行健康目标的探测。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;healthchecks.active.unhealthy.interval&lt;/code&gt; 默认和设置为 &lt;code&gt;0&lt;/code&gt;时， 不会进行不健康目标的探测。&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;h4 id=&#34;kong-config-todo&#34;&gt;kong.config[TODO]&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;healthchecks.active.healthy.interval&lt;/code&gt; 不能设置为 &lt;code&gt;0&lt;/code&gt;，设置为&lt;code&gt;0&lt;/code&gt;将不会进行健康目标的探测。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;healthchecks.active.unhealthy.interval&lt;/code&gt; 不能设置为 &lt;code&gt;0&lt;/code&gt;，设置为&lt;code&gt;0&lt;/code&gt;将不会进行不健康目标的探测。&lt;/li&gt;
-&lt;/ul&gt;
 </description>
      </item>
    
@@ -1692,13 +1685,6 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;healthchecks.active.healthy.interval&lt;/code&gt; default and set to &lt;code&gt;0&lt;/code&gt; that active probes for &lt;code&gt;healthy targets&lt;/code&gt; should not be performed.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;healthchecks.active.unhealthy.interval&lt;/code&gt; default and set to  &lt;code&gt;0&lt;/code&gt; that active probes for &lt;code&gt;unhealthy targets&lt;/code&gt; should not be performed.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;kong-config-todo&#34;&gt;kong.config[TODO]&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;healthchecks.active.healthy.interval&lt;/code&gt; cannot set &lt;code&gt;0&lt;/code&gt; that active probes for healthy targets should not be performed.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;healthchecks.active.unhealthy.interval&lt;/code&gt; cannot set to  &lt;code&gt;0&lt;/code&gt; that active probes for unhealthy targets should not be performed.&lt;/li&gt;
 &lt;/ul&gt;
 </description>
      </item>
