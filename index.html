@@ -11,7 +11,7 @@
   <title>Qicz&#39;s Thoughts HUB | The creative and technical writing. &lt;br&gt; Do more, challenge more, know more, be more.</title>
   <meta property="og:title" content="Qicz&#39;s Thoughts HUB | ">
   <meta property="og:type" content="website">
-  <meta name="Keywords" content="Qicz,Jobsz,RD,technology,tech,learning,设计模式,分布式,架构设计,P6,P7,软件设计,数据库,大数据,MySQL,Zookeeper,MongoDB,redis,dubbo,ServiceMesh,SOFAMesh,Serverless,hugo,Java,Mybatis,Spring,Spring Boot,Spring Cloud,istio">
+  <meta name="Keywords" content="Qicz,Jobsz,RD,technology,tech,learning,设计模式,分布式,架构设计,P6,P7,软件设计,数据库,大数据,MySQL,Zookeeper,MongoDB,redis,dubbo,ServiceMesh,SOFAMesh,Serverless,hugo,Java,Mybatis,Spring,Spring Boot,Spring Cloud,istio,Kong,Gateway">
   <meta name="description" content="Qicz&#39;s creative tand technical writing.">
   <meta property="og:url" content="https://izcqi.com/">
   
@@ -23,7 +23,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://izcqi.com/" />
 
-<meta property="og:updated_time" content="2020-08-01T17:58:16+08:00" />
+<meta property="og:updated_time" content="2020-08-04T20:55:24+08:00" />
 
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Qicz&#39;s Thoughts HUB"/>
@@ -112,6 +112,48 @@
         <ul>
           
           <li class="first">
+            <h1><a href="https://izcqi.com/posts/2020/08/04/kong-routes-headers-params-expected-a-map/" title="Kong Routes Headers Params Expected a Map">Kong Routes Headers Params Expected a Map</a></h1>
+            <aside>
+    
+    <span class="fa fa-calendar"><time class="post-date" datetime="2020-08-04T20:55:24&#43;08:00"> Aug 4, 2020 20:55</time>
+    &nbsp; | &nbsp; 
+    
+    <span class="fa fa-book">
+        <em class="categories">
+            
+                
+                <a href="https://izcqi.com/categories/gateway">gateway</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+     
+    <span class="fa fa-tags">
+        <em class="tags">
+            
+                
+                <a href="https://izcqi.com/tags/kong">#kong</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+    <span class="fa fa-plane"><em> One minute read</em> </span>
+</aside>
+
+
+            <p>Kong 提供了对Routes的扩展header方式，但是对于这个参数的设置，不小心就会出错了。作者在使用过程中也遇到了问题。
+使用postman设置routes的headers参数时，出现如下错误：
+ schema violation (headers: expected a map)
+ 大写的！！！
+找了很多资料，几乎都是使用raw的方式，而kong并不支持对routes的headers设置使用raw的方式。
+找了很多资料，想起空对数组的处理方式，比如paths，可以像如下这样赋值：
+paths[] = &#39;/foo&#39; paths[] = &#39;/example&#39; 于是，用同样的方式尝试，居然成功了，😝</p>
+            
+          </li>
+          
+          <li >
             <h1><a href="https://izcqi.com/posts/2020/08/01/the-first-long-distance-race-of-2020/" title="记2020年第一长跑">记2020年第一长跑</a></h1>
             <aside>
     

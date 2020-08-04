@@ -8,10 +8,37 @@
    <managingEditor>zcq#zhucongqi.cn (Qicz)</managingEditor>
    <webMaster>zcq#zhucongqi.cn (Qicz)</webMaster>
    <copyright>&amp;copy; 2012 - </copyright>
-   <lastBuildDate>Sat, 01 Aug 2020 17:58:16 +0800</lastBuildDate>
+   <lastBuildDate>Tue, 04 Aug 2020 20:55:24 +0800</lastBuildDate>
    
        <atom:link href="https://izcqi.com/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Kong Routes Headers Params Expected a Map</title>
+       <link>https://izcqi.com/posts/2020/08/04/kong-routes-headers-params-expected-a-map/</link>
+       <pubDate>Tue, 04 Aug 2020 20:55:24 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2020/08/04/kong-routes-headers-params-expected-a-map/</guid>
+       <description>&lt;p&gt;Kong 提供了对Routes的扩展header方式，但是对于这个参数的设置，不小心就会出错了。作者在使用过程中也遇到了问题。&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code&gt;postman&lt;/code&gt;设置&lt;code&gt;routes&lt;/code&gt;的&lt;code&gt;headers&lt;/code&gt;参数时，出现如下错误：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;schema violation (headers: expected a map)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;大写的！！！&lt;/p&gt;
+
+&lt;p&gt;找了很多资料，几乎都是使用raw的方式，而kong并不支持对routes的headers设置使用raw的方式。&lt;/p&gt;
+
+&lt;p&gt;找了很多资料，想起空对数组的处理方式，比如&lt;code&gt;paths&lt;/code&gt;，可以像如下这样赋值：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;paths[] = &amp;#39;/foo&amp;#39;
+paths[] = &amp;#39;/example&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;于是，用同样的方式尝试，居然成功了，😝&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/kong-routes-headers.jpg&#34; alt=&#34;kong-routes-headers&#34; /&gt;&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>记2020年第一长跑</title>
