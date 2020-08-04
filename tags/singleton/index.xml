@@ -14,6 +14,68 @@
    
    
      <item>
+       <title>Kong Lessons Content</title>
+       <link>https://izcqi.com/posts/2020/08/04/kong-lessons-content/</link>
+       <pubDate>Tue, 04 Aug 2020 22:02:29 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2020/08/04/kong-lessons-content/</guid>
+       <description>
+
+&lt;blockquote&gt;
+&lt;p&gt;在从研究Kong第5天左右的时候，就有了整理一个系列Kong教程的想法。在这里先把这个系列大大概先整理出来。&lt;/p&gt;
+
+&lt;p&gt;说明：作者Qicz将有可能随时的修订本文的内容，为了保证内容的一致性和严谨性，作者Qicz保留本文的所有权利。未经作者Qicz本人同意，不得转载或者以其他方式使用这些内容。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;入门&#34;&gt;入门&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;api gateway概述&lt;/li&gt;
+&lt;li&gt;kong安装&lt;/li&gt;
+&lt;li&gt;kong.conf&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;配置&#34;&gt;配置&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;kong.conf高级配置&lt;/li&gt;
+&lt;li&gt;nginx配置&lt;/li&gt;
+&lt;li&gt;proxy配置&lt;/li&gt;
+&lt;li&gt;ssl配置&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;adminapi&#34;&gt;AdminApi&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Services&lt;/li&gt;
+&lt;li&gt;Routes&lt;/li&gt;
+&lt;li&gt;Consumer&lt;/li&gt;
+&lt;li&gt;Plugins&lt;/li&gt;
+&lt;li&gt;Upstreams&lt;/li&gt;
+&lt;li&gt;Targets&lt;/li&gt;
+&lt;li&gt;Tags&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;常用插件&#34;&gt;常用插件&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;key-auth&lt;/li&gt;
+&lt;li&gt;rate-limiting&lt;/li&gt;
+&lt;li&gt;proxy-cache&lt;/li&gt;
+&lt;li&gt;oauth2.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;高级&#34;&gt;高级&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自定义Plugin&lt;/li&gt;
+&lt;li&gt;plugin调式&lt;/li&gt;
+&lt;li&gt;cluster&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+     </item>
+   
+     <item>
        <title>Kong Routes Headers Params Expected a Map</title>
        <link>https://izcqi.com/posts/2020/08/04/kong-routes-headers-params-expected-a-map/</link>
        <pubDate>Tue, 04 Aug 2020 20:55:24 +0800</pubDate>
