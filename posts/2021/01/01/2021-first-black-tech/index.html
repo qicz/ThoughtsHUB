@@ -1,0 +1,657 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta name="generator" content="Hugo 0.59.1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>2021第一篇黑科技 | Qicz&#39;s Thoughts HUB</title>
+  <meta property="og:title" content="2021第一篇黑科技 - Qicz&#39;s Thoughts HUB">
+  <meta property="og:type" content="article">
+      
+  <meta property="article:published_time" content="2021-01-01T20:22:11&#43;08:00">
+      
+      
+  <meta property="article:modified_time" content="2021-01-01T20:22:11&#43;08:00">
+      
+  <meta name="Keywords" content="Qicz,Jobsz,RD,technology,tech,learning,设计模式,分布式,架构设计,P6,P7,软件设计,数据库,大数据,MySQL,Zookeeper,MongoDB,redis,dubbo,ServiceMesh,SOFAMesh,Serverless,hugo,Java,Mybatis,Spring,Spring Boot,Spring Cloud,istio,Kong,Gateway">
+  <meta name="description" content="2021第一篇黑科技">
+      
+  <meta name="author" content="Qicz">
+  <meta property="og:url" content="https://izcqi.com/posts/2021/01/01/2021-first-black-tech/">
+  
+  <link rel="shortcut icon" href="https://izcqi.com/favicon.png" />
+  
+
+  <meta property="og:title" content="2021第一篇黑科技" />
+<meta property="og:description" content="背景 最近有个项目接入了es，对于检索关键字需要扩大范围检索结果的匹配范围，所以考虑将检索关键字进行分词处理，再交给es处理。(当然这里可以用es的highlevelclient的analyze接口，此处不考虑这种情况)。于是研究ik-analysis。于是有了ik-springboot-demo这个项目，接下来都将以此项目展开描述。
+解决的问题  在SpringBoot项目中直接且简单便捷的使用ik。
+ 收获  得到了SpringBoot项目中使用ik的两种方式； 得到了SpringBoot项目的资源管理的更优方案。  重头戏 从ik的项目情况开始 （以下摘录自ik的github README）
+ IKAnalyzer.cfg.xml can be located at {conf}/analysis-ik/config/IKAnalyzer.cfg.xml or {plugins}/elasticsearch-analysis-ik-*/config/IKAnalyzer.cfg.xml
+ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,中华人民,中华,华人,人民共和国,人民,人,民,共和国,共和,和,国国,国歌”，会穷尽各种可能的组合，适合 Term Query；
+ik_smart: 会做最粗粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,国歌”，适合 Phrase 查询。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://izcqi.com/posts/2021/01/01/2021-first-black-tech/" />
+<meta property="article:published_time" content="2021-01-01T20:22:11+08:00" />
+<meta property="article:modified_time" content="2021-01-01T20:22:11+08:00" />
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="2021第一篇黑科技"/>
+<meta name="twitter:description" content="背景 最近有个项目接入了es，对于检索关键字需要扩大范围检索结果的匹配范围，所以考虑将检索关键字进行分词处理，再交给es处理。(当然这里可以用es的highlevelclient的analyze接口，此处不考虑这种情况)。于是研究ik-analysis。于是有了ik-springboot-demo这个项目，接下来都将以此项目展开描述。
+解决的问题  在SpringBoot项目中直接且简单便捷的使用ik。
+ 收获  得到了SpringBoot项目中使用ik的两种方式； 得到了SpringBoot项目的资源管理的更优方案。  重头戏 从ik的项目情况开始 （以下摘录自ik的github README）
+ IKAnalyzer.cfg.xml can be located at {conf}/analysis-ik/config/IKAnalyzer.cfg.xml or {plugins}/elasticsearch-analysis-ik-*/config/IKAnalyzer.cfg.xml
+ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,中华人民,中华,华人,人民共和国,人民,人,民,共和国,共和,和,国国,国歌”，会穷尽各种可能的组合，适合 Term Query；
+ik_smart: 会做最粗粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,国歌”，适合 Phrase 查询。"/>
+<meta name="generator" content="Hugo 0.59.1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
+  <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="https://izcqi.com/css/styles.css" />
+  
+  <link href="https://izcqi.com/css/monokai.min.css" rel="stylesheet">
+  </head>
+
+<body>
+  <div id="container">
+    <header-container>
+    <header>
+      <h1>
+        <a href="https://izcqi.com/">Qicz&rsquo;s Thoughts HUB</a>
+      </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="mailto:zcq#zhucongqi.cn" title="Email me" target="_blank">
+               <i class="fas fa-envelope fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://github.com/qicz" title="GitHub" target="_blank">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://weibo.com/powerlinux" title="Weibo" target="_blank">
+               <i class="fab fa-weibo fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://douban.com/people/podevor" title="Douban" target="_blank">
+               <i class="fab fa-spotify fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>The creative and technical writing. <br> Do more, challenge more, know more, be more.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://izcqi.com/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/categories/">
+                <i class="fa-li fa  fa-lg"></i><span>Categories</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/tags/">
+                <i class="fa-li fa  fa-lg"></i><span>Tags</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+  </header-container>
+    <main>
+
+
+
+
+<article>
+
+    <h1>2021第一篇黑科技</h1>
+
+    
+        <aside>
+    
+    <span class="fa fa-calendar"><time class="post-date" datetime="2021-01-01T20:22:11&#43;08:00"> Jan 1, 2021 20:22</time>
+    &nbsp; | &nbsp; 
+    
+    <span class="fa fa-book">
+        <em class="categories">
+            
+                
+                <a href="https://izcqi.com/categories/spring">spring</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+     
+    <span class="fa fa-tags">
+        <em class="tags">
+            
+                
+                <a href="https://izcqi.com/tags/spring">#spring</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+    <span class="fa fa-plane"><em> 5 minutes read</em> </span>
+</aside>
+
+
+    
+
+    
+
+<h2 id="背景">背景</h2>
+
+<p>最近有个项目接入了es，对于检索关键字需要扩大范围检索结果的匹配范围，所以考虑将检索关键字进行分词处理，再交给es处理。(当然这里可以用es的highlevelclient的analyze接口，此处不考虑这种情况)。于是研究<a href="https://github.com/medcl/elasticsearch-analysis-ik">ik-analysis</a>。于是有了<a href="https://github.com/qicz/ik-springboot-demo">ik-springboot-demo</a>这个项目，接下来都将以此项目展开描述。</p>
+
+<h2 id="解决的问题">解决的问题</h2>
+
+<blockquote>
+<p>在SpringBoot项目中直接且简单便捷的使用ik。</p>
+</blockquote>
+
+<h2 id="收获">收获</h2>
+
+<ul>
+<li>得到了SpringBoot项目中使用ik的两种方式；</li>
+<li>得到了SpringBoot项目的资源管理的更优方案。</li>
+</ul>
+
+<h2 id="重头戏">重头戏</h2>
+
+<h3 id="从ik的项目情况开始">从ik的项目情况开始</h3>
+
+<p>（以下摘录自ik的github README）</p>
+
+<blockquote>
+<p>IKAnalyzer.cfg.xml can be located at {conf}/analysis-ik/config/IKAnalyzer.cfg.xml or {plugins}/elasticsearch-analysis-ik-*/config/IKAnalyzer.cfg.xml</p>
+
+<p>ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,中华人民,中华,华人,人民共和国,人民,人,民,共和国,共和,和,国国,国歌”，会穷尽各种可能的组合，适合 Term Query；</p>
+
+<p>ik_smart: 会做最粗粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,国歌”，适合 Phrase 查询。</p>
+</blockquote>
+
+<h3 id="项目引入ik">项目引入ik</h3>
+
+<blockquote>
+<p>ik似乎已经很久没有将更新push到maven Central了，致使maven Central上的不是最新的。需要最新的版本，需要自行编译。这个是很入门的操作了（下载源码，本地<code>mvn install</code>），就不展开了。此处以最新的7.4.0展开。</p>
+</blockquote>
+
+<h4 id="项目结构">项目结构</h4>
+
+<blockquote>
+<p>注意：mvn-cp及jar-cp方式的项目，在ik-demo-config目录有差异，以下示例是jar-cp的结构。具体从ik-springboot-demo的mvn-cp和jar-cp两个分支查看。（master分支使用的jar-cp方式）</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">.
+├── README.md
+├── ik-demo-config
+│   ├── resources
+│   │   └── config
+│   │       ├── analysis-ik
+│   │       │   ├── IKAnalyzer.cfg.xml
+│   │       │   ├── extra_main.dic
+│   │       │   ├── extra_single_word.dic
+│   │       │   ├── extra_single_word_full.dic
+│   │       │   ├── extra_single_word_low_freq.dic
+│   │       │   ├── extra_stopword.dic
+│   │       │   ├── main.dic
+│   │       │   ├── preposition.dic
+│   │       │   ├── quantifier.dic
+│   │       │   ├── stopword.dic
+│   │       │   ├── suffix.dic
+│   │       │   └── surname.dic
+│   │       ├── application-dev.yml
+│   │       ├── application-prod.yml
+│   │       ├── application-test.yml
+│   │       └── application.yml
+│   └── target
+│       └── generated-sources
+│           └── annotations
+├── ik-demo-parent.iml
+├── ik-demo-server
+│   ├── pom.xml
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── abc
+│       │   │       ├── App.java
+│       │   │       └── kit
+│       │   │           └── Kit.java
+│       │   └── resources
+│       └── <span style="color:#8be9fd;font-style:italic">test</span>
+│           └── java
+├── ik-demo-services
+│   ├── pom.xml
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── abc
+│       │   │       ├── config
+│       │   │       │   └── IKConfig.java
+│       │   │       └── services
+│       │   │           └── IkJob.java
+│       │   └── resources
+│       └── <span style="color:#8be9fd;font-style:italic">test</span>
+│           └── java
+└── pom.xml</code></pre></div>
+<h4 id="详细配置如下">详细配置如下</h4>
+
+<blockquote>
+<p>以下配置仅为了描述过程，部分内容实际使用中需要调整，如版本的管理。</p>
+</blockquote>
+
+<ul>
+<li><p>parent pom.xml</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;properties&gt;</span>
+  <span style="color:#ff79c6">&lt;elasticsearch.version&gt;</span>7.4.0<span style="color:#ff79c6">&lt;/elasticsearch.version&gt;</span>
+  <span style="color:#ff79c6">&lt;java.version&gt;</span>1.8<span style="color:#ff79c6">&lt;/java.version&gt;</span>
+  <span style="color:#ff79c6">&lt;maven.compiler.target&gt;</span>1.8<span style="color:#ff79c6">&lt;/maven.compiler.target&gt;</span>
+<span style="color:#ff79c6">&lt;/properties&gt;</span>
+  
+<span style="color:#ff79c6">&lt;dependencyManagement&gt;</span>
+  <span style="color:#ff79c6">&lt;dependencies&gt;</span>
+      <span style="color:#ff79c6">&lt;dependency&gt;</span>
+          <span style="color:#ff79c6">&lt;groupId&gt;</span>org.elasticsearch<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+          <span style="color:#ff79c6">&lt;artifactId&gt;</span>elasticsearch-analysis-ik<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+          <span style="color:#ff79c6">&lt;version&gt;</span>${elasticsearch.version}<span style="color:#ff79c6">&lt;/version&gt;</span>
+      <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+      <span style="color:#ff79c6">&lt;dependency&gt;</span>
+          <span style="color:#ff79c6">&lt;groupId&gt;</span>org.example<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+          <span style="color:#ff79c6">&lt;artifactId&gt;</span>ik-demo-services<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+          <span style="color:#ff79c6">&lt;version&gt;</span>${project.version}<span style="color:#ff79c6">&lt;/version&gt;</span>
+      <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+  <span style="color:#ff79c6">&lt;/dependencies&gt;</span>
+<span style="color:#ff79c6">&lt;/dependencyManagement&gt;</span></code></pre></div></li>
+
+<li><p>services module pom.xml</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;dependencies&gt;</span>
+  <span style="color:#ff79c6">&lt;dependency&gt;</span>
+      <span style="color:#ff79c6">&lt;groupId&gt;</span>org.elasticsearch<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+      <span style="color:#ff79c6">&lt;artifactId&gt;</span>elasticsearch-analysis-ik<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+  <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+  <span style="color:#ff79c6">&lt;dependency&gt;</span>
+      <span style="color:#ff79c6">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+      <span style="color:#ff79c6">&lt;artifactId&gt;</span>spring-boot-starter-web<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+      <span style="color:#ff79c6">&lt;version&gt;</span>2.4.1<span style="color:#ff79c6">&lt;/version&gt;</span>
+  <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+<span style="color:#ff79c6">&lt;/dependencies&gt;</span></code></pre></div></li>
+
+<li><p>示例部分源码（<a href="https://github.com/qicz/ik-springboot-demo/blob/master/ik-demo-services/src/main/java/abc/services/IkJob.java">点击这里是完整内容</a>)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">static String text <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;123abc;；.。。。\\l a吃 IK Analyzer是一个结合词典分词和文法分词的中文分词开源工具包。它使用了全新的正向迭代最细粒度切分算法。&#34;</span>;
+  
+...
+  
+IKSegmenter segmenter <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> IKSegmenter(<span style="color:#ff79c6">new</span> StringReader(text), configuration);
+Lexeme next;
+System.<span style="color:#50fa7b">out</span>.<span style="color:#50fa7b">print</span>(<span style="color:#f1fa8c">&#34;非智能分词结果(ik_max_world)：&#34;</span>);
+StringJoiner stringJoiner <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringJoiner(<span style="color:#f1fa8c">&#34;,&#34;</span>);
+<span style="color:#ff79c6">while</span>((next<span style="color:#ff79c6">=</span>segmenter.<span style="color:#50fa7b">next</span>())<span style="color:#ff79c6">!=</span><span style="color:#ff79c6">null</span>){
+  String lexemeText <span style="color:#ff79c6">=</span> next.<span style="color:#50fa7b">getLexemeText</span>();
+  stringJoiner.<span style="color:#50fa7b">add</span>(lexemeText);
+}
+System.<span style="color:#50fa7b">out</span>.<span style="color:#50fa7b">println</span>(stringJoiner);
+System.<span style="color:#50fa7b">out</span>.<span style="color:#50fa7b">println</span>();
+System.<span style="color:#50fa7b">out</span>.<span style="color:#50fa7b">println</span>(<span style="color:#f1fa8c">&#34;----------------------------分割线------------------------------&#34;</span>);
+  
+<span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">configuration</span>.<span style="color:#50fa7b">setUseSmart</span>(<span style="color:#ff79c6">true</span>);
+IKSegmenter smartSegmenter <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> IKSegmenter(<span style="color:#ff79c6">new</span> StringReader(text), configuration);
+System.<span style="color:#50fa7b">out</span>.<span style="color:#50fa7b">print</span>(<span style="color:#f1fa8c">&#34;智能分词结果(ik_smart)：&#34;</span>);
+stringJoiner <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringJoiner(<span style="color:#f1fa8c">&#34;,&#34;</span>);
+<span style="color:#ff79c6">while</span>((next<span style="color:#ff79c6">=</span>smartSegmenter.<span style="color:#50fa7b">next</span>())<span style="color:#ff79c6">!=</span><span style="color:#ff79c6">null</span>) {
+  String lexemeText <span style="color:#ff79c6">=</span> next.<span style="color:#50fa7b">getLexemeText</span>();
+  stringJoiner.<span style="color:#50fa7b">add</span>(lexemeText);
+}
+System.<span style="color:#50fa7b">out</span>.<span style="color:#50fa7b">println</span>(stringJoiner);</code></pre></div></li>
+</ul>
+
+<h4 id="遇到的问题">遇到的问题</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ERROR Dictionary ik-analyzer: Main Dict not found java.io.FileNotFoundException: /Users/Qicz/.m2/repository/org/elasticsearch/elasticsearch-analysis-ik/7.4.0/config/main.dic <span style="color:#ff79c6">(</span>No such file or directory<span style="color:#ff79c6">)</span>
+
+ERROR Dictionary ik-analyzer: Surname not found java.io.FileNotFoundException: /Users/Qicz/.m2/repository/org/elasticsearch/elasticsearch-analysis-ik/7.4.0/config/surname.dic <span style="color:#ff79c6">(</span>No such file or directory<span style="color:#ff79c6">)</span></code></pre></div>
+<p>找不到对应的ik的词典。其他博友的解决方案是改写ik。我的考虑是先分析源码，再确定是不是要改写。从ik源码<code>Configuration</code> 入手（不得不说ik的源码写的有点随意，风格各种都有&hellip;)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public Configuration(Environment env,Settings settings) {
+  <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">environment</span> <span style="color:#ff79c6">=</span> env;
+  <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">settings</span><span style="color:#ff79c6">=</span>settings;
+
+  <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">useSmart</span> <span style="color:#ff79c6">=</span> settings.<span style="color:#50fa7b">get</span>(<span style="color:#f1fa8c">&#34;use_smart&#34;</span>, <span style="color:#f1fa8c">&#34;false&#34;</span>).<span style="color:#50fa7b">equals</span>(<span style="color:#f1fa8c">&#34;true&#34;</span>);
+  <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">enableLowercase</span> <span style="color:#ff79c6">=</span> settings.<span style="color:#50fa7b">get</span>(<span style="color:#f1fa8c">&#34;enable_lowercase&#34;</span>, <span style="color:#f1fa8c">&#34;true&#34;</span>).<span style="color:#50fa7b">equals</span>(<span style="color:#f1fa8c">&#34;true&#34;</span>);
+  <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">enableRemoteDict</span> <span style="color:#ff79c6">=</span> settings.<span style="color:#50fa7b">get</span>(<span style="color:#f1fa8c">&#34;enable_remote_dict&#34;</span>, <span style="color:#f1fa8c">&#34;true&#34;</span>).<span style="color:#50fa7b">equals</span>(<span style="color:#f1fa8c">&#34;true&#34;</span>);
+
+  Dictionary.<span style="color:#50fa7b">initial</span>(<span style="color:#ff79c6">this</span>);
+}</code></pre></div>
+<p>可以看到，构造<code>Configuration</code>需要<code>Environment</code>及<code>Settings</code>。从字面理解，这二者应该就是与<code>config</code>有关的。先看看<code>Environment</code>的构造</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public Environment(Settings settings, Path configPath) {
+        <span style="color:#ff79c6">this</span>(settings, configPath, PathUtils.<span style="color:#50fa7b">get</span>(System.<span style="color:#50fa7b">getProperty</span>(<span style="color:#f1fa8c">&#34;java.io.tmpdir&#34;</span>), <span style="color:#ff79c6">new</span> String[0]));
+    }
+
+    Environment(Settings settings, Path configPath, Path tmpPath) {
+        <span style="color:#ff79c6">if</span> (PATH_HOME_SETTING.<span style="color:#50fa7b">exists</span>(settings)) {
+            Path homeFile <span style="color:#ff79c6">=</span> PathUtils.<span style="color:#50fa7b">get</span>((String)PATH_HOME_SETTING.<span style="color:#50fa7b">get</span>(settings), <span style="color:#ff79c6">new</span> String[0]).<span style="color:#50fa7b">toAbsolutePath</span>().<span style="color:#50fa7b">normalize</span>();
+            <span style="color:#ff79c6">if</span> (configPath <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">null</span>) {
+                <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">configFile</span> <span style="color:#ff79c6">=</span> configPath.<span style="color:#50fa7b">toAbsolutePath</span>().<span style="color:#50fa7b">normalize</span>();
+            } <span style="color:#ff79c6">else</span> {
+                <span style="color:#ff79c6">this</span>.<span style="color:#50fa7b">configFile</span> <span style="color:#ff79c6">=</span> homeFile.<span style="color:#50fa7b">resolve</span>(<span style="color:#f1fa8c">&#34;config&#34;</span>);
+            }
+<span style="color:#ff79c6">//</span>... 其他已省略          </code></pre></div>
+<p>可以看到，<code>configFile</code>源自<code>Settings</code>或<code>configPath</code>，于是有了下面的构造一个<code>Configuration</code>的代码</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Environment environment <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Environment(Settings.<span style="color:#50fa7b">builder</span>().<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;path.home&#34;</span>, path).<span style="color:#50fa7b">build</span>(), <span style="color:#ff79c6">null</span>);
+Settings settings <span style="color:#ff79c6">=</span> Settings.<span style="color:#50fa7b">builder</span>()
+        .<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;use_smart&#34;</span>, <span style="color:#ff79c6">false</span>)
+        .<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;enable_lowercase&#34;</span>, <span style="color:#ff79c6">false</span>)
+        .<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;enable_remote_dict&#34;</span>, <span style="color:#ff79c6">false</span>)
+        .<span style="color:#50fa7b">build</span>();
+<span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> Configuration(environment, settings).<span style="color:#50fa7b">setUseSmart</span>(<span style="color:#ff79c6">false</span>);</code></pre></div>
+<p>那么接下里的问题就是如果确定这<code>path</code>了。从ik的源码来看，借助了<code>Path</code>需要一个绝对路径，提供一个<code>流</code>(<code>InputStream</code>)都不好使，如果真那样就只能改源码了，不是我的初衷，于是从构造<code>path</code>继续深入。</p>
+
+<p>一个绝对的<code>path</code>需要考虑在ide（idea）中调试及实际应用运行（jar方式）两个情况，而为了便于应用的部署，配置也必然会与jar一起打包，那么这种情况下就无法拿到绝对的<code>path</code>了（？！）。所以需要把相关的配置拿到jar之外，那么这就自然想到了使用maven的插件，将关联的配置文件拷贝到jar可以读取的地方。</p>
+
+<h4 id="使用maven插件">使用maven插件</h4>
+
+<blockquote>
+<p>ik-springboot-demo的mvn-cp分支有完整源码</p>
+</blockquote>
+
+<p>使用maven插件，有了<code>ik-demo-server</code>的下面pom.xml配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;build&gt;</span>
+    <span style="color:#ff79c6">&lt;plugins&gt;</span>
+        <span style="color:#ff79c6">&lt;plugin&gt;</span>
+            <span style="color:#ff79c6">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+            <span style="color:#ff79c6">&lt;artifactId&gt;</span>spring-boot-maven-plugin<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+            <span style="color:#ff79c6">&lt;configuration&gt;</span>
+                <span style="color:#ff79c6">&lt;mainClass&gt;</span>abc.App<span style="color:#ff79c6">&lt;/mainClass&gt;</span>
+            <span style="color:#ff79c6">&lt;/configuration&gt;</span>
+            <span style="color:#ff79c6">&lt;executions&gt;</span>
+                <span style="color:#ff79c6">&lt;execution&gt;</span>
+                    <span style="color:#ff79c6">&lt;goals&gt;</span>
+                        <span style="color:#ff79c6">&lt;goal&gt;</span>repackage<span style="color:#ff79c6">&lt;/goal&gt;</span>
+                    <span style="color:#ff79c6">&lt;/goals&gt;</span>
+                <span style="color:#ff79c6">&lt;/execution&gt;</span>
+            <span style="color:#ff79c6">&lt;/executions&gt;</span>
+        <span style="color:#ff79c6">&lt;/plugin&gt;</span>
+        <span style="color:#ff79c6">&lt;plugin&gt;</span> <span style="color:#6272a4">&lt;!-- 拷贝ik配置到${project.build.directory}/config下 --&gt;</span>
+            <span style="color:#ff79c6">&lt;artifactId&gt;</span>maven-resources-plugin<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+            <span style="color:#ff79c6">&lt;version&gt;</span>2.6<span style="color:#ff79c6">&lt;/version&gt;</span>
+            <span style="color:#ff79c6">&lt;executions&gt;</span>
+                <span style="color:#ff79c6">&lt;execution&gt;</span>
+                    <span style="color:#ff79c6">&lt;id&gt;</span>copy-resources<span style="color:#ff79c6">&lt;/id&gt;</span> <span style="color:#6272a4">&lt;!-- here the phase you need --&gt;</span>
+                    <span style="color:#ff79c6">&lt;phase&gt;</span>validate<span style="color:#ff79c6">&lt;/phase&gt;</span>
+                    <span style="color:#ff79c6">&lt;goals&gt;</span>
+                        <span style="color:#ff79c6">&lt;goal&gt;</span>copy-resources<span style="color:#ff79c6">&lt;/goal&gt;</span>
+                    <span style="color:#ff79c6">&lt;/goals&gt;</span>
+                    <span style="color:#ff79c6">&lt;configuration&gt;</span> <span style="color:#6272a4">&lt;!--copyTo的目录--&gt;</span>
+                        <span style="color:#ff79c6">&lt;outputDirectory&gt;</span>${project.build.directory}/config<span style="color:#ff79c6">&lt;/outputDirectory&gt;</span>
+                        <span style="color:#ff79c6">&lt;resources&gt;</span>
+                            <span style="color:#ff79c6">&lt;resource&gt;</span> <span style="color:#6272a4">&lt;!--被copy的目录--&gt;</span>
+                                <span style="color:#ff79c6">&lt;directory&gt;</span>../ik-demo-config/config<span style="color:#ff79c6">&lt;/directory&gt;</span>
+                                <span style="color:#ff79c6">&lt;filtering&gt;</span>true<span style="color:#ff79c6">&lt;/filtering&gt;</span>
+                            <span style="color:#ff79c6">&lt;/resource&gt;</span>
+                        <span style="color:#ff79c6">&lt;/resources&gt;</span>
+                    <span style="color:#ff79c6">&lt;/configuration&gt;</span>
+                <span style="color:#ff79c6">&lt;/execution&gt;</span>
+            <span style="color:#ff79c6">&lt;/executions&gt;</span>
+        <span style="color:#ff79c6">&lt;/plugin&gt;</span>
+    <span style="color:#ff79c6">&lt;/plugins&gt;</span>
+    <span style="color:#ff79c6">&lt;resources&gt;</span> <span style="color:#6272a4">&lt;!-- 指定SpringBoot资源配置位置 --&gt;</span>
+        <span style="color:#ff79c6">&lt;resource&gt;</span>
+            <span style="color:#ff79c6">&lt;directory&gt;</span>../ik-demo-config/resources<span style="color:#ff79c6">&lt;/directory&gt;</span>
+        <span style="color:#ff79c6">&lt;/resource&gt;</span>
+        <span style="color:#ff79c6">&lt;resource&gt;</span>
+            <span style="color:#ff79c6">&lt;directory&gt;</span>src/main/resources<span style="color:#ff79c6">&lt;/directory&gt;</span>
+        <span style="color:#ff79c6">&lt;/resource&gt;</span>
+    <span style="color:#ff79c6">&lt;/resources&gt;</span>
+<span style="color:#ff79c6">&lt;/build&gt;</span></code></pre></div>
+<p>进行上面的配置之后，当进行<code>mvn clean package</code>时则会将<code>ik-demo-config/config</code>下面的内容配置拷贝到jar同级的<code>config</code>目录中，这样就可以了。那么对应的<code>path</code>也就知道了</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String path <span style="color:#ff79c6">=</span> System.<span style="color:#50fa7b">getProperty</span>(<span style="color:#f1fa8c">&#34;user.dir&#34;</span>)<span style="color:#6272a4">/* + &#34;/config&#34; */</span>;</code></pre></div>
+<blockquote>
+<p>因为ik做了config目录的配置处理，所以<code>+ &quot;/config&quot;</code>不必添加。也就是<code>String path = System.getProperty(&quot;user.dir&quot;);</code></p>
+</blockquote>
+
+<p>但在ide，如idea中，实时编译的class都在target下（并未进行<code>mvn clean package</code>操作），那么在target下就没有<code>config</code>目录，那么在ide里实时调试就有问题了，于是有了下面的兼容处理</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String path <span style="color:#ff79c6">=</span> System.<span style="color:#50fa7b">getProperty</span>(<span style="color:#f1fa8c">&#34;user.dir&#34;</span>);
+<span style="color:#6272a4">// 仅在idea中实时调试需要，与config所在的目录必须一致，此处为ik-demo-config
+</span><span style="color:#6272a4"></span>boolean inIdea <span style="color:#ff79c6">=</span> path.<span style="color:#50fa7b">endsWith</span>(<span style="color:#f1fa8c">&#34;ik-demo-parent&#34;</span>);
+<span style="color:#ff79c6">if</span> (inIdea) {
+    path <span style="color:#ff79c6">+=</span> <span style="color:#f1fa8c">&#34;/ik-demo-config&#34;</span>;
+}</code></pre></div>
+<p>有了上面的前提就得到了完整的<code>Configuration</code>构造(同时将其注入ioc，此处<code>inIdea</code>的处理与<code>jar-cp</code>有略微差异）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Bean
+public Configuration ikConfiguration() {
+    String path <span style="color:#ff79c6">=</span> System.<span style="color:#50fa7b">getProperty</span>(<span style="color:#f1fa8c">&#34;user.dir&#34;</span>);
+    <span style="color:#6272a4">// 仅在idea中实时调试需要，与config所在的目录必须一致，此处为ik-demo-config
+</span><span style="color:#6272a4"></span>    boolean inIdea <span style="color:#ff79c6">=</span> path.<span style="color:#50fa7b">endsWith</span>(<span style="color:#f1fa8c">&#34;ik-demo-parent&#34;</span>);
+    <span style="color:#ff79c6">if</span> (inIdea) {
+        path <span style="color:#ff79c6">+=</span> <span style="color:#f1fa8c">&#34;/ik-demo-config&#34;</span>;
+    }
+    Environment environment <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Environment(Settings.<span style="color:#50fa7b">builder</span>().<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;path.home&#34;</span>, path).<span style="color:#50fa7b">build</span>(), <span style="color:#ff79c6">null</span>);
+    Settings settings <span style="color:#ff79c6">=</span> Settings.<span style="color:#50fa7b">builder</span>()
+            .<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;use_smart&#34;</span>, <span style="color:#ff79c6">false</span>)
+            .<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;enable_lowercase&#34;</span>, <span style="color:#ff79c6">false</span>)
+            .<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;enable_remote_dict&#34;</span>, <span style="color:#ff79c6">false</span>)
+            .<span style="color:#50fa7b">build</span>();
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> Configuration(environment, settings).<span style="color:#50fa7b">setUseSmart</span>(<span style="color:#ff79c6">false</span>);
+}</code></pre></div>
+<p>经测试上面的配置可以实现分词。</p>
+
+<p>那么除了maven插件以外，是不是可以使用java来直接拷贝呢，会不会更便捷呢？于是有了<code>jar-cp</code>的方式</p>
+
+<h4 id="使用jar-cp方式-推荐">使用jar-cp方式（推荐）</h4>
+
+<blockquote>
+<p>ik-springboot-demo的jar-cp分支有完整源码</p>
+</blockquote>
+
+<p>使用<code>jar-cp</code>，实质就是<code>Java</code>源码进行相关资源拷贝的处理，于是有了下面的代码</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * Kit
+</span><span style="color:#6272a4"> *
+</span><span style="color:#6272a4"> * @author Qicz
+</span><span style="color:#6272a4"> */</span>
+public final class Kit {
+
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * 拷贝SpringBoot配置&amp;ik配置
+</span><span style="color:#6272a4">     * @param appClass spring boot 启动类
+</span><span style="color:#6272a4">     * @throws IOException io exception
+</span><span style="color:#6272a4">     */</span>
+    public static void copyConfigInJar(Class<span style="color:#ff79c6">&lt;?&gt;</span> appClass) throws IOException {
+        ApplicationHome applicationHome <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ApplicationHome(App.<span style="color:#50fa7b">class</span>);
+        File source <span style="color:#ff79c6">=</span> applicationHome.<span style="color:#50fa7b">getSource</span>();
+        <span style="color:#ff79c6">if</span> (source <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">null</span>) {
+            String absolutePath <span style="color:#ff79c6">=</span> source.<span style="color:#50fa7b">getAbsolutePath</span>();
+            boolean aJar <span style="color:#ff79c6">=</span> absolutePath.<span style="color:#50fa7b">endsWith</span>(<span style="color:#f1fa8c">&#34;jar&#34;</span>);
+            <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>aJar) {
+                <span style="color:#ff79c6">return</span>;
+            }
+
+            final String configPath <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;config/&#34;</span>;
+            File config <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> File(System.<span style="color:#50fa7b">getProperty</span>(<span style="color:#f1fa8c">&#34;user.dir&#34;</span>) <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;/&#34;</span> <span style="color:#ff79c6">+</span> configPath);
+            <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>config.<span style="color:#50fa7b">exists</span>()) {
+                <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>config.<span style="color:#50fa7b">mkdir</span>()) {
+                    <span style="color:#ff79c6">return</span>;
+                }
+                JarFile jarFile <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> JarFile(source);
+                <span style="color:#ff79c6">for</span> (Enumeration<span style="color:#ff79c6">&lt;?</span> extends ZipEntry<span style="color:#ff79c6">&gt;</span> entries <span style="color:#ff79c6">=</span> jarFile.<span style="color:#50fa7b">entries</span>(); entries.<span style="color:#50fa7b">hasMoreElements</span>(); ) {
+                    ZipEntry entry <span style="color:#ff79c6">=</span> entries.<span style="color:#50fa7b">nextElement</span>();
+                    String entryName <span style="color:#ff79c6">=</span> entry.<span style="color:#50fa7b">getName</span>();
+                    <span style="color:#6272a4">// 仅拷贝config目录
+</span><span style="color:#6272a4"></span>                    <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>entryName.<span style="color:#50fa7b">contains</span>(configPath)) {
+                        <span style="color:#ff79c6">continue</span>;
+                    }
+                    InputStream jarFileInputStream <span style="color:#ff79c6">=</span> jarFile.<span style="color:#50fa7b">getInputStream</span>(entry);
+                    String outPath <span style="color:#ff79c6">=</span> (entryName.<span style="color:#50fa7b">substring</span>(entryName.<span style="color:#50fa7b">indexOf</span>(configPath)));
+                    <span style="color:#6272a4">// 判断路径是否存在,不存在则创建文件路径
+</span><span style="color:#6272a4"></span>                    File currentFile <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> File(outPath.<span style="color:#50fa7b">substring</span>(0, outPath.<span style="color:#50fa7b">lastIndexOf</span>(<span style="color:#f1fa8c">&#39;/&#39;</span>)));
+                    <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>currentFile.<span style="color:#50fa7b">exists</span>() <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#ff79c6">!</span>currentFile.<span style="color:#50fa7b">mkdirs</span>()) {
+                        <span style="color:#ff79c6">continue</span>;
+                    }
+                    <span style="color:#6272a4">// 判断文件全路径是否为文件夹,如果是上面已经上传,不需要解压
+</span><span style="color:#6272a4"></span>                    <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">new</span> File(outPath).<span style="color:#50fa7b">isDirectory</span>()) {
+                        <span style="color:#ff79c6">continue</span>;
+                    }
+
+                    FileOutputStream out <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> FileOutputStream(outPath);
+                    byte[] bytes <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">byte</span>[1024];
+                    int len;
+                    <span style="color:#ff79c6">while</span> ((len <span style="color:#ff79c6">=</span> jarFileInputStream.<span style="color:#50fa7b">read</span>(bytes)) <span style="color:#ff79c6">&gt;</span> 0) {
+                        out.<span style="color:#50fa7b">write</span>(bytes, 0, len);
+                    }
+                    jarFileInputStream.<span style="color:#50fa7b">close</span>();
+                    out.<span style="color:#50fa7b">close</span>();
+                }
+            }
+        }
+    }
+}</code></pre></div>
+<p>借用了<code>SpringBoot</code>的<code>ApplicationHome</code>来获取当前应用的启动类所在的路径<code>absolutePath</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ApplicationHome applicationHome <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ApplicationHome(App.<span style="color:#50fa7b">class</span>);
+File source <span style="color:#ff79c6">=</span> applicationHome.<span style="color:#50fa7b">getSource</span>();
+<span style="color:#ff79c6">if</span> (source <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">null</span>) {
+    String absolutePath <span style="color:#ff79c6">=</span> source.<span style="color:#50fa7b">getAbsolutePath</span>();
+ ...</code></pre></div>
+<p>通过检查这个<code>absolutePath</code>是否以<code>jar</code>结尾确定是否以<code>jar</code>方式运行。如果是则开始进行<code>jar</code>文件的解析，将其资源拷贝到<code>jar</code>的同级目录的<code>config</code>中。</p>
+
+<p>采用<code>jar-cp</code>对应的ik-demo-server的pom.xml配置也有相应的差异，无需maven插件的处理。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;build&gt;</span>
+    <span style="color:#ff79c6">&lt;plugins&gt;</span>
+        <span style="color:#ff79c6">&lt;plugin&gt;</span>
+            <span style="color:#ff79c6">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+            <span style="color:#ff79c6">&lt;artifactId&gt;</span>spring-boot-maven-plugin<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+            <span style="color:#ff79c6">&lt;configuration&gt;</span>
+                <span style="color:#ff79c6">&lt;mainClass&gt;</span>abc.App<span style="color:#ff79c6">&lt;/mainClass&gt;</span>
+            <span style="color:#ff79c6">&lt;/configuration&gt;</span>
+            <span style="color:#ff79c6">&lt;executions&gt;</span>
+                <span style="color:#ff79c6">&lt;execution&gt;</span>
+                    <span style="color:#ff79c6">&lt;goals&gt;</span>
+                        <span style="color:#ff79c6">&lt;goal&gt;</span>repackage<span style="color:#ff79c6">&lt;/goal&gt;</span>
+                    <span style="color:#ff79c6">&lt;/goals&gt;</span>
+                <span style="color:#ff79c6">&lt;/execution&gt;</span>
+            <span style="color:#ff79c6">&lt;/executions&gt;</span>
+        <span style="color:#ff79c6">&lt;/plugin&gt;</span>
+    <span style="color:#ff79c6">&lt;/plugins&gt;</span>
+    <span style="color:#ff79c6">&lt;resources&gt;</span>
+        <span style="color:#ff79c6">&lt;resource&gt;</span>
+            <span style="color:#ff79c6">&lt;directory&gt;</span>../ik-demo-config/resources<span style="color:#ff79c6">&lt;/directory&gt;</span>
+        <span style="color:#ff79c6">&lt;/resource&gt;</span>
+        <span style="color:#ff79c6">&lt;resource&gt;</span>
+            <span style="color:#ff79c6">&lt;directory&gt;</span>src/main/resources<span style="color:#ff79c6">&lt;/directory&gt;</span>
+        <span style="color:#ff79c6">&lt;/resource&gt;</span>
+    <span style="color:#ff79c6">&lt;/resources&gt;</span>
+<span style="color:#ff79c6">&lt;/build&gt;</span></code></pre></div>
+<p>对应的<code>Configuration</code>构造，差异在于<code>inIdea</code>中的路径配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Bean
+public Configuration ikConfiguration() {
+    String path <span style="color:#ff79c6">=</span> System.<span style="color:#50fa7b">getProperty</span>(<span style="color:#f1fa8c">&#34;user.dir&#34;</span>);
+    <span style="color:#6272a4">// 仅在idea中实时调试需要，与config所在的目录必须一致，此处为ik-demo-config/resources
+</span><span style="color:#6272a4"></span>    boolean inIdea <span style="color:#ff79c6">=</span> path.<span style="color:#50fa7b">endsWith</span>(<span style="color:#f1fa8c">&#34;ik-demo-parent&#34;</span>);
+    <span style="color:#ff79c6">if</span> (inIdea) {
+        path <span style="color:#ff79c6">+=</span> <span style="color:#f1fa8c">&#34;/ik-demo-config/resources&#34;</span>;
+    }
+    Environment environment <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Environment(Settings.<span style="color:#50fa7b">builder</span>().<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;path.home&#34;</span>, path).<span style="color:#50fa7b">build</span>(), <span style="color:#ff79c6">null</span>);
+    Settings settings <span style="color:#ff79c6">=</span> Settings.<span style="color:#50fa7b">builder</span>()
+            .<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;use_smart&#34;</span>, <span style="color:#ff79c6">false</span>)
+            .<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;enable_lowercase&#34;</span>, <span style="color:#ff79c6">false</span>)
+            .<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;enable_remote_dict&#34;</span>, <span style="color:#ff79c6">false</span>)
+            .<span style="color:#50fa7b">build</span>();
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> Configuration(environment, settings).<span style="color:#50fa7b">setUseSmart</span>(<span style="color:#ff79c6">false</span>);
+}</code></pre></div>
+<blockquote>
+<p>需要注意的是，在jar-cp方式中，对应的ik-demo-config中的资源的存放方式是将SpringBoot的配置及ik的配置都放到ik-demo-config/resources，同时是将ik-demo-config/resources配置成了项目的resources，也就是package时会将resources下面的SpringBoot配置及ik配置都打包进jar，这也是必然的，这是进行jar-cp的基础，使用Java拷贝问题，总得有东西给你拷吧。😝，这样的好处就是：</p>
+
+<blockquote>
+<p>你拿到一个jar，自己java -jar 对应的配置都有了。不需要在手动拷贝，也可以避免不必要的失误 。</p>
+</blockquote>
+</blockquote>
+
+<h2 id="总结">总结</h2>
+
+<ul>
+<li><p>使用了两种方式来处理ik的配置，<code>mvn-cp</code>及<code>jar-cp</code>，推荐<code>jar-cp</code>，便于应用的部署；</p></li>
+
+<li><p>两种方式中对应的<code>ik-demo-config</code>的目录结构有差异</p>
+
+<ul>
+<li><code>mvn-cp</code>，<code>mvn package</code>仅拷贝ik的配置（当然可以配置将SpringBoot配置也拷贝，但是实际项目部署，当你是用<code>jar</code>直接部署时，SpringBoot的配置和ik配置都是没有的，所以没有什么区别）</li>
+</ul>
+
+<blockquote>
+<p>ik-demo-config/resources/application.yml
+ik-demo-config/config/analysis-ik</p>
+</blockquote>
+
+<ul>
+<li><code>jar-cp</code>，<code>mvn package</code>时会将SpringBoot配置及ik配置都打包进jar，为后面jar运行执行<code>jar-cp</code>提供基础</li>
+</ul>
+
+<blockquote>
+<p>ik-demo-config/config/analysis-ik&hellip;application.yml</p>
+</blockquote></li>
+
+<li><p><code>jar-cp</code>，推荐方式。便于在项目现场的部署，不需要手动拷贝相关的配置，避免不不要的手误。</p></li>
+</ul>
+
+
+</article>
+
+<script src="https://utteranc.es/client.js"
+    repo="qicz/ThoughtsHUB"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://izcqi.com/posts/2020/09/21/yi-wang-wu-qian-notes/"><i class="fa fa-chevron-circle-left"></i> 《一往无前》读后感</a>
+        </li>
+        
+        
+    </ul>
+</section>
+    
+
+
+
+
+</main>
+    <footer>
+        <h6>&copy; 2012 - 2021 Qicz 
+            - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
+            | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
+            | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>
+    </footer>
+</div>
+
+<script async src="https://izcqi.com/js/busuanzi.pure.mini.js"></script>
+
+</body>
+
+</html>
+
