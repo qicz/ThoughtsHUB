@@ -383,6 +383,22 @@ public final class Kit {
         }
     }
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;需要注意的时，这个处理必须要在SpringBoot启用起来之前进行，即就是&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * App
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; *
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * @author Qicz
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; */&lt;/span&gt;
+@SpringBootApplication
+public class App {
+
+    public static void main(String[] args) throws IOException {
+        Kit.&lt;span style=&#34;color:#50fa7b&#34;&gt;copyConfigInJar&lt;/span&gt;(App.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;);
+        SpringApplication.&lt;span style=&#34;color:#50fa7b&#34;&gt;run&lt;/span&gt;(App.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, args);
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;借用了&lt;code&gt;SpringBoot&lt;/code&gt;的&lt;code&gt;ApplicationHome&lt;/code&gt;来获取当前应用的启动类所在的路径&lt;code&gt;absolutePath&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;ApplicationHome applicationHome &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; ApplicationHome(App.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;);
 File source &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; applicationHome.&lt;span style=&#34;color:#50fa7b&#34;&gt;getSource&lt;/span&gt;();

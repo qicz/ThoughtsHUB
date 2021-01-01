@@ -527,6 +527,22 @@ public final class Kit {
         }
     }
 }</code></pre></div>
+<blockquote>
+<p>需要注意的时，这个处理必须要在SpringBoot启用起来之前进行，即就是</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * App
+</span><span style="color:#6272a4"> *
+</span><span style="color:#6272a4"> * @author Qicz
+</span><span style="color:#6272a4"> */</span>
+@SpringBootApplication
+public class App {
+
+    public static void main(String[] args) throws IOException {
+        Kit.<span style="color:#50fa7b">copyConfigInJar</span>(App.<span style="color:#50fa7b">class</span>);
+        SpringApplication.<span style="color:#50fa7b">run</span>(App.<span style="color:#50fa7b">class</span>, args);
+    }
+}</code></pre></div>
 <p>借用了<code>SpringBoot</code>的<code>ApplicationHome</code>来获取当前应用的启动类所在的路径<code>absolutePath</code></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ApplicationHome applicationHome <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ApplicationHome(App.<span style="color:#50fa7b">class</span>);
 File source <span style="color:#ff79c6">=</span> applicationHome.<span style="color:#50fa7b">getSource</span>();
