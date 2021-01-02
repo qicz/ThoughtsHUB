@@ -23,11 +23,6 @@
   </url>
   
   <url>
-    <loc>https://izcqi.com/posts/2021/01/01/2021-first-black-tech/</loc>
-    <lastmod>2021-01-01T20:22:11+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://izcqi.com/</loc>
     <lastmod>2021-01-01T20:22:11+08:00</lastmod>
   </url>
@@ -39,6 +34,11 @@
   
   <url>
     <loc>https://izcqi.com/tags/spring/</loc>
+    <lastmod>2021-01-01T20:22:11+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://izcqi.com/posts/2021/01/01/using-ik-in-springboot/</loc>
     <lastmod>2021-01-01T20:22:11+08:00</lastmod>
   </url>
   
@@ -93,12 +93,12 @@
   </url>
   
   <url>
-    <loc>https://izcqi.com/categories/lifestyle/</loc>
+    <loc>https://izcqi.com/tags/lifestyle/</loc>
     <lastmod>2020-08-01T17:58:16+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://izcqi.com/tags/lifestyle/</loc>
+    <loc>https://izcqi.com/categories/lifestyle/</loc>
     <lastmod>2020-08-01T17:58:16+08:00</lastmod>
   </url>
   
@@ -228,12 +228,12 @@
   </url>
   
   <url>
-    <loc>https://izcqi.com/categories/distributed-system/</loc>
+    <loc>https://izcqi.com/tags/distributed-system/</loc>
     <lastmod>2019-12-02T21:17:29+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://izcqi.com/tags/distributed-system/</loc>
+    <loc>https://izcqi.com/categories/distributed-system/</loc>
     <lastmod>2019-12-02T21:17:29+08:00</lastmod>
   </url>
   
