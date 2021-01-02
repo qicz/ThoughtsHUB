@@ -600,13 +600,34 @@ public Configuration ikConfiguration() {
     <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> Configuration(environment, settings).<span style="color:#50fa7b">setUseSmart</span>(<span style="color:#ff79c6">false</span>);
 }</code></pre></div>
 <blockquote>
-<p>需要注意的是，在jar-cp方式中，对应的ik-demo-config中的资源的存放方式是将SpringBoot的配置及ik的配置都放到ik-demo-config/resources，同时是将ik-demo-config/resources配置成了项目的resources，也就是package时会将resources下面的SpringBoot配置及ik配置都打包进jar，这也是必然的，这是进行<code>jar-cp</code>的基础，使用Java拷贝问题，总得有东西给你拷吧。😝，这样的好处就是：</p>
+<p>需要注意的是，在<code>jar-cp</code>方式中，对应的ik-demo-config中的资源的存放方式是将SpringBoot的配置及ik的配置都放到<code>ik-demo-config/resources/config</code>中，并将ik-demo-config/resources使用maven配置成了项目的<code>resources</code>，也就是<code>package</code>时会将<code>resources</code>下面的SpringBoot配置及ik配置都打包进<code>jar</code>，这也是必然的，这是进行<code>jar-cp</code>的基础，使用Java拷贝问题，总得有东西给你拷吧。😝，这样的好处就是：</p>
 
 <blockquote>
-<p>你拿到一个jar，直接<code>java -jar xx.jar</code> （项目部署）对应的配置都有了。不需要在手动拷贝，也可以避免不必要的失误 。</p>
+<p>你拿到一个<code>jar</code>，直接<code>java -jar xx.jar</code> （项目部署）对应的配置（SpringBoot各类profile及ik的配置）都有了。不需要在手动拷贝，也可以避免不必要的失误 。</p>
 </blockquote>
 </blockquote>
 
+<p>目录结构是这样的</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">├── ik-demo-config
+│   ├── resources
+│   │   └── config
+│   │       ├── analysis-ik
+│   │       │   ├── IKAnalyzer.cfg.xml
+│   │       │   ├── extra_main.dic
+│   │       │   ├── extra_single_word.dic
+│   │       │   ├── extra_single_word_full.dic
+│   │       │   ├── extra_single_word_low_freq.dic
+│   │       │   ├── extra_stopword.dic
+│   │       │   ├── main.dic
+│   │       │   ├── preposition.dic
+│   │       │   ├── quantifier.dic
+│   │       │   ├── stopword.dic
+│   │       │   ├── suffix.dic
+│   │       │   └── surname.dic
+│   │       ├── application-dev.yml
+│   │       ├── application-prod.yml
+│   │       ├── application-test.yml
+│   │       └── application.yml</code></pre></div>
 <h2 id="总结">总结</h2>
 
 <ul>
@@ -619,19 +640,19 @@ public Configuration ikConfiguration() {
 </ul>
 
 <blockquote>
-<p>ik-demo-config/resources/application.yml
-ik-demo-config/config/analysis-ik</p>
+<p><code>ik-demo-config/resources</code>/application.yml
+<code>ik-demo-config/config</code>/analysis-ik</p>
 </blockquote>
 
 <ul>
-<li><code>jar-cp</code>，<code>mvn package</code>时会将SpringBoot配置及ik配置都打包进jar，为后面jar运行执行<code>jar-cp</code>提供基础</li>
+<li><code>jar-cp</code>，<code>mvn package</code>时会将SpringBoot配置及ik配置(它们都在<code>ik-demo-config/resources/config</code>下)都打包进jar，为后面jar运行执行<code>jar-cp</code>提供基础</li>
 </ul>
 
 <blockquote>
-<p>ik-demo-config/config/analysis-ik&hellip;application.yml</p>
+<p><code>ik-demo-config/resources/config</code>/analysis-ik&hellip;application.yml</p>
 </blockquote></li>
 
-<li><p><code>jar-cp</code>，推荐方式。便于在项目现场的部署，不需要手动拷贝相关的配置，避免不不要的手误。</p></li>
+<li><p><code>jar-cp</code>【推荐方式】便于在项目现场的部署，不需要手动拷贝相关的配置，避免不不要的手误；且与SpringBoot的配置机制一致，只需针对性微调关联配置即可（SpringBoot本就会优先扫描当前应用jar所在目录下的config目录的application-{profile}.yml/prperties)<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-files">参考这里</a>。</p></li>
 </ul>
 
 
