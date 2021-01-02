@@ -636,8 +636,10 @@ public Configuration ikConfiguration() {
 <li><p>两种方式中对应的<code>ik-demo-config</code>的目录结构有差异</p>
 
 <ul>
-<li><code>mvn-cp</code>，<code>mvn package</code>仅拷贝ik的配置（当然可以配置将SpringBoot配置也拷贝，但是实际项目部署，当你是用<code>jar</code>直接部署时，SpringBoot的配置和ik配置都是没有的，所以没有什么区别）</li>
+<li><code>mvn-cp</code>方式</li>
 </ul>
+
+<p><code>mvn-cp</code>，<code>mvn package</code>仅拷贝ik的配置（当然可以配置将SpringBoot配置也拷贝，但是实际项目部署，当你是用<code>jar</code>直接部署时，SpringBoot的配置和ik配置都是没有的，所以没有什么区别）</p>
 
 <blockquote>
 <p><code>ik-demo-config/resources</code>/application.yml</p>
@@ -646,8 +648,10 @@ public Configuration ikConfiguration() {
 </blockquote>
 
 <ul>
-<li><code>jar-cp</code>，<code>mvn package</code>时会将SpringBoot配置及ik配置(它们都在<code>ik-demo-config/resources/config</code>下)都打包进jar，为后面jar运行执行<code>jar-cp</code>提供基础</li>
+<li><code>jar-cp</code>方式</li>
 </ul>
+
+<p><code>jar-cp</code>，<code>mvn package</code>时会将SpringBoot配置及ik配置(它们都在<code>ik-demo-config/resources/config</code>下)都打包进jar，为后面jar运行执行<code>jar-cp</code>提供基础`</p>
 
 <blockquote>
 <p><code>ik-demo-config/resources/config</code>/analysis-ik&hellip;application.yml</p>

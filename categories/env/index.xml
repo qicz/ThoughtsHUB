@@ -492,8 +492,10 @@ public Configuration ikConfiguration() {
 &lt;li&gt;&lt;p&gt;两种方式中对应的&lt;code&gt;ik-demo-config&lt;/code&gt;的目录结构有差异&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;mvn-cp&lt;/code&gt;，&lt;code&gt;mvn package&lt;/code&gt;仅拷贝ik的配置（当然可以配置将SpringBoot配置也拷贝，但是实际项目部署，当你是用&lt;code&gt;jar&lt;/code&gt;直接部署时，SpringBoot的配置和ik配置都是没有的，所以没有什么区别）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mvn-cp&lt;/code&gt;方式&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;mvn-cp&lt;/code&gt;，&lt;code&gt;mvn package&lt;/code&gt;仅拷贝ik的配置（当然可以配置将SpringBoot配置也拷贝，但是实际项目部署，当你是用&lt;code&gt;jar&lt;/code&gt;直接部署时，SpringBoot的配置和ik配置都是没有的，所以没有什么区别）&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;ik-demo-config/resources&lt;/code&gt;/application.yml&lt;/p&gt;
@@ -502,8 +504,10 @@ public Configuration ikConfiguration() {
 &lt;/blockquote&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;jar-cp&lt;/code&gt;，&lt;code&gt;mvn package&lt;/code&gt;时会将SpringBoot配置及ik配置(它们都在&lt;code&gt;ik-demo-config/resources/config&lt;/code&gt;下)都打包进jar，为后面jar运行执行&lt;code&gt;jar-cp&lt;/code&gt;提供基础&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;jar-cp&lt;/code&gt;方式&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;jar-cp&lt;/code&gt;，&lt;code&gt;mvn package&lt;/code&gt;时会将SpringBoot配置及ik配置(它们都在&lt;code&gt;ik-demo-config/resources/config&lt;/code&gt;下)都打包进jar，为后面jar运行执行&lt;code&gt;jar-cp&lt;/code&gt;提供基础`&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;ik-demo-config/resources/config&lt;/code&gt;/analysis-ik&amp;hellip;application.yml&lt;/p&gt;
