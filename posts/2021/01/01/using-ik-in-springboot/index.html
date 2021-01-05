@@ -157,7 +157,7 @@ ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民�
     </span>
     
     &nbsp; | &nbsp; 
-    <span class="fa fa-plane"><em> 5 minutes read</em> </span>
+    <span class="fa fa-plane"><em> 6 minutes read</em> </span>
 </aside>
 
 
@@ -438,8 +438,7 @@ Settings settings <span style="color:#ff79c6">=</span> Settings.<span style="col
 <p>但在IDE(如idea)中，实时编译的class都在target下（并未进行<code>mvn clean package</code>操作），那么在target下就没有<code>config</code>目录，那么在ide里实时调试就有问题了，于是有了下面的兼容处理</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String path <span style="color:#ff79c6">=</span> System.<span style="color:#50fa7b">getProperty</span>(<span style="color:#f1fa8c">&#34;user.dir&#34;</span>);
 <span style="color:#6272a4">// 仅在idea中实时调试需要，与config所在的目录必须一致，此处为ik-demo-config
-</span><span style="color:#6272a4"></span>boolean inIdea <span style="color:#ff79c6">=</span> path.<span style="color:#50fa7b">endsWith</span>(<span style="color:#f1fa8c">&#34;ik-demo-parent&#34;</span>);
-<span style="color:#ff79c6">if</span> (inIdea) {
+</span><span style="color:#6272a4"></span><span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>Kit.<span style="color:#50fa7b">runningAsJar</span>) {
     path <span style="color:#ff79c6">+=</span> <span style="color:#f1fa8c">&#34;/ik-demo-config&#34;</span>;
 }</code></pre></div>
 <p>有了上面的前提就得到了完整的<code>Configuration</code>构造(同时将其注入ioc，此处<code>inIdea</code>的处理与<code>jar-cp</code>有略微差异）</p>
@@ -447,8 +446,7 @@ Settings settings <span style="color:#ff79c6">=</span> Settings.<span style="col
 public Configuration ikConfiguration() {
     String path <span style="color:#ff79c6">=</span> System.<span style="color:#50fa7b">getProperty</span>(<span style="color:#f1fa8c">&#34;user.dir&#34;</span>);
     <span style="color:#6272a4">// 仅在idea中实时调试需要，与config所在的目录必须一致，此处为ik-demo-config
-</span><span style="color:#6272a4"></span>    boolean inIdea <span style="color:#ff79c6">=</span> path.<span style="color:#50fa7b">endsWith</span>(<span style="color:#f1fa8c">&#34;ik-demo-parent&#34;</span>);
-    <span style="color:#ff79c6">if</span> (inIdea) {
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>Kit.<span style="color:#50fa7b">runningAsJar</span>) {
         path <span style="color:#ff79c6">+=</span> <span style="color:#f1fa8c">&#34;/ik-demo-config&#34;</span>;
     }
     Environment environment <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Environment(Settings.<span style="color:#50fa7b">builder</span>().<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;path.home&#34;</span>, path).<span style="color:#50fa7b">build</span>(), <span style="color:#ff79c6">null</span>);
@@ -469,7 +467,7 @@ public Configuration ikConfiguration() {
 <p>ik-springboot-demo的<code>jar-cp</code>分支有完整源码</p>
 </blockquote>
 
-<p>使用<code>jar-cp</code>，实质就是<code>Java</code>进行相关资源拷贝的逻辑处理，于是有了下面的代码</p>
+<p>使用<code>jar-cp</code>，实质就是<code>Java</code>进行相关资源拷贝的逻辑处理，于是有了下面的代码(拷贝<code>jar</code>中的<code>config</code>目录及其子目录、其他<code>properties</code>、<code>yaml</code>、<code>yml</code>、<code>xml</code>配置文件到当前<code>jar</code>所在的<code>config</code>目录中)</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">/**
 </span><span style="color:#6272a4"> * Kit
 </span><span style="color:#6272a4"> *
@@ -477,18 +475,20 @@ public Configuration ikConfiguration() {
 </span><span style="color:#6272a4"> */</span>
 public final class Kit {
 
+    public static boolean runningAsJar <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span>;
+
     <span style="color:#6272a4">/**
 </span><span style="color:#6272a4">     * 拷贝SpringBoot配置&amp;ik配置
 </span><span style="color:#6272a4">     * @param appClass spring boot 启动类
 </span><span style="color:#6272a4">     * @throws IOException io exception
 </span><span style="color:#6272a4">     */</span>
     public static void copyConfigInJar(Class<span style="color:#ff79c6">&lt;?&gt;</span> appClass) throws IOException {
-        ApplicationHome applicationHome <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ApplicationHome(App.<span style="color:#50fa7b">class</span>);
+        ApplicationHome applicationHome <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ApplicationHome(appClass);
         File source <span style="color:#ff79c6">=</span> applicationHome.<span style="color:#50fa7b">getSource</span>();
         <span style="color:#ff79c6">if</span> (source <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">null</span>) {
             String absolutePath <span style="color:#ff79c6">=</span> source.<span style="color:#50fa7b">getAbsolutePath</span>();
-            boolean aJar <span style="color:#ff79c6">=</span> absolutePath.<span style="color:#50fa7b">endsWith</span>(<span style="color:#f1fa8c">&#34;jar&#34;</span>);
-            <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>aJar) {
+            Kit.<span style="color:#50fa7b">runningAsJar</span> <span style="color:#ff79c6">=</span> absolutePath.<span style="color:#50fa7b">endsWith</span>(<span style="color:#f1fa8c">&#34;jar&#34;</span>);
+            <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>Kit.<span style="color:#50fa7b">runningAsJar</span>) {
                 <span style="color:#ff79c6">return</span>;
             }
 
@@ -499,17 +499,40 @@ public final class Kit {
                     <span style="color:#ff79c6">return</span>;
                 }
                 JarFile jarFile <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> JarFile(source);
+                final Set<span style="color:#ff79c6">&lt;</span>String&gt; configFiles <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HashSet<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">&gt;</span>(){{
+                    add(<span style="color:#f1fa8c">&#34;.properties&#34;</span>);
+                    add(<span style="color:#f1fa8c">&#34;.yaml&#34;</span>);
+                    add(<span style="color:#f1fa8c">&#34;.yml&#34;</span>);
+                    add(<span style="color:#f1fa8c">&#34;.xml&#34;</span>);
+                }};
                 <span style="color:#ff79c6">for</span> (Enumeration<span style="color:#ff79c6">&lt;?</span> extends ZipEntry<span style="color:#ff79c6">&gt;</span> entries <span style="color:#ff79c6">=</span> jarFile.<span style="color:#50fa7b">entries</span>(); entries.<span style="color:#50fa7b">hasMoreElements</span>(); ) {
                     ZipEntry entry <span style="color:#ff79c6">=</span> entries.<span style="color:#50fa7b">nextElement</span>();
                     String entryName <span style="color:#ff79c6">=</span> entry.<span style="color:#50fa7b">getName</span>();
-                    <span style="color:#6272a4">// 仅拷贝config目录
-</span><span style="color:#6272a4"></span>                    <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>entryName.<span style="color:#50fa7b">contains</span>(configPath)) {
+                    <span style="color:#6272a4">// 仅拷贝config目录或properties,yaml。
+</span><span style="color:#6272a4"></span>                    boolean isConfig <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span>;
+                    int lastIndexOf <span style="color:#ff79c6">=</span> entryName.<span style="color:#50fa7b">indexOf</span>(configPath);
+                    String outPath <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;&#34;</span>;
+                    <span style="color:#6272a4">// has config dir
+</span><span style="color:#6272a4"></span>                    <span style="color:#ff79c6">if</span> (lastIndexOf <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">-</span>1) {
+                        outPath <span style="color:#ff79c6">=</span> entryName.<span style="color:#50fa7b">substring</span>(lastIndexOf);
+                        isConfig <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>;
+                    } <span style="color:#ff79c6">else</span> {
+                        lastIndexOf <span style="color:#ff79c6">=</span> entryName.<span style="color:#50fa7b">lastIndexOf</span>(<span style="color:#f1fa8c">&#34;.&#34;</span>);
+                        <span style="color:#ff79c6">if</span> (lastIndexOf <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">-</span>1) {
+                            String file <span style="color:#ff79c6">=</span> entryName.<span style="color:#50fa7b">substring</span>(entryName.<span style="color:#50fa7b">lastIndexOf</span>(<span style="color:#f1fa8c">&#34;/&#34;</span>) <span style="color:#ff79c6">+</span> 1);
+                            boolean pomFile <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;pom.properties&#34;</span>.<span style="color:#50fa7b">equals</span>(file) <span style="color:#ff79c6">||</span> <span style="color:#f1fa8c">&#34;pom.xml&#34;</span>.<span style="color:#50fa7b">equals</span>(file);
+                            isConfig <span style="color:#ff79c6">=</span> configFiles.<span style="color:#50fa7b">contains</span>(entryName.<span style="color:#50fa7b">substring</span>(lastIndexOf)) <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#ff79c6">!</span>pomFile;
+                            <span style="color:#ff79c6">if</span> (isConfig) {
+                                outPath <span style="color:#ff79c6">=</span> String.<span style="color:#50fa7b">join</span>(<span style="color:#f1fa8c">&#34;&#34;</span>, configPath, file);
+                            }
+                        }
+                    }
+
+                    <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>isConfig) {
                         <span style="color:#ff79c6">continue</span>;
                     }
                     InputStream jarFileInputStream <span style="color:#ff79c6">=</span> jarFile.<span style="color:#50fa7b">getInputStream</span>(entry);
-                    String outPath <span style="color:#ff79c6">=</span> (entryName.<span style="color:#50fa7b">substring</span>(entryName.<span style="color:#50fa7b">indexOf</span>(configPath)));
-                    <span style="color:#6272a4">// 判断路径是否存在,不存在则创建文件路径
-</span><span style="color:#6272a4"></span>                    File currentFile <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> File(outPath.<span style="color:#50fa7b">substring</span>(0, outPath.<span style="color:#50fa7b">lastIndexOf</span>(<span style="color:#f1fa8c">&#39;/&#39;</span>)));
+                    File currentFile <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> File(outPath.<span style="color:#50fa7b">substring</span>(0, outPath.<span style="color:#50fa7b">lastIndexOf</span>(<span style="color:#f1fa8c">&#39;/&#39;</span>)));;
                     <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>currentFile.<span style="color:#50fa7b">exists</span>() <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#ff79c6">!</span>currentFile.<span style="color:#50fa7b">mkdirs</span>()) {
                         <span style="color:#ff79c6">continue</span>;
                     }
@@ -587,8 +610,7 @@ File source <span style="color:#ff79c6">=</span> applicationHome.<span style="co
 public Configuration ikConfiguration() {
     String path <span style="color:#ff79c6">=</span> System.<span style="color:#50fa7b">getProperty</span>(<span style="color:#f1fa8c">&#34;user.dir&#34;</span>);
     <span style="color:#6272a4">// 仅在idea中实时调试需要，与config所在的目录必须一致，此处为ik-demo-config/resources
-</span><span style="color:#6272a4"></span>    boolean inIdea <span style="color:#ff79c6">=</span> path.<span style="color:#50fa7b">endsWith</span>(<span style="color:#f1fa8c">&#34;ik-demo-parent&#34;</span>);
-    <span style="color:#ff79c6">if</span> (inIdea) {
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>Kit.<span style="color:#50fa7b">runningAsJar</span>) {
         path <span style="color:#ff79c6">+=</span> <span style="color:#f1fa8c">&#34;/ik-demo-config/resources&#34;</span>;
     }
     Environment environment <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Environment(Settings.<span style="color:#50fa7b">builder</span>().<span style="color:#50fa7b">put</span>(<span style="color:#f1fa8c">&#34;path.home&#34;</span>, path).<span style="color:#50fa7b">build</span>(), <span style="color:#ff79c6">null</span>);
@@ -660,6 +682,22 @@ public Configuration ikConfiguration() {
 <li><p><code>jar-cp</code>【推荐方式】便于在项目现场的部署，不需要手动拷贝相关的配置，避免不不要的手误；且与SpringBoot的配置机制一致，只需针对性微调关联配置即可（SpringBoot本就会优先扫描当前应用jar所在目录下的<code>config</code>目录的application-{profile}.yml/prperties)<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-files">参考这里</a>。</p></li>
 </ul>
 
+<blockquote>
+<p><code>jar-cp</code>核心的<code>copy</code>处理已合并到<code>spring-boot-x 2.8.RELEASE</code>的<a href="https://github.com/OpeningO/spring-boot-x/blob/v2.8/src/main/java/org/openingo/spring/boot/SpringApplicationX.java">SpringApplicationX</a>中，如下使用即可。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * App
+</span><span style="color:#6272a4"> *
+</span><span style="color:#6272a4"> * @author Qicz
+</span><span style="color:#6272a4"> */</span>
+@SpringBootApplication
+@EnableExtension
+public class App {
+
+    public static void main(String[] args) throws InterruptedException {
+        SpringApplicationX.<span style="color:#50fa7b">run</span>(App.<span style="color:#50fa7b">class</span>, args);
+    }
+}</code></pre></div>
 
 </article>
 

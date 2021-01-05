@@ -294,8 +294,7 @@ Settings settings &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; Setti
 &lt;p&gt;但在IDE(如idea)中，实时编译的class都在target下（并未进行&lt;code&gt;mvn clean package&lt;/code&gt;操作），那么在target下就没有&lt;code&gt;config&lt;/code&gt;目录，那么在ide里实时调试就有问题了，于是有了下面的兼容处理&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;String path &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; System.&lt;span style=&#34;color:#50fa7b&#34;&gt;getProperty&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;user.dir&amp;#34;&lt;/span&gt;);
 &lt;span style=&#34;color:#6272a4&#34;&gt;// 仅在idea中实时调试需要，与config所在的目录必须一致，此处为ik-demo-config
-&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;boolean inIdea &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; path.&lt;span style=&#34;color:#50fa7b&#34;&gt;endsWith&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;ik-demo-parent&amp;#34;&lt;/span&gt;);
-&lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (inIdea) {
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;Kit.&lt;span style=&#34;color:#50fa7b&#34;&gt;runningAsJar&lt;/span&gt;) {
     path &lt;span style=&#34;color:#ff79c6&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/ik-demo-config&amp;#34;&lt;/span&gt;;
 }&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;有了上面的前提就得到了完整的&lt;code&gt;Configuration&lt;/code&gt;构造(同时将其注入ioc，此处&lt;code&gt;inIdea&lt;/code&gt;的处理与&lt;code&gt;jar-cp&lt;/code&gt;有略微差异）&lt;/p&gt;
@@ -303,8 +302,7 @@ Settings settings &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; Setti
 public Configuration ikConfiguration() {
     String path &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; System.&lt;span style=&#34;color:#50fa7b&#34;&gt;getProperty&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;user.dir&amp;#34;&lt;/span&gt;);
     &lt;span style=&#34;color:#6272a4&#34;&gt;// 仅在idea中实时调试需要，与config所在的目录必须一致，此处为ik-demo-config
-&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;    boolean inIdea &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; path.&lt;span style=&#34;color:#50fa7b&#34;&gt;endsWith&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;ik-demo-parent&amp;#34;&lt;/span&gt;);
-    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (inIdea) {
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;Kit.&lt;span style=&#34;color:#50fa7b&#34;&gt;runningAsJar&lt;/span&gt;) {
         path &lt;span style=&#34;color:#ff79c6&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/ik-demo-config&amp;#34;&lt;/span&gt;;
     }
     Environment environment &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; Environment(Settings.&lt;span style=&#34;color:#50fa7b&#34;&gt;builder&lt;/span&gt;().&lt;span style=&#34;color:#50fa7b&#34;&gt;put&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;path.home&amp;#34;&lt;/span&gt;, path).&lt;span style=&#34;color:#50fa7b&#34;&gt;build&lt;/span&gt;(), &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;);
@@ -325,7 +323,7 @@ public Configuration ikConfiguration() {
 &lt;p&gt;ik-springboot-demo的&lt;code&gt;jar-cp&lt;/code&gt;分支有完整源码&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;使用&lt;code&gt;jar-cp&lt;/code&gt;，实质就是&lt;code&gt;Java&lt;/code&gt;进行相关资源拷贝的逻辑处理，于是有了下面的代码&lt;/p&gt;
+&lt;p&gt;使用&lt;code&gt;jar-cp&lt;/code&gt;，实质就是&lt;code&gt;Java&lt;/code&gt;进行相关资源拷贝的逻辑处理，于是有了下面的代码(拷贝&lt;code&gt;jar&lt;/code&gt;中的&lt;code&gt;config&lt;/code&gt;目录及其子目录、其他&lt;code&gt;properties&lt;/code&gt;、&lt;code&gt;yaml&lt;/code&gt;、&lt;code&gt;yml&lt;/code&gt;、&lt;code&gt;xml&lt;/code&gt;配置文件到当前&lt;code&gt;jar&lt;/code&gt;所在的&lt;code&gt;config&lt;/code&gt;目录中)&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
 &lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * Kit
 &lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; *
@@ -333,18 +331,20 @@ public Configuration ikConfiguration() {
 &lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; */&lt;/span&gt;
 public final class Kit {
 
+    public static boolean runningAsJar &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;false&lt;/span&gt;;
+
     &lt;span style=&#34;color:#6272a4&#34;&gt;/**
 &lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * 拷贝SpringBoot配置&amp;amp;ik配置
 &lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * @param appClass spring boot 启动类
 &lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * @throws IOException io exception
 &lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     */&lt;/span&gt;
     public static void copyConfigInJar(Class&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; appClass) throws IOException {
-        ApplicationHome applicationHome &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; ApplicationHome(App.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;);
+        ApplicationHome applicationHome &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; ApplicationHome(appClass);
         File source &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; applicationHome.&lt;span style=&#34;color:#50fa7b&#34;&gt;getSource&lt;/span&gt;();
         &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (source &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;) {
             String absolutePath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; source.&lt;span style=&#34;color:#50fa7b&#34;&gt;getAbsolutePath&lt;/span&gt;();
-            boolean aJar &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; absolutePath.&lt;span style=&#34;color:#50fa7b&#34;&gt;endsWith&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;jar&amp;#34;&lt;/span&gt;);
-            &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;aJar) {
+            Kit.&lt;span style=&#34;color:#50fa7b&#34;&gt;runningAsJar&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; absolutePath.&lt;span style=&#34;color:#50fa7b&#34;&gt;endsWith&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;jar&amp;#34;&lt;/span&gt;);
+            &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;Kit.&lt;span style=&#34;color:#50fa7b&#34;&gt;runningAsJar&lt;/span&gt;) {
                 &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt;;
             }
 
@@ -355,17 +355,40 @@ public final class Kit {
                     &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt;;
                 }
                 JarFile jarFile &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; JarFile(source);
+                final Set&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String&amp;gt; configFiles &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; HashSet&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt;(){{
+                    add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.properties&amp;#34;&lt;/span&gt;);
+                    add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.yaml&amp;#34;&lt;/span&gt;);
+                    add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.yml&amp;#34;&lt;/span&gt;);
+                    add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.xml&amp;#34;&lt;/span&gt;);
+                }};
                 &lt;span style=&#34;color:#ff79c6&#34;&gt;for&lt;/span&gt; (Enumeration&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&lt;/span&gt; extends ZipEntry&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt; entries &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; jarFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;entries&lt;/span&gt;(); entries.&lt;span style=&#34;color:#50fa7b&#34;&gt;hasMoreElements&lt;/span&gt;(); ) {
                     ZipEntry entry &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entries.&lt;span style=&#34;color:#50fa7b&#34;&gt;nextElement&lt;/span&gt;();
                     String entryName &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entry.&lt;span style=&#34;color:#50fa7b&#34;&gt;getName&lt;/span&gt;();
-                    &lt;span style=&#34;color:#6272a4&#34;&gt;// 仅拷贝config目录
-&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;                    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;contains&lt;/span&gt;(configPath)) {
+                    &lt;span style=&#34;color:#6272a4&#34;&gt;// 仅拷贝config目录或properties,yaml。
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;                    boolean isConfig &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;false&lt;/span&gt;;
+                    int lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;indexOf&lt;/span&gt;(configPath);
+                    String outPath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;;
+                    &lt;span style=&#34;color:#6272a4&#34;&gt;// has config dir
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;                    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;-&lt;/span&gt;1) {
+                        outPath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(lastIndexOf);
+                        isConfig &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;;
+                    } &lt;span style=&#34;color:#ff79c6&#34;&gt;else&lt;/span&gt; {
+                        lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;lastIndexOf&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.&amp;#34;&lt;/span&gt;);
+                        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;-&lt;/span&gt;1) {
+                            String file &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;lastIndexOf&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; 1);
+                            boolean pomFile &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;pom.properties&amp;#34;&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;equals&lt;/span&gt;(file) &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;pom.xml&amp;#34;&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;equals&lt;/span&gt;(file);
+                            isConfig &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; configFiles.&lt;span style=&#34;color:#50fa7b&#34;&gt;contains&lt;/span&gt;(entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(lastIndexOf)) &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;pomFile;
+                            &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (isConfig) {
+                                outPath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; String.&lt;span style=&#34;color:#50fa7b&#34;&gt;join&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;, configPath, file);
+                            }
+                        }
+                    }
+
+                    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;isConfig) {
                         &lt;span style=&#34;color:#ff79c6&#34;&gt;continue&lt;/span&gt;;
                     }
                     InputStream jarFileInputStream &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; jarFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;getInputStream&lt;/span&gt;(entry);
-                    String outPath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; (entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;indexOf&lt;/span&gt;(configPath)));
-                    &lt;span style=&#34;color:#6272a4&#34;&gt;// 判断路径是否存在,不存在则创建文件路径
-&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;                    File currentFile &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; File(outPath.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(0, outPath.&lt;span style=&#34;color:#50fa7b&#34;&gt;lastIndexOf&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;)));
+                    File currentFile &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; File(outPath.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(0, outPath.&lt;span style=&#34;color:#50fa7b&#34;&gt;lastIndexOf&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;)));;
                     &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;currentFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;exists&lt;/span&gt;() &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;currentFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;mkdirs&lt;/span&gt;()) {
                         &lt;span style=&#34;color:#ff79c6&#34;&gt;continue&lt;/span&gt;;
                     }
@@ -443,8 +466,7 @@ File source &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; application
 public Configuration ikConfiguration() {
     String path &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; System.&lt;span style=&#34;color:#50fa7b&#34;&gt;getProperty&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;user.dir&amp;#34;&lt;/span&gt;);
     &lt;span style=&#34;color:#6272a4&#34;&gt;// 仅在idea中实时调试需要，与config所在的目录必须一致，此处为ik-demo-config/resources
-&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;    boolean inIdea &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; path.&lt;span style=&#34;color:#50fa7b&#34;&gt;endsWith&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;ik-demo-parent&amp;#34;&lt;/span&gt;);
-    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (inIdea) {
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;Kit.&lt;span style=&#34;color:#50fa7b&#34;&gt;runningAsJar&lt;/span&gt;) {
         path &lt;span style=&#34;color:#ff79c6&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/ik-demo-config/resources&amp;#34;&lt;/span&gt;;
     }
     Environment environment &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; Environment(Settings.&lt;span style=&#34;color:#50fa7b&#34;&gt;builder&lt;/span&gt;().&lt;span style=&#34;color:#50fa7b&#34;&gt;put&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;path.home&amp;#34;&lt;/span&gt;, path).&lt;span style=&#34;color:#50fa7b&#34;&gt;build&lt;/span&gt;(), &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;);
@@ -515,7 +537,23 @@ public Configuration ikConfiguration() {
 
 &lt;li&gt;&lt;p&gt;&lt;code&gt;jar-cp&lt;/code&gt;【推荐方式】便于在项目现场的部署，不需要手动拷贝相关的配置，避免不不要的手误；且与SpringBoot的配置机制一致，只需针对性微调关联配置即可（SpringBoot本就会优先扫描当前应用jar所在目录下的&lt;code&gt;config&lt;/code&gt;目录的application-{profile}.yml/prperties)&lt;a href=&#34;https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-files&#34;&gt;参考这里&lt;/a&gt;。&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;jar-cp&lt;/code&gt;核心的&lt;code&gt;copy&lt;/code&gt;处理已合并到&lt;code&gt;spring-boot-x 2.8.RELEASE&lt;/code&gt;的&lt;a href=&#34;https://github.com/OpeningO/spring-boot-x/blob/v2.8/src/main/java/org/openingo/spring/boot/SpringApplicationX.java&#34;&gt;SpringApplicationX&lt;/a&gt;中，如下使用即可。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * App
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; *
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * @author Qicz
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; */&lt;/span&gt;
+@SpringBootApplication
+@EnableExtension
+public class App {
+
+    public static void main(String[] args) throws InterruptedException {
+        SpringApplicationX.&lt;span style=&#34;color:#50fa7b&#34;&gt;run&lt;/span&gt;(App.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, args);
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
      </item>
    
      <item>
