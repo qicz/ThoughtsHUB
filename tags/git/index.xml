@@ -350,62 +350,61 @@ public final class Kit {
 
             final String configPath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;config/&amp;#34;&lt;/span&gt;;
             File config &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; File(System.&lt;span style=&#34;color:#50fa7b&#34;&gt;getProperty&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;user.dir&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; configPath);
-            &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;config.&lt;span style=&#34;color:#50fa7b&#34;&gt;exists&lt;/span&gt;()) {
-                &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;config.&lt;span style=&#34;color:#50fa7b&#34;&gt;mkdir&lt;/span&gt;()) {
-                    &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt;;
-                }
-                JarFile jarFile &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; JarFile(source);
-                final Set&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String&amp;gt; configFiles &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; HashSet&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt;(){{
-                    add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.properties&amp;#34;&lt;/span&gt;);
-                    add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.yaml&amp;#34;&lt;/span&gt;);
-                    add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.yml&amp;#34;&lt;/span&gt;);
-                    add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.xml&amp;#34;&lt;/span&gt;);
-                }};
-                &lt;span style=&#34;color:#ff79c6&#34;&gt;for&lt;/span&gt; (Enumeration&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&lt;/span&gt; extends ZipEntry&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt; entries &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; jarFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;entries&lt;/span&gt;(); entries.&lt;span style=&#34;color:#50fa7b&#34;&gt;hasMoreElements&lt;/span&gt;(); ) {
-                    ZipEntry entry &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entries.&lt;span style=&#34;color:#50fa7b&#34;&gt;nextElement&lt;/span&gt;();
-                    String entryName &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entry.&lt;span style=&#34;color:#50fa7b&#34;&gt;getName&lt;/span&gt;();
-                    &lt;span style=&#34;color:#6272a4&#34;&gt;// 仅拷贝config目录或properties,yaml。
-&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;                    boolean isConfig &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;false&lt;/span&gt;;
-                    int lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;indexOf&lt;/span&gt;(configPath);
-                    String outPath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;;
-                    &lt;span style=&#34;color:#6272a4&#34;&gt;// has config dir
-&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;                    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;-&lt;/span&gt;1) {
-                        outPath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(lastIndexOf);
-                        isConfig &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;;
-                    } &lt;span style=&#34;color:#ff79c6&#34;&gt;else&lt;/span&gt; {
-                        lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;lastIndexOf&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.&amp;#34;&lt;/span&gt;);
-                        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;-&lt;/span&gt;1) {
-                            String file &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;lastIndexOf&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; 1);
-                            boolean pomFile &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;pom.properties&amp;#34;&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;equals&lt;/span&gt;(file) &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;pom.xml&amp;#34;&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;equals&lt;/span&gt;(file);
-                            isConfig &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; configFiles.&lt;span style=&#34;color:#50fa7b&#34;&gt;contains&lt;/span&gt;(entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(lastIndexOf)) &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;pomFile;
-                            &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (isConfig) {
-                                outPath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; String.&lt;span style=&#34;color:#50fa7b&#34;&gt;join&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;, configPath, file);
-                            }
+            &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (config.&lt;span style=&#34;color:#50fa7b&#34;&gt;exists&lt;/span&gt;() &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;config.&lt;span style=&#34;color:#50fa7b&#34;&gt;mkdir&lt;/span&gt;()) {
+                &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt;;
+            }
+
+            JarFile jarFile &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; JarFile(source);
+            final Set&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String&amp;gt; configFiles &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; HashSet&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt;(){{
+                add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.properties&amp;#34;&lt;/span&gt;);
+                add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.yaml&amp;#34;&lt;/span&gt;);
+                add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.yml&amp;#34;&lt;/span&gt;);
+                add(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.xml&amp;#34;&lt;/span&gt;);
+            }};
+            &lt;span style=&#34;color:#ff79c6&#34;&gt;for&lt;/span&gt; (Enumeration&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&lt;/span&gt; extends ZipEntry&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt; entries &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; jarFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;entries&lt;/span&gt;(); entries.&lt;span style=&#34;color:#50fa7b&#34;&gt;hasMoreElements&lt;/span&gt;(); ) {
+                ZipEntry entry &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entries.&lt;span style=&#34;color:#50fa7b&#34;&gt;nextElement&lt;/span&gt;();
+                String entryName &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entry.&lt;span style=&#34;color:#50fa7b&#34;&gt;getName&lt;/span&gt;();
+                &lt;span style=&#34;color:#6272a4&#34;&gt;// 仅拷贝config目录或properties,yaml。
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;                boolean isConfig &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;false&lt;/span&gt;;
+                int lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;indexOf&lt;/span&gt;(configPath);
+                String outPath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;;
+                &lt;span style=&#34;color:#6272a4&#34;&gt;// has config dir
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;                &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;-&lt;/span&gt;1) {
+                    outPath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(lastIndexOf);
+                    isConfig &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;;
+                } &lt;span style=&#34;color:#ff79c6&#34;&gt;else&lt;/span&gt; {
+                    lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;lastIndexOf&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;.&amp;#34;&lt;/span&gt;);
+                    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (lastIndexOf &lt;span style=&#34;color:#ff79c6&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;-&lt;/span&gt;1) {
+                        String file &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;lastIndexOf&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; 1);
+                        boolean pomFile &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;pom.properties&amp;#34;&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;equals&lt;/span&gt;(file) &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;pom.xml&amp;#34;&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;equals&lt;/span&gt;(file);
+                        isConfig &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; configFiles.&lt;span style=&#34;color:#50fa7b&#34;&gt;contains&lt;/span&gt;(entryName.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(lastIndexOf)) &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;pomFile;
+                        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (isConfig) {
+                            outPath &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; String.&lt;span style=&#34;color:#50fa7b&#34;&gt;join&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;, configPath, file);
                         }
                     }
-
-                    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;isConfig) {
-                        &lt;span style=&#34;color:#ff79c6&#34;&gt;continue&lt;/span&gt;;
-                    }
-                    InputStream jarFileInputStream &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; jarFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;getInputStream&lt;/span&gt;(entry);
-                    File currentFile &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; File(outPath.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(0, outPath.&lt;span style=&#34;color:#50fa7b&#34;&gt;lastIndexOf&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;)));;
-                    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;currentFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;exists&lt;/span&gt;() &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;currentFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;mkdirs&lt;/span&gt;()) {
-                        &lt;span style=&#34;color:#ff79c6&#34;&gt;continue&lt;/span&gt;;
-                    }
-                    &lt;span style=&#34;color:#6272a4&#34;&gt;// 判断文件全路径是否为文件夹,如果是上面已经上传,不需要解压
-&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;                    &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; File(outPath).&lt;span style=&#34;color:#50fa7b&#34;&gt;isDirectory&lt;/span&gt;()) {
-                        &lt;span style=&#34;color:#ff79c6&#34;&gt;continue&lt;/span&gt;;
-                    }
-
-                    FileOutputStream out &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; FileOutputStream(outPath);
-                    byte[] bytes &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#8be9fd&#34;&gt;byte&lt;/span&gt;[1024];
-                    int len;
-                    &lt;span style=&#34;color:#ff79c6&#34;&gt;while&lt;/span&gt; ((len &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; jarFileInputStream.&lt;span style=&#34;color:#50fa7b&#34;&gt;read&lt;/span&gt;(bytes)) &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt; 0) {
-                        out.&lt;span style=&#34;color:#50fa7b&#34;&gt;write&lt;/span&gt;(bytes, 0, len);
-                    }
-                    jarFileInputStream.&lt;span style=&#34;color:#50fa7b&#34;&gt;close&lt;/span&gt;();
-                    out.&lt;span style=&#34;color:#50fa7b&#34;&gt;close&lt;/span&gt;();
                 }
+
+                &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;isConfig) {
+                    &lt;span style=&#34;color:#ff79c6&#34;&gt;continue&lt;/span&gt;;
+                }
+                InputStream jarFileInputStream &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; jarFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;getInputStream&lt;/span&gt;(entry);
+                File currentFile &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; File(outPath.&lt;span style=&#34;color:#50fa7b&#34;&gt;substring&lt;/span&gt;(0, outPath.&lt;span style=&#34;color:#50fa7b&#34;&gt;lastIndexOf&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;)));;
+                &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;currentFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;exists&lt;/span&gt;() &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;currentFile.&lt;span style=&#34;color:#50fa7b&#34;&gt;mkdirs&lt;/span&gt;()) {
+                    &lt;span style=&#34;color:#ff79c6&#34;&gt;continue&lt;/span&gt;;
+                }
+                &lt;span style=&#34;color:#6272a4&#34;&gt;// 判断文件全路径是否为文件夹,如果是上面已经上传,不需要解压
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;                &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; File(outPath).&lt;span style=&#34;color:#50fa7b&#34;&gt;isDirectory&lt;/span&gt;()) {
+                    &lt;span style=&#34;color:#ff79c6&#34;&gt;continue&lt;/span&gt;;
+                }
+
+                FileOutputStream out &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; FileOutputStream(outPath);
+                byte[] bytes &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#8be9fd&#34;&gt;byte&lt;/span&gt;[1024];
+                int len;
+                &lt;span style=&#34;color:#ff79c6&#34;&gt;while&lt;/span&gt; ((len &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; jarFileInputStream.&lt;span style=&#34;color:#50fa7b&#34;&gt;read&lt;/span&gt;(bytes)) &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt; 0) {
+                    out.&lt;span style=&#34;color:#50fa7b&#34;&gt;write&lt;/span&gt;(bytes, 0, len);
+                }
+                jarFileInputStream.&lt;span style=&#34;color:#50fa7b&#34;&gt;close&lt;/span&gt;();
+                out.&lt;span style=&#34;color:#50fa7b&#34;&gt;close&lt;/span&gt;();
             }
         }
     }
@@ -539,7 +538,7 @@ public Configuration ikConfiguration() {
 &lt;/ul&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;jar-cp&lt;/code&gt;核心的&lt;code&gt;copy&lt;/code&gt;处理已合并到&lt;code&gt;spring-boot-x 2.8.RELEASE&lt;/code&gt;的&lt;a href=&#34;https://github.com/OpeningO/spring-boot-x/blob/v2.8/src/main/java/org/openingo/spring/boot/SpringApplicationX.java&#34;&gt;SpringApplicationX&lt;/a&gt;中，如下使用即可。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;jar-cp&lt;/code&gt;核心的&lt;code&gt;copy&lt;/code&gt;处理已合并到&lt;code&gt;spring-boot-x&lt;/code&gt;的&lt;a href=&#34;https://github.com/OpeningO/spring-boot-x/blob/master/src/main/java/org/openingo/spring/boot/SpringApplicationX.java&#34;&gt;SpringApplicationX&lt;/a&gt;中，如下使用即可。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
 &lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * App
