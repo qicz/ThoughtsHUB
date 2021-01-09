@@ -8,10 +8,566 @@
    <managingEditor>zcq#zhucongqi.cn (Qicz)</managingEditor>
    <webMaster>zcq#zhucongqi.cn (Qicz)</webMaster>
    <copyright>&amp;copy; 2012 - </copyright>
-   <lastBuildDate>Fri, 01 Jan 2021 20:22:11 +0800</lastBuildDate>
+   <lastBuildDate>Sat, 09 Jan 2021 09:34:31 +0800</lastBuildDate>
    
        <atom:link href="https://izcqi.com/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>细说spring-boot-x</title>
+       <link>https://izcqi.com/posts/2021/01/09/spring-boot-x-specify/</link>
+       <pubDate>Sat, 09 Jan 2021 09:34:31 +0800</pubDate>
+       <author>zcq#zhucongqi.cn (Qicz)</author>
+       <guid>https://izcqi.com/posts/2021/01/09/spring-boot-x-specify/</guid>
+       <description>
+
+&lt;blockquote&gt;
+&lt;p&gt;特别说明：通常，我们会将&lt;code&gt;SpringBoot&lt;/code&gt;写作&lt;code&gt;SpringBoot&lt;/code&gt;，而此处写作&lt;code&gt;spring-boot&lt;/code&gt;是因项目的确就叫做&lt;code&gt;spring-boot-x&lt;/code&gt;。以下简称项目。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;项目地址：&lt;a href=&#34;https://github.com/OpeningO/spring-boot-x&#34;&gt;https://github.com/OpeningO/spring-boot-x&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;源起&#34;&gt;源起&lt;/h2&gt;
+
+&lt;p&gt;娱坛有云&lt;strong&gt;一人一首成名曲&lt;/strong&gt;，虽互联网技术与娱之文艺不同，但个人任以为技术与艺类同，皆为高雅之事。故成此项目，是以&lt;strong&gt;个人有利器&lt;/strong&gt;，便于而后开疆扩土。&lt;/p&gt;
+
+&lt;h2 id=&#34;总览&#34;&gt;总览&lt;/h2&gt;
+
+&lt;h4 id=&#34;特性清单&#34;&gt;特性清单&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;请求日志，包括请求源、请求目标、请求参数、处理时间、错误异常等信息；&lt;/li&gt;
+&lt;li&gt;请求响应参数的自动装配（映射）；&lt;/li&gt;
+&lt;li&gt;跨域的配置；&lt;/li&gt;
+&lt;li&gt;嵌入&lt;code&gt;SpringBoot&lt;/code&gt;的异常处理机制，可以将原来的错误信息中插入其他信息、或将其解析或转换为其他信息；&lt;/li&gt;
+&lt;li&gt;如&lt;code&gt;SpringBoot&lt;/code&gt;之&lt;code&gt;starter&lt;/code&gt;动态装配或在&lt;code&gt;yml&lt;/code&gt;中配置相关特性；&lt;/li&gt;
+&lt;li&gt;简化的&lt;code&gt;Redis&lt;/code&gt;操作；&lt;/li&gt;
+&lt;li&gt;提炼&lt;code&gt;Elasticsearch&lt;/code&gt;之&lt;code&gt;HighlevelClient&lt;/code&gt;常用操作；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;feign&lt;/code&gt;的请求头参数的处理：合并上下游的请求头参数，并发场景的数据处理策略；&lt;/li&gt;
+&lt;li&gt;基于&lt;code&gt;Druid&lt;/code&gt;和&lt;code&gt;Hikari&lt;/code&gt;的动态路由&lt;code&gt;RoutingDataSource&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SpringBoot&lt;/code&gt;应用的配置信息的自动拷贝；&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;更多继续完善&amp;hellip; &amp;hellip;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;引入依赖&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.openingo.spring&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-boot-x&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${spring-boot-x.version}&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;细说特性&#34;&gt;细说特性&lt;/h2&gt;
+
+&lt;h3 id=&#34;请求日志&#34;&gt;请求日志&lt;/h3&gt;
+
+&lt;p&gt;先看看效果&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;****************************************************************
+:: SpringApplicationX :: &lt;span style=&#34;color:#ff79c6&#34;&gt;for&lt;/span&gt; current request report information 
+****************************************************************
+Client IP  : &lt;span style=&#34;color:#bd93f9&#34;&gt;172&lt;/span&gt;.15.11.240 
+Request Time  : &lt;span style=&#34;color:#bd93f9&#34;&gt;2021&lt;/span&gt;-01-09T10:03:43.202 
+Controller  : orgg.openingo.x.controller.EsRestClientXController.&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;EsRestClientXController.java:1&lt;span style=&#34;color:#ff79c6&#34;&gt;)&lt;/span&gt;
+URI  : http://localhost:18080/esx/recommend?q&lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt;%E5%8C%97 
+Handler&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;Action&lt;span style=&#34;color:#ff79c6&#34;&gt;)&lt;/span&gt;  : recommends
+Method  : GET
+Processing Time  : &lt;span style=&#34;color:#bd93f9&#34;&gt;0&lt;/span&gt;.0s
+Header&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;s&lt;span style=&#34;color:#ff79c6&#34;&gt;)&lt;/span&gt;  : &lt;span style=&#34;color:#ff79c6&#34;&gt;[&lt;/span&gt;user-agent:&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;PostmanRuntime/7.26.5&amp;#34;&lt;/span&gt;, accept:&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;*/*&amp;#34;&lt;/span&gt;, cache-control:&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;no-cache&amp;#34;&lt;/span&gt;, postman-token:&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;102da4af-27a4-4d04-bdcd-f8738c1dfc25&amp;#34;&lt;/span&gt;, host:&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;localhost:18080&amp;#34;&lt;/span&gt;, accept-encoding:&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;gzip, deflate, br&amp;#34;&lt;/span&gt;, connection:&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;keep-alive&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;]&lt;/span&gt;
+Body  : &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;北&amp;#34;&lt;/span&gt;
+UrlQuery  : &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;q&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt;%E5%8C%97
+Parameter&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;s&lt;span style=&#34;color:#ff79c6&#34;&gt;)&lt;/span&gt;  : &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;q&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt;北, 
+Exception  : &lt;span style=&#34;color:#ff79c6&#34;&gt;[&lt;/span&gt;qicz&lt;span style=&#34;color:#ff79c6&#34;&gt;]&lt;/span&gt; ElasticsearchStatusException&lt;span style=&#34;color:#ff79c6&#34;&gt;[&lt;/span&gt;Elasticsearch exception &lt;span style=&#34;color:#ff79c6&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt;index_not_found_exception, &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;reason&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt;no such index &lt;span style=&#34;color:#ff79c6&#34;&gt;[&lt;/span&gt;qicz&lt;span style=&#34;color:#ff79c6&#34;&gt;]]]&lt;/span&gt;
+----------------------------------------------------------------&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;以上请求是从Postman发起的一个请求，对此请求的各类参数都进行了一一罗列：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;源(Client IP)；&lt;/li&gt;
+&lt;li&gt;发起时间（Request Time）；&lt;/li&gt;
+&lt;li&gt;请求的handler（对应的Controller、Action）；&lt;/li&gt;
+&lt;li&gt;请求方式（Method)；&lt;/li&gt;
+&lt;li&gt;处理时间（Processing Time）；&lt;/li&gt;
+&lt;li&gt;请求头（Header）；&lt;/li&gt;
+&lt;li&gt;请求体（Body）；&lt;/li&gt;
+&lt;li&gt;参数（Parameters）；&lt;/li&gt;
+&lt;li&gt;此次请求出现的异常（如没有异常此项自然就没有了）。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;如何使用&#34;&gt;如何使用？&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;引入项目依赖及&lt;code&gt;spring-boot-starter-aop&lt;/code&gt;，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;即可；&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;* App
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;*
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;* @author Qicz
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;*/&lt;/span&gt;
+@SpringBootApplication
+@EnableExtension
+public class App {
+  
+  public static void main(String[] args) throws InterruptedException {
+      SpringApplicationX.&lt;span style=&#34;color:#50fa7b&#34;&gt;run&lt;/span&gt;(App.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, args);
+      SpringApplicationX.&lt;span style=&#34;color:#50fa7b&#34;&gt;applicationInfo&lt;/span&gt;();
+  }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;可配置？&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;openingo:
+http:
+  request:
+    cors:
+      allowed-header: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;*&amp;#34;&lt;/span&gt;
+      enable: &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;
+      allowed-all: &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;
+    log:
+      enable: &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;如上即可对log及cors进行配置。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;请求响应参数的自动装配-映射&#34;&gt;请求响应参数的自动装配（映射）&lt;/h3&gt;
+
+&lt;p&gt;通常情况下，我们会将后端处理的结果按照固定的格式包装之后，再返回给前端，所以在&lt;code&gt;Controller&lt;/code&gt;需要对处理结果进行统一的包装处理，于是有了下面的这种代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;@GetMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/resp&amp;#34;&lt;/span&gt;)
+public RespData resp() {
+    Object data &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; service....
+    return RespData.&lt;span style=&#34;color:#50fa7b&#34;&gt;success&lt;/span&gt;(data);
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这种统一的包装处理，既然是统一行为，那么必然是可以进行自动的统一的处理方式。于是有了这个&lt;code&gt;请求响应参数的自动装配（映射）&lt;/code&gt;。先看看使用了这个特性之后，我们的代码变成了什么样：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * AutoRespController
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; *
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * @author Qicz
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; */&lt;/span&gt;
+@RestController
+@RequestMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/auto&amp;#34;&lt;/span&gt;)
+@AutoMappingRespResult
+public class AutoRespController {
+
+    @GetMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/int&amp;#34;&lt;/span&gt;)
+    public Integer toInt() {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; 123;
+    }
+
+    @GetMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/void&amp;#34;&lt;/span&gt;)
+    public void toVoid() {
+
+    }
+
+    @GetMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/exception&amp;#34;&lt;/span&gt;)
+    public void toException() {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; ServiceException(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;异常了&amp;#34;&lt;/span&gt;);
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;可以看到，我们添加了一个&lt;code&gt;@AutoMappingRespResult&lt;/code&gt;注解，在方法体，并无什么特别的了。&lt;/p&gt;
+
+&lt;h4 id=&#34;如何使用-1&#34;&gt;如何使用？&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;引入项目依赖，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;在需要包装的&lt;code&gt;Controller&lt;/code&gt;上加入&lt;code&gt;@AutoMappingRespResult&lt;/code&gt;即可。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;特别说明&#34;&gt;特别说明&lt;/h4&gt;
+
+&lt;p&gt;使用&lt;code&gt;@AutoMappingRespResult&lt;/code&gt;后都将使用&lt;code&gt;org.openingo.jdkits.http.RespData&lt;/code&gt;进行数据包装。而&lt;code&gt;org.openingo.jdkits.http.RespData&lt;/code&gt;是可以对返回的数据进行动态配置的。默认情况下，返回&lt;code&gt;sc&lt;/code&gt;、&lt;code&gt;sm&lt;/code&gt;、&lt;code&gt;data&lt;/code&gt;，如果需要可以使用&lt;code&gt;org.openingo.jdkits.http.RespData.Config&lt;/code&gt;修改它们为其他任意值。&lt;/p&gt;
+
+&lt;h3 id=&#34;嵌入springboot的异常处理机制&#34;&gt;嵌入SpringBoot的异常处理机制&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;SpringBoot&lt;/code&gt;的错误处理是借助&lt;code&gt;org.springframework.boot.web.servlet.error.DefaultErrorAttributes&lt;/code&gt;进行的，常看到的信息如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;timestamp&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;2020-07-13T05:49:06.071+0000&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;status&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#bd93f9&#34;&gt;500&lt;/span&gt;,
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;error&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;Internal Server Error&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;message&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;testing exception&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;path&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/ex&amp;#34;&lt;/span&gt;
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;进行项目的嵌入异常处理后，可以得到以下的信息：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;timestamp&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;2020-07-13T05:49:06.071+0000&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;status&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#bd93f9&#34;&gt;500&lt;/span&gt;,
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;error&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;Internal Server Error&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;exception&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;org.openingo.spring.exception.ServiceException&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;message&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;testing exception&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;path&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/ex&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;handler&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;public java.util.Map org.openingo.x.controller.UserController.ex()&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;openingo.error&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;ex&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;org.openingo.spring.exception.ServiceException: testing exception&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;em&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;testing exception&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;error&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;Internal Server Error&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;#34;ec&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;ERROR_CODE&amp;#34;&lt;/span&gt;
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id=&#34;如何使用-2&#34;&gt;如何使用？&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;引入项目依赖，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用；&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;可配置？&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;openingo:
+http:
+    error:
+      enable: &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;如上即可对error进行配置。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&#34;扩展异常处理&#34;&gt;扩展异常处理&lt;/h4&gt;
+
+&lt;p&gt;默认情况下项目使用&lt;code&gt;org.openingo.spring.http.request.error.DefaultServiceErrorAttributes&lt;/code&gt;提供异常嵌入处理，可以扩展其对异常进行拓展处理，如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * BusinessErrorAttributes
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; *
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * @author Qicz
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; */&lt;/span&gt;
+@Component
+public class BusinessErrorAttributes extends DefaultServiceErrorAttributes {
+
+    &lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * Decorate exception error code, custom for your business logic.
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * &amp;lt;code&amp;gt;
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * &amp;lt;pre&amp;gt;
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * public Object decorateExceptionCode(Exception exception) {
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     *    if (exception instanceof IndexOutOfBoundsException) {
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     *      return 123;
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     *    }
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     *   return super.decorateExceptionCode(exception);
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * }
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * &amp;lt;/pre&amp;gt;
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * &amp;lt;/code&amp;gt;
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     *
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * @param exception the exception that got thrown during handler execution
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     */&lt;/span&gt;
+    @Override
+    public Object decorateExceptionCode(Exception exception) {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (exception instanceof IndexOutOfBoundsException) {
+            &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; 123;
+        }
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (exception instanceof JsonProcessingException) {
+            &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; 345;
+        }
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (exception instanceof MethodArgumentNotValidException
+                &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; exception instanceof ConstraintViolationException
+                &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; exception instanceof BindException
+                &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; exception instanceof HttpMessageNotReadableException
+                &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; exception instanceof MissingServletRequestPartException
+                &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; exception instanceof MissingServletRequestParameterException
+                &lt;span style=&#34;color:#ff79c6&#34;&gt;||&lt;/span&gt; exception instanceof MultipartException) {
+            &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; 1234;
+        }
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;super&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;decorateExceptionCode&lt;/span&gt;(exception);
+    }
+
+    &lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * Decorate error attributes, add extension attributes etc.
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * the {@code errorAttributes} that has exception, handler, message,
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * error, timestamp, status, path params.
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     *
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * @param errorAttributes        error attributes
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * @param serviceErrorAttributes service error attributes
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     */&lt;/span&gt;
+    @Override
+    public void decorateErrorAttributes(Map&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String, Object&amp;gt; errorAttributes, Map&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String, Object&amp;gt; serviceErrorAttributes) {
+        &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;super&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;decorateErrorAttributes&lt;/span&gt;(errorAttributes, serviceErrorAttributes);
+        &lt;span style=&#34;color:#6272a4&#34;&gt;//serviceErrorAttributes.putAll(errorAttributes);
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;简化的redis操作&#34;&gt;简化的Redis操作&lt;/h3&gt;
+
+&lt;p&gt;默认情况下对&lt;code&gt;redis&lt;/code&gt;的操作需要使用&lt;code&gt;redisTemplate&lt;/code&gt;提供的繁琐操作，各种&lt;code&gt;opsFor...&lt;/code&gt;,使用简化方式之后业务代码中会将此类统统干掉，而且将大部分的操作都按照redis官方的command的方式进行了对齐，更容易理解和使用它们。先来看看使用的效果：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;@GetMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/save&amp;#34;&lt;/span&gt;)
+public String save() {
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;try&lt;/span&gt; {
+        KeyNamingKit.&lt;span style=&#34;color:#50fa7b&#34;&gt;set&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;openingo&amp;#34;&lt;/span&gt;);
+        stringKeyRedisTemplateX.&lt;span style=&#34;color:#50fa7b&#34;&gt;set&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;Qicz&amp;#34;&lt;/span&gt;);
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;ok&amp;#34;&lt;/span&gt;;
+    } &lt;span style=&#34;color:#ff79c6&#34;&gt;finally&lt;/span&gt; {
+        KeyNamingKit.&lt;span style=&#34;color:#50fa7b&#34;&gt;remove&lt;/span&gt;();
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;在业务中，通常我们会对写入redis的数据进行region的处理，也就是从key的角度对数据进行划分，以上看到的&lt;code&gt;KeyNamingKit&lt;/code&gt;就是进行了这样的操作。当然了，仅仅使用&lt;code&gt;KeyNamingKit&lt;/code&gt;是不能完成这个功能的，还需要定义一个&lt;code&gt;keyNamingPolicy&lt;/code&gt;，当然项目已提供了一个默认的&lt;code&gt;keyNamingPolicy&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * DefaultKeyNamingPolicy
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; *
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * @author Qicz
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; */&lt;/span&gt;
+public class DefaultKeyNamingPolicy implements IKeyNamingPolicy {
+
+    &lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * if {@code KeyNamingKit.getNaming()} is &amp;#34;null&amp;#34; return key,
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * otherwise return {@code KeyNamingKit.getNaming()}+{@code KeyNamingKit.NAMING_SEPARATOR}+key
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * @param key
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     * @return wrapper key
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;     */&lt;/span&gt;
+    @Override
+    public String getKeyName(String key) {
+        String naming &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; KeyNamingKit.&lt;span style=&#34;color:#50fa7b&#34;&gt;get&lt;/span&gt;();
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (ValidateKit.&lt;span style=&#34;color:#50fa7b&#34;&gt;isNull&lt;/span&gt;(naming)) {
+            &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; key;
+        }
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#ff79c6&#34;&gt;!&lt;/span&gt;naming.&lt;span style=&#34;color:#50fa7b&#34;&gt;endsWith&lt;/span&gt;(KeyNamingKit.&lt;span style=&#34;color:#50fa7b&#34;&gt;NAMING_SEPARATOR&lt;/span&gt;)) {
+            naming &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; naming &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; KeyNamingKit.&lt;span style=&#34;color:#50fa7b&#34;&gt;NAMING_SEPARATOR&lt;/span&gt;;
+        }
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; naming &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; key;
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id=&#34;如何使用-3&#34;&gt;如何使用？&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;引入项目依赖及&lt;code&gt;spring-boot-starter-data-redis&lt;/code&gt;，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用；&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;可配置？&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;openingo:
+redis:
+  enable: &lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;自定义keynamingpolicy&#34;&gt;自定义keyNamingPolicy&lt;/h4&gt;
+
+&lt;p&gt;按照如下即可&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * KeyNamingPolicy
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; *
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * @author Qicz
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; */&lt;/span&gt;
+@Data
+public class KeyNamingPolicy implements IKeyNamingPolicy {
+
+    @Override
+    public String getKeyName(String key) {
+        String s &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; KeyNamingKit.&lt;span style=&#34;color:#50fa7b&#34;&gt;get&lt;/span&gt;();
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;if&lt;/span&gt; (ValidateKit.&lt;span style=&#34;color:#50fa7b&#34;&gt;isNotNull&lt;/span&gt;(s)) {
+            &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; s &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;:qicz:&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; key;
+        }
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;qicz:&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; key;
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;在操作前使用&lt;code&gt;KeyNamingKit.set&lt;/code&gt;将当前操作的&lt;code&gt;region&lt;/code&gt;写入，如此处的&lt;code&gt;openingo&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;@GetMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/save&amp;#34;&lt;/span&gt;)
+public String save() {
+    &lt;span style=&#34;color:#ff79c6&#34;&gt;try&lt;/span&gt; {
+        KeyNamingKit.&lt;span style=&#34;color:#50fa7b&#34;&gt;set&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;openingo&amp;#34;&lt;/span&gt;);
+        stringKeyRedisTemplateX.&lt;span style=&#34;color:#50fa7b&#34;&gt;set&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;Qicz&amp;#34;&lt;/span&gt;);
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;ok&amp;#34;&lt;/span&gt;;
+    } &lt;span style=&#34;color:#ff79c6&#34;&gt;finally&lt;/span&gt; {
+        KeyNamingKit.&lt;span style=&#34;color:#50fa7b&#34;&gt;remove&lt;/span&gt;();
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;elasticsearch之highlevelclient常用操作&#34;&gt;Elasticsearch之HighlevelClient常用操作&lt;/h3&gt;
+
+&lt;p&gt;常用操作即&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;saveOrUpdate类&lt;/li&gt;
+&lt;li&gt;delete类&lt;/li&gt;
+&lt;li&gt;search类：分页处理，随机推荐等等&lt;/li&gt;
+&lt;li&gt;同步处理、异步处理&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * EsRestClientXController
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; *
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * @author Qicz
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; */&lt;/span&gt;
+@RestController
+@RequestMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/esx&amp;#34;&lt;/span&gt;)
+public class EsRestClientXController {
+
+    @Autowired
+    RestHighLevelClientX restHighLevelClientX;
+
+    @SneakyThrows
+    @GetMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/recommend&amp;#34;&lt;/span&gt;)
+    public List&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;Map&amp;gt; recommends(String q) {
+        HighlightBuilder highlightBuilder &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; HighlightBuilder();
+        &lt;span style=&#34;color:#6272a4&#34;&gt;// 如果该属性中有多个关键字 则都高亮
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;        highlightBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;requireFieldMatch&lt;/span&gt;(&lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;);
+        highlightBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;field&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;);
+        highlightBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;field&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;addr&amp;#34;&lt;/span&gt;);
+        highlightBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;preTags&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;&amp;lt;span style=&amp;#39;color:red&amp;#39;&amp;gt;&amp;#34;&lt;/span&gt;);
+        highlightBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;postTags&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;&amp;lt;/span&amp;gt;&amp;#34;&lt;/span&gt;);
+
+        BoolQueryBuilder boolQueryBuilder &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; BoolQueryBuilder();
+
+        q &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;*&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; q &lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;*&amp;#34;&lt;/span&gt;;
+        boolQueryBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;must&lt;/span&gt;(QueryBuilders.&lt;span style=&#34;color:#50fa7b&#34;&gt;wildcardQuery&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;, q));
+        boolQueryBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;should&lt;/span&gt;(QueryBuilders.&lt;span style=&#34;color:#50fa7b&#34;&gt;wildcardQuery&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;addr&amp;#34;&lt;/span&gt;, q));
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;restHighLevelClientX&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;randomRecommend&lt;/span&gt;(Map.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;qicz&amp;#34;&lt;/span&gt;, 3, boolQueryBuilder, highlightBuilder);
+    }
+
+    @GetMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/add&amp;#34;&lt;/span&gt;)
+    public String addIndex() {
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;try&lt;/span&gt; {
+            MappingsProperties mappingsProperties &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; MappingsProperties.&lt;span style=&#34;color:#50fa7b&#34;&gt;me&lt;/span&gt;();
+            mappingsProperties.&lt;span style=&#34;color:#50fa7b&#34;&gt;add&lt;/span&gt;(MappingsProperty.&lt;span style=&#34;color:#50fa7b&#34;&gt;me&lt;/span&gt;().&lt;span style=&#34;color:#50fa7b&#34;&gt;name&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;).&lt;span style=&#34;color:#50fa7b&#34;&gt;type&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;long&amp;#34;&lt;/span&gt;));
+            mappingsProperties.&lt;span style=&#34;color:#50fa7b&#34;&gt;add&lt;/span&gt;(MappingsProperty.&lt;span style=&#34;color:#50fa7b&#34;&gt;me&lt;/span&gt;().&lt;span style=&#34;color:#50fa7b&#34;&gt;name&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;).&lt;span style=&#34;color:#50fa7b&#34;&gt;textType&lt;/span&gt;().&lt;span style=&#34;color:#50fa7b&#34;&gt;analyzer&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;ik_smart&amp;#34;&lt;/span&gt;));
+            restHighLevelClientX.&lt;span style=&#34;color:#50fa7b&#34;&gt;createIndex&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;aaabc&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;, mappingsProperties);
+        } &lt;span style=&#34;color:#ff79c6&#34;&gt;catch&lt;/span&gt; (IOException e) {
+            e.&lt;span style=&#34;color:#50fa7b&#34;&gt;printStackTrace&lt;/span&gt;();
+        }
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;ok&amp;#34;&lt;/span&gt;;
+    }
+
+    @PostMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/put&amp;#34;&lt;/span&gt;)
+    public String putDoc(@RequestBody Map user) {
+        boolean ret &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;false&lt;/span&gt;;
+        IndexRequest indexRequest &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; IndexRequest(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;qicz&amp;#34;&lt;/span&gt;);
+        indexRequest.&lt;span style=&#34;color:#50fa7b&#34;&gt;id&lt;/span&gt;(user.&lt;span style=&#34;color:#50fa7b&#34;&gt;get&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;).&lt;span style=&#34;color:#50fa7b&#34;&gt;toString&lt;/span&gt;());
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;try&lt;/span&gt; {
+            indexRequest.&lt;span style=&#34;color:#50fa7b&#34;&gt;source&lt;/span&gt;(JacksonKit.&lt;span style=&#34;color:#50fa7b&#34;&gt;toJson&lt;/span&gt;(user), XContentType.&lt;span style=&#34;color:#50fa7b&#34;&gt;JSON&lt;/span&gt;);
+            ret &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;restHighLevelClientX&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;saveOrUpdate&lt;/span&gt;(indexRequest);
+        } &lt;span style=&#34;color:#ff79c6&#34;&gt;catch&lt;/span&gt; (IOException e) {
+            e.&lt;span style=&#34;color:#50fa7b&#34;&gt;printStackTrace&lt;/span&gt;();
+        }
+
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; ret &lt;span style=&#34;color:#ff79c6&#34;&gt;?&lt;/span&gt; indexRequest.&lt;span style=&#34;color:#50fa7b&#34;&gt;id&lt;/span&gt;() &lt;span style=&#34;color:#ff79c6&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;;
+    }
+
+    @GetMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/user/{id}&amp;#34;&lt;/span&gt;)
+    public Map findOneById(@PathVariable(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;) Integer id) {
+        Map&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String, Object&amp;gt; ret &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;;
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;try&lt;/span&gt; {
+            ret &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;restHighLevelClientX&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;findAsMapById&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;qicz&amp;#34;&lt;/span&gt;, id.&lt;span style=&#34;color:#50fa7b&#34;&gt;toString&lt;/span&gt;());
+        } &lt;span style=&#34;color:#ff79c6&#34;&gt;catch&lt;/span&gt; (IOException e) {
+            e.&lt;span style=&#34;color:#50fa7b&#34;&gt;printStackTrace&lt;/span&gt;();
+        }
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; ret;
+    }
+
+    @DeleteMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/user/{id}&amp;#34;&lt;/span&gt;)
+    public boolean deleteById(@PathVariable(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;) Integer id) {
+        boolean ret &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;false&lt;/span&gt;;
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;try&lt;/span&gt; {
+            ret &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;restHighLevelClientX&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;deleteByDocId&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;qicz&amp;#34;&lt;/span&gt;, id.&lt;span style=&#34;color:#50fa7b&#34;&gt;toString&lt;/span&gt;());
+        } &lt;span style=&#34;color:#ff79c6&#34;&gt;catch&lt;/span&gt; (IOException e) {
+            e.&lt;span style=&#34;color:#50fa7b&#34;&gt;printStackTrace&lt;/span&gt;();
+        }
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; ret;
+    }
+
+    @GetMapping(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;/user/find&amp;#34;&lt;/span&gt;)
+    public Page&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; find(String q) {
+        SearchSourceBuilder sourceBuilder &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; SearchSourceBuilder();
+
+        BoolQueryBuilder boolQueryBuilder &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; QueryBuilders.&lt;span style=&#34;color:#50fa7b&#34;&gt;boolQuery&lt;/span&gt;();
+        &lt;span style=&#34;color:#6272a4&#34;&gt;//q = &amp;#34;q+-&amp;amp;&amp;amp;||!(){}[]^\&amp;#34;~*?:\\&amp;#34;;
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;        q &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; QueryParser.&lt;span style=&#34;color:#50fa7b&#34;&gt;escape&lt;/span&gt;(q);
+        boolQueryBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;should&lt;/span&gt;(QueryBuilders.&lt;span style=&#34;color:#50fa7b&#34;&gt;queryStringQuery&lt;/span&gt;(q));
+        sourceBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;query&lt;/span&gt;(boolQueryBuilder);
+
+        HighlightBuilder highlightBuilder &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; HighlightBuilder();
+        highlightBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;requireFieldMatch&lt;/span&gt;(&lt;span style=&#34;color:#ff79c6&#34;&gt;true&lt;/span&gt;); &lt;span style=&#34;color:#6272a4&#34;&gt;//如果该属性中有多个关键字 则都高亮
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;        highlightBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;field&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;docType&amp;#34;&lt;/span&gt;);
+        highlightBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;field&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;docTitle&amp;#34;&lt;/span&gt;);
+        highlightBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;field&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;docContent&amp;#34;&lt;/span&gt;);
+        highlightBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;preTags&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;&amp;lt;span style=&amp;#39;color:red&amp;#39;&amp;gt;&amp;#34;&lt;/span&gt;);
+        highlightBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;postTags&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;&amp;lt;/span&amp;gt;&amp;#34;&lt;/span&gt;);
+
+        sourceBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;from&lt;/span&gt;(1);
+        sourceBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;size&lt;/span&gt;(10);
+        sourceBuilder.&lt;span style=&#34;color:#50fa7b&#34;&gt;highlighter&lt;/span&gt;(highlightBuilder);
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;try&lt;/span&gt; {
+            &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;restHighLevelClientX&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;searchForPage&lt;/span&gt;(Object.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, &lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;qicz&amp;#34;&lt;/span&gt;, sourceBuilder, 1, 10);
+        } &lt;span style=&#34;color:#ff79c6&#34;&gt;catch&lt;/span&gt; (IOException e) {
+            e.&lt;span style=&#34;color:#50fa7b&#34;&gt;printStackTrace&lt;/span&gt;();
+        }
+        &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;;
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id=&#34;如何使用-4&#34;&gt;如何使用？&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;引入项目依赖及&lt;code&gt;spring-boot-starter-data-elasticsearch&lt;/code&gt;及&lt;code&gt;elasticsearch-rest-high-level-client&lt;/code&gt;，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;基于druid和hikari的动态路由routingdatasource&#34;&gt;基于Druid和Hikari的动态路由RoutingDataSource&lt;/h3&gt;
+
+&lt;p&gt;spring官方提供了&lt;code&gt;org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource&lt;/code&gt;用于支持动态路由，但他对数据源本身的处理很少，越是基于此对其从根上进行了扩展，于是有了&lt;code&gt;org.openingo.spring.datasource.routing.RoutingDataSource&lt;/code&gt;，可以便捷的加入移除关闭数据源，且支持Druid及Hikari。&lt;/p&gt;
+
+&lt;h4 id=&#34;如何使用-5&#34;&gt;如何使用？&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;引入项目依赖（使用druid时加入其依赖），在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用；&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;示例：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;* DataSourceService
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;*
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;* @author Qicz
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;*/&lt;/span&gt;
+@Service
+@Slf4j
+public class DataSourceService implements IDataSourceService {
+  
+  @Autowired
+  RoutingDataSource routingDataSource;
+  
+  @Autowired
+  DruidDataSource dataSource;
+  
+  @Override
+  public void switchDataSource(String name) throws SQLException {
+      &lt;span style=&#34;color:#ff79c6&#34;&gt;try&lt;/span&gt; {
+          System.&lt;span style=&#34;color:#50fa7b&#34;&gt;out&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;println&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;======before======&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;+&lt;/span&gt;name);
+          routingDataSource.&lt;span style=&#34;color:#50fa7b&#34;&gt;getConnection&lt;/span&gt;();
+          System.&lt;span style=&#34;color:#50fa7b&#34;&gt;out&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;println&lt;/span&gt;(routingDataSource.&lt;span style=&#34;color:#50fa7b&#34;&gt;getCurrentUsingDataSourceProvider&lt;/span&gt;().&lt;span style=&#34;color:#50fa7b&#34;&gt;hashCode&lt;/span&gt;());
+          RoutingDataSourceHolder.&lt;span style=&#34;color:#50fa7b&#34;&gt;setCurrentUsingDataSourceKey&lt;/span&gt;(name);
+          routingDataSource.&lt;span style=&#34;color:#50fa7b&#34;&gt;getConnection&lt;/span&gt;();
+          System.&lt;span style=&#34;color:#50fa7b&#34;&gt;out&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;println&lt;/span&gt;(&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;======after======&amp;#34;&lt;/span&gt;);
+          System.&lt;span style=&#34;color:#50fa7b&#34;&gt;out&lt;/span&gt;.&lt;span style=&#34;color:#50fa7b&#34;&gt;println&lt;/span&gt;(routingDataSource.&lt;span style=&#34;color:#50fa7b&#34;&gt;getCurrentUsingDataSourceProvider&lt;/span&gt;().&lt;span style=&#34;color:#50fa7b&#34;&gt;hashCode&lt;/span&gt;());
+      } &lt;span style=&#34;color:#ff79c6&#34;&gt;finally&lt;/span&gt; {
+          RoutingDataSourceHolder.&lt;span style=&#34;color:#50fa7b&#34;&gt;clearCurrentUsingDataSourceKey&lt;/span&gt;();
+      }
+  }
+  
+  @Override
+  public void add(String name) {
+      &lt;span style=&#34;color:#6272a4&#34;&gt;//routingDataSource.setAutoCloseSameKeyDataSource(false);
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;      DruidDataSourceProvider druidDataSourceProvider &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; DruidDataSourceProvider(dataSource.&lt;span style=&#34;color:#50fa7b&#34;&gt;getUrl&lt;/span&gt;(), dataSource.&lt;span style=&#34;color:#50fa7b&#34;&gt;getUsername&lt;/span&gt;(), dataSource.&lt;span style=&#34;color:#50fa7b&#34;&gt;getPassword&lt;/span&gt;());
+      druidDataSourceProvider.&lt;span style=&#34;color:#50fa7b&#34;&gt;startProviding&lt;/span&gt;();
+      routingDataSource.&lt;span style=&#34;color:#50fa7b&#34;&gt;addDataSource&lt;/span&gt;(name, druidDataSourceProvider);
+  }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;springboot应用的配置信息的自动拷贝&#34;&gt;SpringBoot应用的配置信息的自动拷贝&lt;/h3&gt;
+
+&lt;p&gt;通常情况下，我们的SpringBoot应用都会有各种的配置文件或&lt;code&gt;yaml&lt;/code&gt;或&lt;code&gt;properties&lt;/code&gt;，而在项目部署时有需要将他们进行外部化，便于动态配置，项目的此特性就基于此而实现。&lt;/p&gt;
+
+&lt;h4 id=&#34;如何使用-6&#34;&gt;如何使用？&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;引入项目依赖；&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;在启动类中使用SpringApplicationX即可：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;* App
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;*
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;* @author Qicz
+&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;*/&lt;/span&gt;
+@SpringBootApplication
+@EnableExtension
+public class App {
+  
+  public static void main(String[] args) throws InterruptedException {
+      SpringApplicationX.&lt;span style=&#34;color:#50fa7b&#34;&gt;run&lt;/span&gt;(App.&lt;span style=&#34;color:#50fa7b&#34;&gt;class&lt;/span&gt;, args);
+      SpringApplicationX.&lt;span style=&#34;color:#50fa7b&#34;&gt;applicationInfo&lt;/span&gt;();
+  }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+
+&lt;p&gt;以上对项目的现有的核心功能进行了简单说明，具体可查看项目源码或待后续在针对性的详细说明实现思路。&lt;/p&gt;
+
+&lt;p&gt;此项目在设计之初，经过了多番反复的调整，才有了现在的模样，在打磨过程中，对&lt;code&gt;SpringBoot&lt;/code&gt;又进一步的加深的了解，提升了许多。接下来，会继续将常见的功能不断的完善和加入。&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>SpringBoot环境的ik应用</title>
