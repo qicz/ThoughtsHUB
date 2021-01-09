@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -27,8 +27,8 @@
   
 
   <meta property="og:title" content="Spring-boot-x开发日志" />
-<meta property="og:description" content=" 起源 ​ 一月前，做了这样的一个东西，这个东西目标是打破SpringBoot的Application启动时，在不指定扫描包路径时，扫描启动类所在的包及其子包。实现这个，就可以完成简单的引入一个外部的jar，这样就可以在这个外部的jar中来扩展各种功能了。在这样的情况下，spring-boot-x就一点点的诞生了。
-​ 说到一点点的诞生是因为在开发过程中，对它的源码和设计经历了从复杂到简化，从代码多到代码少一点点的不断的改进。
+<meta property="og:description" content="起源 ​	一月前，做了这样的一个东西，这个东西目标是打破SpringBoot的Application启动时，在不指定扫描包路径时，扫描启动类所在的包及其子包。实现这个，就可以完成简单的引入一个外部的jar，这样就可以在这个外部的jar中来扩展各种功能了。在这样的情况下，spring-boot-x就一点点的诞生了。
+​	说到一点点的诞生是因为在开发过程中，对它的源码和设计经历了从复杂到简化，从代码多到代码少一点点的不断的改进。
 支持的功能  pretty请求日志 自定义Error的异常处理，Error View Redis Command风格的RedisTemplate Redis Keynaming feign header 包装 TODO  " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://izcqi.com/posts/2020/09/18/spring-boot-x-develop-note/" />
@@ -37,10 +37,10 @@
 
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Spring-boot-x开发日志"/>
-<meta name="twitter:description" content=" 起源 ​ 一月前，做了这样的一个东西，这个东西目标是打破SpringBoot的Application启动时，在不指定扫描包路径时，扫描启动类所在的包及其子包。实现这个，就可以完成简单的引入一个外部的jar，这样就可以在这个外部的jar中来扩展各种功能了。在这样的情况下，spring-boot-x就一点点的诞生了。
-​ 说到一点点的诞生是因为在开发过程中，对它的源码和设计经历了从复杂到简化，从代码多到代码少一点点的不断的改进。
+<meta name="twitter:description" content="起源 ​	一月前，做了这样的一个东西，这个东西目标是打破SpringBoot的Application启动时，在不指定扫描包路径时，扫描启动类所在的包及其子包。实现这个，就可以完成简单的引入一个外部的jar，这样就可以在这个外部的jar中来扩展各种功能了。在这样的情况下，spring-boot-x就一点点的诞生了。
+​	说到一点点的诞生是因为在开发过程中，对它的源码和设计经历了从复杂到简化，从代码多到代码少一点点的不断的改进。
 支持的功能  pretty请求日志 自定义Error的异常处理，Error View Redis Command风格的RedisTemplate Redis Keynaming feign header 包装 TODO  "/>
-<meta name="generator" content="Hugo 0.59.1" />
+<meta name="generator" content="Hugo 0.68.3" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
@@ -80,7 +80,7 @@
              </li>
       </ul>
       
-      <p><em>The creative and technical writing. <br> Do more, challenge more, know more, be more.</em></p>
+      <p><em>The creative and technical writing. <!-- raw HTML omitted --> Do more, challenge more, know more, be more.</em></p>
       
     </header>
 
@@ -153,20 +153,24 @@
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
     
 
     
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#起源">起源</a></li>
+        <li><a href="#支持的功能">支持的功能</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
-<h3 id="起源">起源</h3>
-
-<p>​       一月前，做了这样的一个东西，这个东西目标是打破SpringBoot的Application启动时，在不指定扫描包路径时，扫描启动类所在的包及其子包。实现这个，就可以完成简单的引入一个外部的jar，这样就可以在这个外部的jar中来扩展各种功能了。在这样的情况下，spring-boot-x就一点点的诞生了。</p>
-
-<p>​       说到一点点的诞生是因为在开发过程中，对它的源码和设计经历了从复杂到简化，从代码多到代码少一点点的不断的改进。</p>
-
+    <h3 id="起源">起源</h3>
+<p>​		一月前，做了这样的一个东西，这个东西目标是打破SpringBoot的Application启动时，在不指定扫描包路径时，扫描启动类所在的包及其子包。实现这个，就可以完成简单的引入一个外部的jar，这样就可以在这个外部的jar中来扩展各种功能了。在这样的情况下，spring-boot-x就一点点的诞生了。</p>
+<p>​		说到一点点的诞生是因为在开发过程中，对它的源码和设计经历了从复杂到简化，从代码多到代码少一点点的不断的改进。</p>
 <h3 id="支持的功能">支持的功能</h3>
-
 <ol>
 <li>pretty请求日志</li>
 <li>自定义Error的异常处理，Error View</li>
@@ -178,6 +182,7 @@
 
 
 </article>
+
 
 <script src="https://utteranc.es/client.js"
     repo="qicz/ThoughtsHUB"
@@ -208,7 +213,7 @@
 
 </main>
     <footer>
-        <h6>&copy; 2012 - 2021 Qicz 
+        <h6>© 2012 - 2021 Qicz 
             - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
             | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
             | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>

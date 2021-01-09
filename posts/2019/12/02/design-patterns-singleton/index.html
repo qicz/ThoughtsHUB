@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -30,7 +30,7 @@
 <meta property="og:description" content="单例模式是软件设计中非常常见的模式，但真正用好也用对的好像还有很多路要走。一起来研究一下。
 单例，最最起码得有这些吧
  私有的构造方案 一个 static 的实例 一个 static 的外部访问入口  具体代码应该是这样的(懒汉模式)
-public class Singleton { private static Singleton instance = null; private Singleton(){} public static Singleton getInstance() { if (null == instance) { instance = new Singleton(); } return instance; } } 当然了，看着好像是那么回事，完成了以上操作，我们来测试一下" />
+1public class Singleton { 2 3 private static Singleton instance = null; 4 5 private Singleton(){} 6 7 public static Singleton getInstance() { 8 if (null == instance) { 9 instance = new Singleton(); 10 } 11 return instance; 12 } 13} 当然了，看着好像是那么回事，完成了以上操作，我们来测试一下" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://izcqi.com/posts/2019/12/02/design-patterns-singleton/" />
 <meta property="article:published_time" content="2019-12-02T14:36:39+08:00" />
@@ -41,8 +41,8 @@ public class Singleton { private static Singleton instance = null; private Singl
 <meta name="twitter:description" content="单例模式是软件设计中非常常见的模式，但真正用好也用对的好像还有很多路要走。一起来研究一下。
 单例，最最起码得有这些吧
  私有的构造方案 一个 static 的实例 一个 static 的外部访问入口  具体代码应该是这样的(懒汉模式)
-public class Singleton { private static Singleton instance = null; private Singleton(){} public static Singleton getInstance() { if (null == instance) { instance = new Singleton(); } return instance; } } 当然了，看着好像是那么回事，完成了以上操作，我们来测试一下"/>
-<meta name="generator" content="Hugo 0.59.1" />
+1public class Singleton { 2 3 private static Singleton instance = null; 4 5 private Singleton(){} 6 7 public static Singleton getInstance() { 8 if (null == instance) { 9 instance = new Singleton(); 10 } 11 return instance; 12 } 13} 当然了，看着好像是那么回事，完成了以上操作，我们来测试一下"/>
+<meta name="generator" content="Hugo 0.68.3" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
@@ -82,7 +82,7 @@ public class Singleton { private static Singleton instance = null; private Singl
              </li>
       </ul>
       
-      <p><em>The creative and technical writing. <br> Do more, challenge more, know more, be more.</em></p>
+      <p><em>The creative and technical writing. <!-- raw HTML omitted --> Do more, challenge more, know more, be more.</em></p>
       
     </header>
 
@@ -158,236 +158,226 @@ public class Singleton { private static Singleton instance = null; private Singl
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> 3 minutes read</em> </span>
 </aside>
-
-
     
 
     
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#enumsingleton-枚举方式实现的单例">EnumSingleton 枚举方式实现的单例</a></li>
+    <li><a href="#innerclasssingleton-内部类方式实现的单例">InnerClassSingleton 内部类方式实现的单例</a></li>
+    <li><a href="#特别说明">特别说明</a></li>
+  </ul>
+</nav>
 
-<p>单例模式是软件设计中非常常见的模式，但真正用好也用对的好像还有很多路要走。一起来研究一下。</p>
-
+    <p>单例模式是软件设计中非常常见的模式，但真正用好也用对的好像还有很多路要走。一起来研究一下。</p>
 <p>单例，最最起码得有这些吧</p>
-
 <ul>
 <li>私有的构造方案</li>
 <li>一个 static 的实例</li>
 <li>一个 static 的外部访问入口</li>
 </ul>
-
 <p>具体代码应该是这样的(懒汉模式)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public class Singleton {
-
-    private static Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>;
-
-    private Singleton(){}
-
-    public static Singleton getInstance() {
-        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> instance) {
-            instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Singleton();
-        }
-        <span style="color:#ff79c6">return</span> instance;
-    }
-}</code></pre></div>
-<p>当然了，看着好像是那么回事，完成了以上操作，我们来测试一下</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public class SingletonTest {
-
-    public static void main(String[] args) {
-        <span style="color:#ff79c6">for</span> (int i <span style="color:#ff79c6">=</span> 0; i <span style="color:#ff79c6">&lt;</span> 3; i<span style="color:#ff79c6">++</span>) {
-            <span style="color:#6272a4">//test1
-</span><span style="color:#6272a4"></span>            Singleton singleton <span style="color:#ff79c6">=</span> Singleton.<span style="color:#50fa7b">getInstance</span>();
-            System.<span style="color:#50fa7b">out</span>.<span style="color:#50fa7b">println</span>(<span style="color:#f1fa8c">&#34;running at thread&#34;</span> <span style="color:#ff79c6">+</span> Thread.<span style="color:#50fa7b">currentThread</span>().<span style="color:#50fa7b">getName</span>() <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;&gt;&gt;&#34;</span> <span style="color:#ff79c6">+</span> singleton);
-        }
-    }
-}</code></pre></div>
-<p>输出（每次运行输出是不一样的）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">running at threadmain&gt;&gt;cn.zhucongqi.singleton.Singleton@49476842
-running at threadmain&gt;&gt;cn.zhucongqi.singleton.Singleton@49476842
-running at threadmain&gt;&gt;cn.zhucongqi.singleton.Singleton@49476842</code></pre></div>
-<p>单例完成了！？</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Singleton</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#50fa7b">Singleton</span><span style="color:#ff79c6">(){}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> Singleton <span style="color:#50fa7b">getInstance</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> instance<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>            instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Singleton<span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>        <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        <span style="color:#ff79c6">return</span> instance<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>当然了，看着好像是那么回事，完成了以上操作，我们来测试一下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">SingletonTest</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>        <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span> i <span style="color:#ff79c6">&lt;</span> 3<span style="color:#ff79c6">;</span> i<span style="color:#ff79c6">++)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>            <span style="color:#6272a4">//test1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#6272a4"></span>            Singleton singleton <span style="color:#ff79c6">=</span> Singleton<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getInstance</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;running at thread&#34;</span> <span style="color:#ff79c6">+</span> Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">().</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;&gt;&gt;&#34;</span> <span style="color:#ff79c6">+</span> singleton<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>输出（每次运行输出是不一样的）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>running at threadmain&gt;&gt;cn.zhucongqi.singleton.Singleton@49476842
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>running at threadmain&gt;&gt;cn.zhucongqi.singleton.Singleton@49476842
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>running at threadmain&gt;&gt;cn.zhucongqi.singleton.Singleton@49476842
+</code></pre></div><p>单例完成了！？</p>
 <p>我们在多线程下测试一下，改造一下</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public class SingletonTest {
-
-    public static void main(String[] args) {
-<span style="color:#6272a4">//        for (int i = 0; i &lt; 3; i++) {
-</span><span style="color:#6272a4">//            //test1
-</span><span style="color:#6272a4">//            Singleton singleton = Singleton.getInstance();
-</span><span style="color:#6272a4">//            System.out.println(&#34;running at thread&#34; + Thread.currentThread().getName() + &#34;&gt;&gt;&#34; + singleton);
-</span><span style="color:#6272a4">//        }
-</span><span style="color:#6272a4"></span>
-
-        <span style="color:#6272a4">//test2
-</span><span style="color:#6272a4"></span>        Runnable r <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Runnable() {
-            @Override
-            public void run() {
-                Singleton singleton <span style="color:#ff79c6">=</span> Singleton.<span style="color:#50fa7b">getInstance</span>();
-                System.<span style="color:#50fa7b">out</span>.<span style="color:#50fa7b">println</span>(<span style="color:#f1fa8c">&#34;running at thread&#34;</span> <span style="color:#ff79c6">+</span> Thread.<span style="color:#50fa7b">currentThread</span>().<span style="color:#50fa7b">getName</span>() <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;&gt;&gt;&#34;</span> <span style="color:#ff79c6">+</span> singleton);
-            }
-        };
-        <span style="color:#ff79c6">new</span> Thread(r).<span style="color:#50fa7b">start</span>();
-        <span style="color:#ff79c6">new</span> Thread(r).<span style="color:#50fa7b">start</span>();
-        <span style="color:#ff79c6">new</span> Thread(r).<span style="color:#50fa7b">start</span>();
-        <span style="color:#ff79c6">new</span> Thread(r).<span style="color:#50fa7b">start</span>();
-        <span style="color:#ff79c6">new</span> Thread(r).<span style="color:#50fa7b">start</span>();
-    }
-}</code></pre></div>
-<p>输出（每次运行输出是不一样的）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">running at threadThread-2&gt;&gt;cn.zhucongqi.singleton.Singleton@a1a1c96
-running at threadThread-5&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
-running at threadThread-4&gt;&gt;cn.zhucongqi.singleton.Singleton@a1a1c96
-running at threadThread-3&gt;&gt;cn.zhucongqi.singleton.Singleton@a1a1c96
-running at threadThread-0&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
-running at threadThread-1&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc</code></pre></div>
-<p>出现问题了！！！怎么在多线程下出现了不同实例了？？？是不是我们的设计有问题呢？我们在图示位置打个断点，按照 Thread 来处理</p>
-
-<p><img src="https://izcqi.com/images/singleton-breakpoint.png" alt="" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">SingletonTest</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#6272a4">//        for (int i = 0; i &lt; 3; i++) {
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#6272a4">//            //test1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#6272a4">//            Singleton singleton = Singleton.getInstance();
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#6272a4">//            System.out.println(&#34;running at thread&#34; + Thread.currentThread().getName() + &#34;&gt;&gt;&#34; + singleton);
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#6272a4">//        }
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span style="color:#6272a4"></span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        <span style="color:#6272a4">//test2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#6272a4"></span>        Runnable r <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Runnable<span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>            @Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">run</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>                Singleton singleton <span style="color:#ff79c6">=</span> Singleton<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getInstance</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>                System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;running at thread&#34;</span> <span style="color:#ff79c6">+</span> Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">().</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;&gt;&gt;&#34;</span> <span style="color:#ff79c6">+</span> singleton<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>            <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>        <span style="color:#ff79c6">};</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>        <span style="color:#ff79c6">new</span> Thread<span style="color:#ff79c6">(</span>r<span style="color:#ff79c6">).</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>        <span style="color:#ff79c6">new</span> Thread<span style="color:#ff79c6">(</span>r<span style="color:#ff79c6">).</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>        <span style="color:#ff79c6">new</span> Thread<span style="color:#ff79c6">(</span>r<span style="color:#ff79c6">).</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>        <span style="color:#ff79c6">new</span> Thread<span style="color:#ff79c6">(</span>r<span style="color:#ff79c6">).</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>        <span style="color:#ff79c6">new</span> Thread<span style="color:#ff79c6">(</span>r<span style="color:#ff79c6">).</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>输出（每次运行输出是不一样的）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>running at threadThread-2&gt;&gt;cn.zhucongqi.singleton.Singleton@a1a1c96
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>running at threadThread-5&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>running at threadThread-4&gt;&gt;cn.zhucongqi.singleton.Singleton@a1a1c96
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>running at threadThread-3&gt;&gt;cn.zhucongqi.singleton.Singleton@a1a1c96
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>running at threadThread-0&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>running at threadThread-1&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
+</code></pre></div><p>出现问题了！！！怎么在多线程下出现了不同实例了？？？是不是我们的设计有问题呢？我们在图示位置打个断点，按照 Thread 来处理</p>
+<p><img src="https://izcqi.com/images/singleton-breakpoint.png" alt=""></p>
 <p>然后 Debug 一下
-<img src="https://izcqi.com/images/singleton-breakpoint-running.png" alt="" /></p>
-
+<img src="https://izcqi.com/images/singleton-breakpoint-running.png" alt=""></p>
 <p>我们先来看看 Thread0 的情况
-<img src="https://izcqi.com/images/singleton-breakpoint-t0-running.png" alt="" />
-<img src="https://izcqi.com/images/singleton-breakpoint-t0-over.png" alt="" /></p>
-
+<img src="https://izcqi.com/images/singleton-breakpoint-t0-running.png" alt="">
+<img src="https://izcqi.com/images/singleton-breakpoint-t0-over.png" alt=""></p>
 <p>看到此时<code>instance</code>为{Singleton@475}。我们换到 Thread1 再看看
-<img src="https://izcqi.com/images/singleton-breakpoint-t1-running.png" alt="" />
+<img src="https://izcqi.com/images/singleton-breakpoint-t1-running.png" alt="">
 看到此时<code>instance</code>也是{Singleton@475}。往下走
-<img src="https://izcqi.com/images/singleton-breakpoint-t1-over.png" alt="" /></p>
-
+<img src="https://izcqi.com/images/singleton-breakpoint-t1-over.png" alt=""></p>
 <p>额等等，怎么<code>instance</code>变成<code>{Singleton@476}</code>了，被覆盖咯？？？
 看来我们的设计有问题哦！</p>
-
 <p>怎么改造呢？</p>
-
 <p>从 Debug 来看，是<code>getInstance()</code>时出现了线程安全问题，我们用<code>synchronized</code>是不是可以解决问题呢？我们再改造一下</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public class Singleton {
-
-    private static Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>;
-
-    private Singleton(){}
-
-    public synchronized static Singleton getInstance() {
-        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> instance) {
-            instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Singleton();
-        }
-        <span style="color:#ff79c6">return</span> instance;
-    }
-}</code></pre></div>
-<p>再 Debug 一下。
-<img src="https://izcqi.com/images/singleton-breakpoint-monitor.png" alt="" />
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Singleton</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#50fa7b">Singleton</span><span style="color:#ff79c6">(){}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">synchronized</span> <span style="color:#8be9fd;font-style:italic">static</span> Singleton <span style="color:#50fa7b">getInstance</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> instance<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>            instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Singleton<span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>        <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        <span style="color:#ff79c6">return</span> instance<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>再 Debug 一下。
+<img src="https://izcqi.com/images/singleton-breakpoint-monitor.png" alt="">
 看到就一个 Thread 是 running 的，其他的是 Monitor 的，是不是可以了。我们往下继续走。
-<img src="https://izcqi.com/images/singleton-breakpoint-monitor-t0-over.png" alt="" />
+<img src="https://izcqi.com/images/singleton-breakpoint-monitor-t0-over.png" alt="">
 看到，Thread0 走出来之后，Thread4 才进入到 Running 状态。也就是加入<code>synchronized</code>把整个class都锁住了。目的到底，但是性能不好。我们再改造一下</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public class Singleton {
-
-    private static Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>;
-
-    private Singleton(){}
-
-    public static Singleton getInstance() {
-        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> instance) {
-            <span style="color:#8be9fd;font-style:italic">synchronized</span>(Singleton.<span style="color:#50fa7b">class</span>) {
-                instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Singleton();
-            }
-        }
-        <span style="color:#ff79c6">return</span> instance;
-    }
-}</code></pre></div>
-<p>再Debug 看看
-<img src="https://izcqi.com/images/singleton-breakpoint-running-2.png" alt="" />
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Singleton</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#50fa7b">Singleton</span><span style="color:#ff79c6">(){}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> Singleton <span style="color:#50fa7b">getInstance</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> instance<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>            <span style="color:#8be9fd;font-style:italic">synchronized</span><span style="color:#ff79c6">(</span>Singleton<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>                instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Singleton<span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>            <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>        <span style="color:#ff79c6">return</span> instance<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>再Debug 看看
+<img src="https://izcqi.com/images/singleton-breakpoint-running-2.png" alt="">
 现在所有 Thread 都是 Running 的了。我们继续走，先看看 Thread0
-<img src="https://izcqi.com/images/singleton-breakpoint-t0-running-2.png" alt="" />
+<img src="https://izcqi.com/images/singleton-breakpoint-t0-running-2.png" alt="">
 再看看 Thread3
-<img src="https://izcqi.com/images/singleton-breakpoint-t3-running.png" alt="" />
+<img src="https://izcqi.com/images/singleton-breakpoint-t3-running.png" alt="">
 看样子又要被覆盖咯！！！看来还是不行哦！是不是我们再加一把锁哦？！</p>
-
 <p>我们再改造一下</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public class Singleton {
-
-    private static Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>;
-
-    private Singleton(){}
-
-    public static Singleton getInstance() {
-        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> instance) {
-            <span style="color:#8be9fd;font-style:italic">synchronized</span>(Singleton.<span style="color:#50fa7b">class</span>) {
-                <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> instance) {
-                    instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Singleton();
-                }
-            }
-        }
-        <span style="color:#ff79c6">return</span> instance;
-    }
-}</code></pre></div>
-<p>这次我们先 Run 一下看看结果，输出</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">running at threadThread-2&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
-running at threadThread-0&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
-running at threadThread-1&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
-running at threadThread-3&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
-running at threadThread-4&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc</code></pre></div>
-<p>结果对咯！为什么呢？</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Singleton</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#50fa7b">Singleton</span><span style="color:#ff79c6">(){}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> Singleton <span style="color:#50fa7b">getInstance</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> instance<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>            <span style="color:#8be9fd;font-style:italic">synchronized</span><span style="color:#ff79c6">(</span>Singleton<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>                <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> instance<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>                    instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Singleton<span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>                <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>            <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>        <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>        <span style="color:#ff79c6">return</span> instance<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>这次我们先 Run 一下看看结果，输出</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>running at threadThread-2&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>running at threadThread-0&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>running at threadThread-1&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>running at threadThread-3&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>running at threadThread-4&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
+</code></pre></div><p>结果对咯！为什么呢？</p>
 <p>其实，刚才的效果和不断的改造，我们把最初的<code>Singleton</code>改造成了<strong>DoubleCheck</strong> 的懒汉式Singleton了。</p>
-
 <p>当然了，上面这种方式只是一种方式罢了。下面直接上其他的方式Code。</p>
-
 <blockquote>
 <p>2020.2.20更新</p>
-
-<p>在Doublecheck的第一次check的时候，<strong>代码读取到instance不为null时，instance引用的对象有可能还没有完成初始化。</strong>主要原因是<strong>重排序</strong>，<strong>所以只需要做一点小的修改（把instance声明为volatile型），就可以实现线程安全的延迟初始化。</strong>因为被volatile关键字修饰的变量是被禁止重排序的。</p>
+<p>在Doublecheck的第一次check的时候，<strong>代码读取到instance不为null时，instance引用的对象有可能还没有完成初始化。<strong>主要原因是</strong>重排序</strong>，**所以只需要做一点小的修改（把instance声明为volatile型），就可以实现线程安全的延迟初始化。**因为被volatile关键字修饰的变量是被禁止重排序的。</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">private static volatile Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>;</code></pre></div>
-<h2 id="enumsingleton-枚举方式实现的单例">EnumSingleton 枚举方式实现的单例</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// Enum Singleton
-</span><span style="color:#6272a4"></span>public enum EnumSingleton {
-
-    INSTANCE;
-    
-    public static EnumSingleton getInstance() {
-        <span style="color:#ff79c6">return</span> INSTANCE;
-    }
-}</code></pre></div>
-<h2 id="innerclasssingleton-内部类方式实现的单例">InnerClassSingleton 内部类方式实现的单例</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// Inner class Singleton
-</span><span style="color:#6272a4"></span>public class InnerSingleton {
-
-    private InnerSingleton(){
-        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">null</span> <span style="color:#ff79c6">!=</span> InnerHolder.<span style="color:#50fa7b">INSTANCE</span>) {
-            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> RuntimeException(<span style="color:#f1fa8c">&#34;Just only one Instance can be create!&#34;</span>);
-        }
-    }
-
-    <span style="color:#6272a4">//Serializable
-</span><span style="color:#6272a4"></span>    private Object readResolve() {
-        <span style="color:#ff79c6">return</span> InnerHolder.<span style="color:#50fa7b">INSTANCE</span>;
-    }
-
-    public static InnerSingleton getInstance() {
-        <span style="color:#ff79c6">return</span> InnerHolder.<span style="color:#50fa7b">INSTANCE</span>;
-    }
-
-    private static class InnerHolder {
-        private static final InnerSingleton INSTANCE <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> InnerSingleton();
-    }
-}</code></pre></div>
-<h2 id="特别说明">特别说明</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">volatile</span> Singleton instance <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+</code></pre></div><h2 id="enumsingleton-枚举方式实现的单例">EnumSingleton 枚举方式实现的单例</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#6272a4">// Enum Singleton
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">enum</span> EnumSingleton <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    INSTANCE<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>    
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> EnumSingleton <span style="color:#50fa7b">getInstance</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>        <span style="color:#ff79c6">return</span> INSTANCE<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span style="color:#ff79c6">}</span>
+</code></pre></div><h2 id="innerclasssingleton-内部类方式实现的单例">InnerClassSingleton 内部类方式实现的单例</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#6272a4">// Inner class Singleton
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">InnerSingleton</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#50fa7b">InnerSingleton</span><span style="color:#ff79c6">(){</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span> <span style="color:#ff79c6">!=</span> InnerHolder<span style="color:#ff79c6">.</span><span style="color:#50fa7b">INSTANCE</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> RuntimeException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Just only one Instance can be create!&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    <span style="color:#6272a4">//Serializable
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">private</span> Object <span style="color:#50fa7b">readResolve</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        <span style="color:#ff79c6">return</span> InnerHolder<span style="color:#ff79c6">.</span><span style="color:#50fa7b">INSTANCE</span><span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> InnerSingleton <span style="color:#50fa7b">getInstance</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>        <span style="color:#ff79c6">return</span> InnerHolder<span style="color:#ff79c6">.</span><span style="color:#50fa7b">INSTANCE</span><span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">InnerHolder</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>        <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> InnerSingleton INSTANCE <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> InnerSingleton<span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span style="color:#ff79c6">}</span>
+</code></pre></div><h2 id="特别说明">特别说明</h2>
 <ul>
-<li><p>为了避免序列化出现的 Singleton 实例不唯一的情况，覆盖 Object 的readResolve方法。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">private Object readResolve() {
-    <span style="color:#ff79c6">return</span> InnerHolder.<span style="color:#50fa7b">INSTANCE</span>;
-}</code></pre></div></li>
-
-<li><p>为了避免，通过反射错误的使用 Singleton，在构造中做再处理</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">private InnerSingleton(){
-    <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">null</span> <span style="color:#ff79c6">!=</span> InnerHolder.<span style="color:#50fa7b">INSTANCE</span>) {
-        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> RuntimeException(<span style="color:#f1fa8c">&#34;Just only one Instance can be create!&#34;</span>);
-    }
-}</code></pre></div></li>
+<li>为了避免序列化出现的 Singleton 实例不唯一的情况，覆盖 Object 的readResolve方法。</li>
 </ul>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#8be9fd;font-style:italic">private</span> Object <span style="color:#50fa7b">readResolve</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>        <span style="color:#ff79c6">return</span> InnerHolder<span style="color:#ff79c6">.</span><span style="color:#50fa7b">INSTANCE</span><span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>为了避免，通过反射错误的使用 Singleton，在构造中做再处理</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#50fa7b">InnerSingleton</span><span style="color:#ff79c6">(){</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span> <span style="color:#ff79c6">!=</span> InnerHolder<span style="color:#ff79c6">.</span><span style="color:#50fa7b">INSTANCE</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> RuntimeException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Just only one Instance can be create!&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>        <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span style="color:#ff79c6">}</span>
+</code></pre></div>
 
 </article>
+
 
 <script src="https://utteranc.es/client.js"
     repo="qicz/ThoughtsHUB"
@@ -418,7 +408,7 @@ running at threadThread-4&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc</code>
 
 </main>
     <footer>
-        <h6>&copy; 2012 - 2021 Qicz 
+        <h6>© 2012 - 2021 Qicz 
             - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
             | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
             | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>

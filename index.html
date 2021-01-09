@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -22,13 +22,12 @@
 <meta property="og:description" content="Qicz&#39;s creative tand technical writing." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://izcqi.com/" />
-
-<meta property="og:updated_time" content="2021-01-09T09:34:31+08:00" />
+<meta property="og:updated_time" content="2019-11-27T19:26:16+08:00" />
 
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Qicz&#39;s Thoughts HUB"/>
 <meta name="twitter:description" content="Qicz&#39;s creative tand technical writing."/>
-<link rel="alternate" type="application/rss+xml+xml" href="https://izcqi.com/index.xml" title="Qicz's Thoughts HUB" /><meta name="generator" content="Hugo 0.59.1" />
+<link rel="alternate" type="application/rss+xml+xml" href="https://izcqi.com/index.xml" title="Qicz's Thoughts HUB" /><meta name="generator" content="Hugo 0.68.3" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
@@ -68,7 +67,7 @@
              </li>
       </ul>
       
-      <p><em>The creative and technical writing. <br> Do more, challenge more, know more, be more.</em></p>
+      <p><em>The creative and technical writing. <!-- raw HTML omitted --> Do more, challenge more, know more, be more.</em></p>
       
     </header>
 
@@ -139,16 +138,19 @@
     </span>
     
     &nbsp; | &nbsp; 
-    <span class="fa fa-plane"><em> 5 minutes read</em> </span>
+    <span class="fa fa-plane"><em> 6 minutes read</em> </span>
 </aside>
-
-
             <p>特别说明：通常，我们会将SpringBoot写作SpringBoot，而此处写作spring-boot是因项目的确就叫做spring-boot-x。以下简称项目。
  项目地址：https://github.com/OpeningO/spring-boot-x
 源起 娱坛有云一人一首成名曲，虽互联网技术与娱之文艺不同，但个人仍以为技术与艺类同，皆为高雅之事。故成此项目，是以个人有利器，便于而后开疆扩土。
-总览 特性清单  请求日志，包括请求源、请求目标、请求参数、处理时间、错误异常等信息； 请求响应参数的自动装配（映射）； 跨域的配置； 嵌入SpringBoot的异常处理机制，可以将原来的错误信息中插入其他信息、或将其解析或转换为其他信息； 如SpringBoot之starter动态装配或在yml中配置相关特性； 简化的Redis操作； 提炼Elasticsearch之HighlevelClient常用操作； feign的请求头参数的处理：合并上下游的请求头参数，并发场景的数据处理策略； 基于Druid和Hikari的动态路由RoutingDataSource； SpringBoot应用的配置信息的自动拷贝； 更多继续完善&hellip; &hellip;
- 引入依赖
-&lt;dependency&gt; &lt;groupId&gt;org.openingo.spring&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-x&lt;/artifactId&gt; &lt;version&gt;${spring-boot-x.version}&lt;/version&gt; &lt;/dependency&gt;  细说特性 请求日志 先看看效果</p>
+总览 特性清单   请求日志，包括请求源、请求目标、请求参数、处理时间、错误异常等信息；
+  请求响应参数的自动装配（映射）；
+  跨域的配置；
+  嵌入SpringBoot的异常处理机制，可以将原来的错误信息中插入其他信息、或将其解析或转换为其他信息；
+  如SpringBoot之starter动态装配或在yml中配置相关特性；
+  简化的Redis操作；
+  提炼Elasticsearch之HighlevelClient常用操作；
+  feign的请求头参数的处理：合并上下游的请求头参数，并发场景的数据处理策略；</p>
             
             <a href="https://izcqi.com/posts/2021/01/09/spring-boot-x-specify/">Read more…</a>
             
@@ -182,10 +184,8 @@
     </span>
     
     &nbsp; | &nbsp; 
-    <span class="fa fa-plane"><em> 6 minutes read</em> </span>
+    <span class="fa fa-plane"><em> 7 minutes read</em> </span>
 </aside>
-
-
             <p>2021第一篇黑科技
  背景 最近有个项目接入了es，对于检索关键字需要扩大范围检索结果的匹配范围，所以考虑将检索关键字进行分词处理，再交给es处理。(当然这里可以用es的highlevelclient的analyze接口，此处不考虑这种情况)。于是研究ik-analysis，然后有了ik-springboot-demo这个项目，接下来都将以此项目展开描述。
 解决的问题  在SpringBoot项目中直接且简单便捷的使用ik。
@@ -230,19 +230,20 @@ ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民�
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>过去一周，读了一本书，书名《一往无前》，作者是范海涛女士。多年前，读过范女士的一部著作《世界因你不同》，讲述的是李开复的故事。收益颇深。范女士是哥伦比亚大学首位口述历史硕士学位获得者。而这部《一往无前》，是许久前就发现和关注的一部著作，2020年出版，讲述的是可谓是商业的又一个神话级的公司的发展史，那就是小米。
 一直以来对各类商业发展史都有或多或少的研究和兴趣，对小米的了解之前也是很浅层次的。通过读此书对小米的发展有了更深刻的了解。对小米的成功也感触颇深：
- 从创立之初雷军的状态  创立小米之初，雷军正直40之龄，是一个已实现财富自由，在IT届已经赫赫有名的大佬。当就是这样一位大佬，还未实现青年时期的梦想，所以为了自己梦想，选择了重新开始。而这将是对中国制造的巨大革新，对Made In China的重新诠释的开始。这也是小米诞生的开始。
- 团队的组建  作为的一个互联网老兵，雷军甚至做一件事，人的重要性，这也是他直到现在在找人少不遗余力的原因。他的用人原则就是，看准的人，不惜任何代价的收入。因为看到了这样的合适的人，而直接收购对方公司的案例太多太多了。没有阿里那般18罗汉的浩大，但也是颇费周折，但比起那当初的18罗汉，可谓是大佬云集。来自google，微软，摩托罗拉等等的比比皆是。
+  从创立之初雷军的状态
+创立小米之初，雷军正直40之龄，是一个已实现财富自由，在IT届已经赫赫有名的大佬。当就是这样一位大佬，还未实现青年时期的梦想，所以为了自己梦想，选择了重新开始。而这将是对中国制造的巨大革新，对Made In China的重新诠释的开始。这也是小米诞生的开始。
+  团队的组建
+作为的一个互联网老兵，雷军甚至做一件事，人的重要性，这也是他直到现在在找人少不遗余力的原因。他的用人原则就是，看准的人，不惜任何代价的收入。因为看到了这样的合适的人，而直接收购对方公司的案例太多太多了。没有阿里那般18罗汉的浩大，但也是颇费周折，但比起那当初的18罗汉，可谓是大佬云集。来自google，微软，摩托罗拉等等的比比皆是。
 而这些人，选择加入小米的原因就是梦想，相信“风口的猪会飞起来”。这些早已实现财富自由的人，凑在了一起，跳出了自己的舒适区，重新出发。
 这个世界上做到的悲剧是比你优秀的人，比你富有的人，却比你努力，而且比你千倍百倍。
- 业务的爆发
- 小米国际化
-  小米的国际化开始于，雨果巴拉的加入。他来自google，从美国来到中国，从小米还是一个小不点的时候，毅然放弃了google的工作来到了小米。
+  业务的爆发
+  小米国际化
+小米的国际化开始于，雨果巴拉的加入。他来自google，从美国来到中国，从小米还是一个小不点的时候，毅然放弃了google的工作来到了小米。
 机会面前，人人平等——选择比努力更重要。
- Are you ok之开拓印度  经典的鬼畜《Are you OK》相信很多人都听过。但是小米的印度之旅却比这更有意思。 一个错误的判断，面向小米的手机为3G制式，结果手机挤压500万台，这可是10亿的活，这对于小米来说是天大大灾难。不过，最终并没有困住英勇的小米人。把这个10亿的货转战其他国家，最后不仅解决了此困局，而且还收入了其他的国家的尝试。</p>
+  Are you ok之开拓印度
+经典的鬼畜《Are you OK》相信很多人都听过。但是小米的印度之旅却比这更有意思。 一个错误的判断，面向小米的手机为3G制式，结果手机挤压500万台，这可是10亿的活，这对于小米来说是天大大灾难。不过，最终并没有困住英勇的小米人。把这个10亿的货转战其他国家，最后不仅解决了此困局，而且还收入了其他的国家的尝试。</p>
             
             <a href="https://izcqi.com/posts/2020/09/21/yi-wang-wu-qian-notes/">Read more…</a>
             
@@ -278,10 +279,8 @@ ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民�
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
-            <p> 起源 ​ 一月前，做了这样的一个东西，这个东西目标是打破SpringBoot的Application启动时，在不指定扫描包路径时，扫描启动类所在的包及其子包。实现这个，就可以完成简单的引入一个外部的jar，这样就可以在这个外部的jar中来扩展各种功能了。在这样的情况下，spring-boot-x就一点点的诞生了。
-​ 说到一点点的诞生是因为在开发过程中，对它的源码和设计经历了从复杂到简化，从代码多到代码少一点点的不断的改进。
+            <p>起源 ​	一月前，做了这样的一个东西，这个东西目标是打破SpringBoot的Application启动时，在不指定扫描包路径时，扫描启动类所在的包及其子包。实现这个，就可以完成简单的引入一个外部的jar，这样就可以在这个外部的jar中来扩展各种功能了。在这样的情况下，spring-boot-x就一点点的诞生了。
+​	说到一点点的诞生是因为在开发过程中，对它的源码和设计经历了从复杂到简化，从代码多到代码少一点点的不断的改进。
 支持的功能  pretty请求日志 自定义Error的异常处理，Error View Redis Command风格的RedisTemplate Redis Keynaming feign header 包装 TODO  </p>
             
           </li>
@@ -316,8 +315,6 @@ ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民�
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> 3 minutes read</em> </span>
 </aside>
-
-
             <p>说明：作者Qicz将有可能随时的修订本文的内容，为了保证内容的一致性和严谨性，作者Qicz保留本文的所有权利。未经作者Qicz本人同意，不得转载或者以其他方式使用这些内容。
  本文作为kong系列的入门，主要内容如下：
  Api gateway概述 Kong安装 Kong.conf  一、Api gateway概述 1、从gateway说起 wikipedia上给gateway了很多定义，gateway是一个入口或者门口，可以说是一个网络间数据或协议交换的物理设备（Router），也可以是设备之前协议转化或数据共享的程序，而这样的程序就是我们这里讨论的重点。
@@ -327,7 +324,7 @@ Kong官网 介绍，Kong是一个运行在Nginx中的基于Lua - Nginx模块实�
 Kong是一个基于云的、快速的、可伸缩的分布式微服务抽象层(也称为API网关或API中间件)。2015年作为开源项目发布，其核心价值是高性能和可扩展性。
 2、为何选择Kong？ 如果您正在为web、移动或物联网构建服务，那们您可能还需要通用功能来运行您的实际软件。Kong可以充当微服务请求的网关(或侧卡)，同时通过插件提供负载平衡、日志记录、身份验证、速率限制、转换等功能。
 Kong的构建遵循以下主要原则：
- 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  3、功能特性  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 + L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 运行状况检查：主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2.</p>
+ 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  3、功能特性  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 + L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 **运行状况检查：**主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2.</p>
             
             <a href="https://izcqi.com/posts/2020/08/31/kong-primer-0/">Read more…</a>
             
@@ -363,8 +360,6 @@ Kong的构建遵循以下主要原则：
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>说明：作者Qicz将有可能随时的修订本文的内容，为了保证内容的一致性和严谨性，作者Qicz保留本文的所有权利。未经作者Qicz本人同意，不得转载或者以其他方式使用这些内容。
  入门  api gateway概述 kong安装 kong.conf  配置  kong.conf高级配置 nginx配置 proxy配置 ssl配置  AdminApi  Services Routes Consumer Plugins Upstreams Targets Tags  常用插件  key-auth rate-limiting proxy-cache oauth2.</p>
             
@@ -402,15 +397,13 @@ Kong的构建遵循以下主要原则：
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>Kong 提供了对Routes的扩展header方式，但是对于这个参数的设置，不小心就会出错了。作者在使用过程中也遇到了问题。
 使用postman设置routes的headers参数时，出现如下错误：
  schema violation (headers: expected a map)
  大写的！！！
 找了很多资料，几乎都是使用raw的方式，而kong并不支持对routes的headers设置使用raw的方式。
 找了很多资料，想起空对数组的处理方式，比如paths，可以像如下这样赋值：
-paths[] = &#39;/foo&#39; paths[] = &#39;/example&#39; 于是，用同样的方式尝试，居然成功了，😝</p>
+1paths[] = &#39;/foo&#39; 2paths[] = &#39;/example&#39; 于是，用同样的方式尝试，居然成功了，😝</p>
             
           </li>
           
@@ -450,8 +443,6 @@ paths[] = &#39;/foo&#39; paths[] = &#39;/example&#39; 于是，用同样的方�
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>非常特别的一次长跑——2020年第一个10km。
 有些时间，甚至说就没有进行过这样的运动，这真如突来的长跑，让我思考许多。现在回想，在整个过程中的感受，依据回味无穷。可惜，手机原因未能记录完整数据记录。以下是文字记录：
 第0km 起跑时，先整了一个冰的红牛。刚起步，感觉是”轻“。在非常清非常缓的状态下，开始了。预计，在跑到300-500m的时候，感觉就上来了，把速度提了一点，据同行伙伴的数据，应该进入了6分左右。但之后的感受就不一样了，身体有点难以适应了，感觉这与头段时间自己的轻松5km感觉非常不同。
@@ -504,14 +495,12 @@ paths[] = &#39;/foo&#39; paths[] = &#39;/example&#39; 于是，用同样的方�
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> 5 minutes read</em> </span>
 </aside>
-
-
             <p>说明：作者Qicz将有可能随时的修订本文的内容，为了保证内容的一致性和严谨性，作者Qicz保留本文的所有权利。未经作者Qicz本人同意，不得转载或者以其他方式使用这些内容。
  从技术的角度来说，Kong是什么（因为Kong也有金刚意思）? (https://docs.konghq.com/2.1.x/getting-started/introduction/) Kong是一个运行在Nginx中的基于Lua - Nginx模块实现的Lua应用程序。Kong与OpenResty一起发布的，以此替代在Nginx中还需编译Lua - Nginx模块，OpenResty已经包含了lua- Nginx模块。OpenResty不是Nginx的一个分支，而是一组扩展其功能的模块。
 Kong是一个基于云的、快速的、可伸缩的分布式微服务抽象层(也称为API网关或API中间件)。2015年作为开源项目发布，其核心价值是高性能和可扩展性。
 为何选择Kong？ 如果您正在为web、移动或物联网构建服务，那们您可能还需要通用功能来运行您的实际软件。Kong可以充当微服务请求的网关(或侧卡)，同时通过插件提供负载平衡、日志记录、身份验证、速率限制、转换等功能。
 Kong的构建遵循以下主要原则：
- 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  Features  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 + L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 运行状况检查：主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2.</p>
+ 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  Features  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 + L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 **运行状况检查：**主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2.</p>
             
             <a href="https://izcqi.com/posts/2020/07/28/kong-quick-start-and-core-concepts-cn/">Read more…</a>
             
@@ -545,10 +534,8 @@ Kong的构建遵循以下主要原则：
     </span>
     
     &nbsp; | &nbsp; 
-    <span class="fa fa-plane"><em> 21 minutes read</em> </span>
+    <span class="fa fa-plane"><em> 22 minutes read</em> </span>
 </aside>
-
-
             <p>Note: Author Qicz may revise the content of this article from time to time. In order to guarantee the consistency and rigor of the content, author Qicz reserves all rights of this article.</p>
             
             <a href="https://izcqi.com/posts/2020/07/28/kong-quick-start-and-core-concepts-en/">Read more…</a>
@@ -588,12 +575,10 @@ Kong的构建遵循以下主要原则：
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>阅读的意义是无限的，近来认识一新朋友，他游历全国各地，而每次的游历都会做足了功夫，会对目的地了解非常，多以历史为主。时间久了，就积累各种历史史事，每每聊到此类话题，都肃然起敬，感叹中华文明之悠远。
 因今之疫情，心情难免波浮，此时唯有阅读聊以蔚然。
 的确，很久没有静心阅读了，近来阅读了基本文学著作，也找到了对应的电影，深入的透析了一把。
-阅读是一个很美的事，阅读可以让心平静下来。昨天还看到一则新闻，一位湖北的农民工大叔，在东莞打工17年，却在东莞图书馆阅读了12年之久，因今年的疫情情况，原来的工作单位不能在工作，计划离别东莞，在离别之际，还写了一感谢信。从字里行间，能够感受到，这12年的阅读，对他的帮助之大，他小学文化，但是选择了以这种方式来提升自己，而时间的积累也效果明显。阅读不只是一种提升的方式，更是一种休闲的方式。阅读聊以蔚然。</p>
+阅读是一个很美的事，阅读可以让心平静下来。昨天还看到一则新闻，一位湖北的农民工大叔，在东莞打工17年，却在东莞图书馆阅读了12年之久，因今年的疫情情况，原来的工作单位不能在工作，计划离别东莞，在离别之际，还写了一感谢信。从字里行间，能够感受到，这12年的阅读，对他的帮助之大，他小学文化，但是选择了以这种方式来提升自己，而时间的积累也效果明显。**阅读不只是一种提升的方式，更是一种休闲的方式。**阅读聊以蔚然。</p>
             
           </li>
           
@@ -627,15 +612,13 @@ Kong的构建遵循以下主要原则：
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> 2 minutes read</em> </span>
 </aside>
-
-
             <p>提到Spring的动态数据源重点在于对AbstractRoutingDataSource实现及工作原理的认知。
 先从Spring的DataSource开始说起，而说到DataSource，用最原始的jdbc来说明可能会更容易理解了。
 在使用jdbc时，要进行一个sql操作，我们需要这样的一个链路：
  Statement &lt;- Connection &lt;- DataSource
  也就是根源上就是获取一个DataSource，这就是关联到一个具体源的对象。那么切换源，从原理上来讲就是切换这个DataSource对象了。
 那么，下一步，来看看这个AbstractRoutingDataSource的工作原理是不是就是这样的呢？这里摘取它的部分实现源码:
-@Nullable private Map&lt;Object, Object&gt; targetDataSources; @Nullable private Object defaultTargetDataSource; ... @Override public void afterPropertiesSet() { if (this.targetDataSources == null) { throw new IllegalArgumentException(&#34;Property &#39;targetDataSources&#39; is required&#34;); } this.</p>
+1@Nullable 2private Map&lt;Object, Object&gt; targetDataSources; 3 4@Nullable 5private Object defaultTargetDataSource; 6... 7@Override 8public void afterPropertiesSet() { 9 if (this.</p>
             
             <a href="https://izcqi.com/posts/2020/05/31/principle-dynamic-data-source/">Read more…</a>
             
@@ -671,8 +654,6 @@ Kong的构建遵循以下主要原则：
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>此清单将进行不定期的修订
  整理此清单，目的是为了参考市场的各类工具，并应用到生活、工作中，从而提供各种效率。
 TODO List类 - 奇妙清单Wunderlist 很早前，就接触和使用了它。它可以非常好的管理好自己的待办。操作界面也比较简约，支持PC、Mac、移动端，方便随时的关注和管理自己的待办。
@@ -681,7 +662,8 @@ Pomotodo 番茄土豆，按照番茄时钟的方式管理todo。
 - 滴答清单  待尝试
  笔记类 - 印象笔记 这个产品，我使用时间也笔记旧了，自己也注册了各种的账号，用途就是整理各种各样的笔记。创建不同的NoteBook，在不同的NoteBook中创建不同等Note，可以对Note加入不同的tag。
 新版本的印象支持了Markdown，习惯用Markdown的朋友，也可以方便在里面应用。对OCR、Mindmap也有了很多的应用，不过因为我本人可能用不到这类高级功能（我可能会借助其他工具完成），所以没有购买印象的高级功能，并尝试这些高级特性。
-- Typora 这个产品，是我目前为止使用过的Markdown类产品中，最爽的：简约，支持自定义很多内容，比如主题，切换交互方式：文本，源码等等。我现在写这篇文章就是用的它。日常工作中，我整理笔记也会用到它。</p>
+- Typora 这个产品，是我目前为止使用过的Markdown类产品中，最爽的：简约，支持自定义很多内容，比如主题，切换交互方式：文本，源码等等。我现在写这篇文章就是用的它。日常工作中，我整理笔记也会用到它。
+它的不足就是，它只是一个本地的文本Editor，不能将内容保存到云端。（PS：可以考虑看看有没有办法自己定制一个）</p>
             
             <a href="https://izcqi.com/posts/2020/05/03/list-of-efficiency-tools/">Read more…</a>
             
@@ -717,16 +699,18 @@ Pomotodo 番茄土豆，按照番茄时钟的方式管理todo。
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>从故事说起 前段时间，一朋友公司招聘CTO，因为朋友不太懂技术，我帮着参谋了一下。共参与面试了两个人。我想说说对此次面试的感受吧。
 第一个，47岁，看到简历，过去的经历非常的丰富。工作经验都20多年了，相比一定的大牛，我还特别担心是不是可以聊得了。但结果却让我大跌眼镜。
 到现在，我记得比较深刻的几个问题：
- linux的发现版有哪些？——因为他提到他对linux很熟悉   答：redhat，centos，其他的就不知道了
+  linux的发现版有哪些？——因为他提到他对linux很熟悉
+ 答：redhat，centos，其他的就不知道了
  其实这个问题，是我在与他沟通过程中发现了很多的问题，他对linux并不熟悉，所以想从这个口去看看他对Linux的了解，结果这根本谈不上了解。甚至还没到Linux系统层面的东西。
-   未来技术发展趋势？   答：好好学习，学习使用&hellip; &hellip;
+    未来技术发展趋势？
+ 答：好好学习，学习使用&hellip; &hellip;
  这个让我大大的大跌眼镜，这种说法表面既不成熟，也对技术发展没有任何了解。
-   按照高可用的标准改造一个他熟悉的系统的思路    基本上答非所问&hellip;</p>
+    按照高可用的标准改造一个他熟悉的系统的思路
+  基本上答非所问&hellip;
+    另一个，40岁，也是朋友公司比较看重的一个人，从简历上看经历也是相当的丰富的。想着面对这样的人，必定也经历和面试过很多人，换种方式来沟通，让他自己用一种他任何合适的方式来展示自己。</p>
             
             <a href="https://izcqi.com/posts/2020/04/03/thought-and-felling-about-technology-in-2020/">Read more…</a>
             
@@ -762,8 +746,6 @@ Pomotodo 番茄土豆，按照番茄时钟的方式管理todo。
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>2020年对于世界和每个人都是及其特别的一年。
 2019年12月开始，陆陆续续爆发的新型冠状病毒疫情，肆虐了国内外。
 在国内，疫情最严重的地方就是湖北武汉，而来自全国各地的专家、医护人员的舍命付出，在春暖花开的时节，一切都回归了生机，迎来了难得的胜利之光。
@@ -807,8 +789,6 @@ Pomotodo 番茄土豆，按照番茄时钟的方式管理todo。
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>什么是FatJar和ThinJar？
 FatJar  FatJar又叫做UberJar，就是一种超级Jar，其实就是把一个基础Jar及其依赖都打包到一个Jar里面，然后用了它就可以独立工作的Jar。总数很“重”。
  ThinJar  ThinJar就是对超级Jar相对应的Jar，“纤瘦”的Jar。只有自身的资源组合（.class，properties等等）。
@@ -858,13 +838,11 @@ Problem）。
     </span>
     
     &nbsp; | &nbsp; 
-    <span class="fa fa-plane"><em> 3 minutes read</em> </span>
+    <span class="fa fa-plane"><em> 4 minutes read</em> </span>
 </aside>
-
-
             <p>故事开头： 在使用MyBatis的RowBounds时，发现结果没有和理论的一致，然后深入研究RowBounds的实现原理：MyBatis仅借助RowBounds在内存中完成了数据的分页处理——逻辑分页。还有一种是物理分页，就是常见的Limit offset, limit的方式（MySQL）。然后查资料，研究找到了很多的实现方式。我先尝试了一下其中的一种：使用Interceptor的方式。大体的逻辑是在当前执行的SQL后面把RowBounds的offset，limit按照limit offset,limit的方式拼接在SQL后面。
 实现如下：
-@Intercepts({@Signature(type = Executor.class, method = &#34;query&#34;, args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})}) public class PageInterceptor implements Interceptor { @Override public Object intercept(Invocation invocation) throws Throwable { Object[] args = invocation.</p>
+1@Intercepts({@Signature(type = Executor.class, method = &#34;query&#34;, args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})}) 2public class PageInterceptor implements Interceptor { 3 4 @Override 5 public Object intercept(Invocation invocation) throws Throwable { 6 Object[] args = invocation.</p>
             
             <a href="https://izcqi.com/posts/2019/12/09/mybatis-plugins-principle/">Read more…</a>
             
@@ -900,12 +878,10 @@ Problem）。
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>怎样在项目中快速的生成.gitignore文件呢？ 使用git过程中，重视需要加入gitignore忽略文件把项目中不必要的文件忽略掉。但是每次都拷贝之前旧的文件很不方便。而且，针对不同的环境，不同的程序语言，使用的忽略文件可能还不一样，如何快速的生成对应的 ignore 文件呢？
 ps：因为我在 mac 平台，我就以 mac 平台举例了。
 gitignore.io 帮助完成ignore文件的自动化生成 在Terminal中执行如下操作
-echo &#34;function gi() { curl -sL https://www.gitignore.io/api/\$@ ;}&#34; &gt;&gt; \ ~/.bash_profile &amp;&amp; source ~/.bash_profile 使用举例  需要macOS下使用Idea(intellij)、Maven开发 Java的ignore，在项目根目录下（.</p>
+1echo &#34;function gi() { curl -sL https://www.gitignore.io/api/\$@ ;}&#34; &gt;&gt; \ 2~/.bash_profile &amp;&amp; source ~/.bash_profile 使用举例  需要macOS下使用Idea(intellij)、Maven开发 Java的ignore，在项目根目录下（.git 文件夹所在目录）执行如下操作  1gi java,macos,maven,intellij &gt;&gt; .</p>
             
             <a href="https://izcqi.com/posts/2019/12/08/generate-gitigore-file/">Read more…</a>
             
@@ -944,11 +920,9 @@ echo &#34;function gi() { curl -sL https://www.gitignore.io/api/\$@ ;}&#34; &gt;
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> 2 minutes read</em> </span>
 </aside>
-
-
-            <p>软件设计原则  开闭原则 Open-Closed Principle, OCP   软件实体如类、模块和函数应该对扩展开放，对修改关闭。 所谓的开闭，也正是对扩展和修改两个行为的一个原则。用抽象构建框架，用实现扩展细节。可提高软件系统的可复用性和可维护性。
+            <p>软件设计原则  开闭原则 Open-Closed Principle, OCP   软件实体如类、模块和函数应该对扩展开放，对修改关闭。 所谓的开闭，也正是对扩展和修改两个行为的一个原则。**用抽象构建框架，用实现扩展细节。**可提高软件系统的可复用性和可维护性。
   单一职责原则 Simple Responsibility Principle，SRP   不要存在多于一个导致类变更的原因。如有一个 Class 负责两个职责，一旦发生需求变化，修改其中一个职责的逻辑代码，有可能会导致另一个职责的功能发生故障——这个 Class 就存在了两个导致类变更的因素。此时，我们就需要给两个职责分别用两个 Class 来实现，实现解耦职责的清晰拆分。后期的需要变更维护互不影响。如此设计，可降低类的复杂度，提高类的可读性，提高系统的可维护性，降低变更引起的风险。一个 Class/Interface/Method只负责一项职能.
-  依赖倒置原则 Dependence Inversion Principle，DIP   设计代码结构时，高层模块不应该依赖底层模块，二者都应该是依赖其抽象。抽象不应依赖细节；细节应该依赖抽象。通过依赖倒置，可减少类与类的耦合性，提高系统的稳定性，提高代码的可读性和可维护性，并可以降低修改程序所造成的风险。【依赖注入】</p>
+  依赖倒置原则 Dependence Inversion Principle，DIP   设计代码结构时，高层模块不应该依赖底层模块，二者都应该是依赖其抽象。**抽象不应依赖细节；细节应该依赖抽象。**通过依赖倒置，可减少类与类的耦合性，提高系统的稳定性，提高代码的可读性和可维护性，并可以降低修改程序所造成的风险。【依赖注入】</p>
             
             <a href="https://izcqi.com/posts/2019/12/03/design-principles-patterns-summary/">Read more…</a>
             
@@ -990,8 +964,6 @@ echo &#34;function gi() { curl -sL https://www.gitignore.io/api/\$@ ;}&#34; &gt;
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>DID 原则 : Design - Implement - Deploy  设计（Design）20倍的容量。 实现（Implement）3倍的容量。 部署（Deploy）1.5倍的容量。  确保一定时间内，不会因为业务体量的变化出现对架构较大的升级调整。但尽快如此，也不能过度咯。
  1、换个思路理解 DID 在软件建构领域，有一个原则叫DID, 通常用来保证资源和时间的最小化。
 DID:
@@ -1036,12 +1008,10 @@ DID:
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> 3 minutes read</em> </span>
 </aside>
-
-
             <p>单例模式是软件设计中非常常见的模式，但真正用好也用对的好像还有很多路要走。一起来研究一下。
 单例，最最起码得有这些吧
  私有的构造方案 一个 static 的实例 一个 static 的外部访问入口  具体代码应该是这样的(懒汉模式)
-public class Singleton { private static Singleton instance = null; private Singleton(){} public static Singleton getInstance() { if (null == instance) { instance = new Singleton(); } return instance; } } 当然了，看着好像是那么回事，完成了以上操作，我们来测试一下</p>
+1public class Singleton { 2 3 private static Singleton instance = null; 4 5 private Singleton(){} 6 7 public static Singleton getInstance() { 8 if (null == instance) { 9 instance = new Singleton(); 10 } 11 return instance; 12 } 13} 当然了，看着好像是那么回事，完成了以上操作，我们来测试一下</p>
             
             <a href="https://izcqi.com/posts/2019/12/02/design-patterns-singleton/">Read more…</a>
             
@@ -1077,8 +1047,6 @@ public class Singleton { private static Singleton instance = null; private Singl
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
             <p>木桶视盛水的多少来具体他应有的价值，所以出现了，短板决定其价值的说法。 扬长避短，说的是要去发挥长处，避开短处。似乎与“木桶”相反了。
 　但，人无完人金无足赤，完人不可能存在，也就是人之短，必然存在。当对于长短如何取舍呢 ？
 　商业行为中，攻破短板可能是制胜之宝。比如几个人一起合伙创业，各种能力不一，但在创业这件事上，绝对都是“长长”结合，最后也实现了“有效木桶”。
@@ -1105,7 +1073,7 @@ public class Singleton { private static Singleton instance = null; private Singl
 
 </main>
     <footer>
-        <h6>&copy; 2012 - 2021 Qicz 
+        <h6>© 2012 - 2021 Qicz 
             - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
             | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
             | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>

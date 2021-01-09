@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -36,7 +36,7 @@ Kong官网 介绍，Kong是一个运行在Nginx中的基于Lua - Nginx模块实�
 Kong是一个基于云的、快速的、可伸缩的分布式微服务抽象层(也称为API网关或API中间件)。2015年作为开源项目发布，其核心价值是高性能和可扩展性。
 2、为何选择Kong？ 如果您正在为web、移动或物联网构建服务，那们您可能还需要通用功能来运行您的实际软件。Kong可以充当微服务请求的网关(或侧卡)，同时通过插件提供负载平衡、日志记录、身份验证、速率限制、转换等功能。
 Kong的构建遵循以下主要原则：
- 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  3、功能特性  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 &#43; L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 运行状况检查：主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2." />
+ 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  3、功能特性  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 &#43; L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 **运行状况检查：**主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://izcqi.com/posts/2020/08/31/kong-primer-0/" />
 <meta property="article:published_time" content="2020-08-31T13:24:55+08:00" />
@@ -53,8 +53,8 @@ Kong官网 介绍，Kong是一个运行在Nginx中的基于Lua - Nginx模块实�
 Kong是一个基于云的、快速的、可伸缩的分布式微服务抽象层(也称为API网关或API中间件)。2015年作为开源项目发布，其核心价值是高性能和可扩展性。
 2、为何选择Kong？ 如果您正在为web、移动或物联网构建服务，那们您可能还需要通用功能来运行您的实际软件。Kong可以充当微服务请求的网关(或侧卡)，同时通过插件提供负载平衡、日志记录、身份验证、速率限制、转换等功能。
 Kong的构建遵循以下主要原则：
- 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  3、功能特性  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 &#43; L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 运行状况检查：主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2."/>
-<meta name="generator" content="Hugo 0.59.1" />
+ 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  3、功能特性  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 &#43; L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 **运行状况检查：**主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2."/>
+<meta name="generator" content="Hugo 0.68.3" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
@@ -94,7 +94,7 @@ Kong的构建遵循以下主要原则：
              </li>
       </ul>
       
-      <p><em>The creative and technical writing. <br> Do more, challenge more, know more, be more.</em></p>
+      <p><em>The creative and technical writing. <!-- raw HTML omitted --> Do more, challenge more, know more, be more.</em></p>
       
     </header>
 
@@ -167,61 +167,53 @@ Kong的构建遵循以下主要原则：
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> 3 minutes read</em> </span>
 </aside>
-
-
     
 
     
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一api-gateway概述">一、Api gateway概述</a></li>
+        <li><a href="#二kong安装">二、Kong安装</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
-<blockquote>
+    <blockquote>
 <p>说明：作者Qicz将有可能随时的修订本文的内容，为了保证内容的一致性和严谨性，作者Qicz保留本文的所有权利。未经作者Qicz本人同意，不得转载或者以其他方式使用这些内容。</p>
 </blockquote>
-
 <p>本文作为<a href="kong-lessons-content.md">kong系列</a>的入门，主要内容如下：</p>
-
 <ul>
 <li>Api gateway概述</li>
 <li>Kong安装</li>
 <li>Kong.conf</li>
 </ul>
-
-<h3 id="一-api-gateway概述">一、Api gateway概述</h3>
-
-<h4 id="1-从gateway说起">1、从gateway说起</h4>
-
+<h3 id="一api-gateway概述">一、Api gateway概述</h3>
+<h4 id="1从gateway说起">1、从gateway说起</h4>
 <p><a href="https://en.wikipedia.org/wiki/Gateway">wikipedia上给gateway了很多定义</a>，gateway是一个入口或者门口，可以说是一个网络间数据或协议交换的物理设备（Router），也可以是设备之前协议转化或数据共享的程序，而这样的程序就是我们这里讨论的重点。</p>
-
 <p>在微服务甚至又出现的宏服务时代，gateway作为一个入口程序，关联着上游服务的数据交互、权限管控、链路跟踪、限流等等，那么kong也在这样的时代背景下应运而生。而且是站在巨人的肩上成长了起来。</p>
-
 <p>这个巨人就是<a href="http://nginx.org/">nginx</a>，高性能的代理服务器。</p>
-
 <p><a href="https://docs.konghq.com/2.1.x/getting-started/introduction/">Kong官网</a> 介绍，Kong是一个运行在Nginx中的基于Lua - Nginx模块实现的Lua应用程序。Kong与<a href="http://openresty.org/">OpenResty</a>一起发布的，以此替代在Nginx中还需编译Lua - Nginx模块，OpenResty已经包含了lua- Nginx模块。OpenResty不是Nginx的一个分支，而是一组扩展其功能的模块。</p>
-
 <p>Kong是一个基于云的、快速的、可伸缩的分布式微服务抽象层(也称为API网关或API中间件)。2015年作为开源项目发布，其核心价值是高性能和可扩展性。</p>
-
-<h4 id="2-为何选择kong">2、为何选择Kong？</h4>
-
+<h4 id="2为何选择kong">2、为何选择Kong？</h4>
 <p>如果您正在为web、移动或物联网构建服务，那们您可能还需要通用功能来运行您的实际软件。Kong可以充当微服务请求的网关(或侧卡)，同时通过插件提供负载平衡、日志记录、身份验证、速率限制、转换等功能。</p>
-
-<p><img src="https://izcqi.com/images/image-20200728111142106.png" alt="Different architecture compare" /></p>
-
+<p><img src="https://izcqi.com/images/image-20200728111142106.png" alt="Different architecture compare"></p>
 <p>Kong的构建遵循以下主要原则：</p>
-
 <ul>
 <li><strong>高性能</strong>：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。</li>
 <li><strong>可扩展性</strong>：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。</li>
 <li><strong>可移植性</strong>：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。</li>
 </ul>
-
-<h4 id="3-功能特性">3、功能特性</h4>
-
+<h4 id="3功能特性">3、功能特性</h4>
 <ul>
 <li><strong>Cloud-Native</strong>：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。</li>
 <li><strong>Kubernetes-Native</strong>：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 + L7通信。</li>
 <li><strong>动态负载平衡</strong>：在多个上游服务之间平衡流量。</li>
 <li><strong>基于哈希的负载平衡</strong>：具有一致的哈希/粘性会话的负载平衡。</li>
 <li><strong>断路器</strong>：智能跟踪不健康的上游服务。</li>
-<li><strong>运行状况检查：</strong>主动和被动监视上游服务。</li>
+<li>**运行状况检查：**主动和被动监视上游服务。</li>
 <li><strong>服务发现</strong>：在第三方DNS解析器（例如Consul）中解析SRV记录。</li>
 <li><strong>无服务器</strong>：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。</li>
 <li><strong>WebSockets</strong>：通过WebSockets与您的上游服务进行通信。</li>
@@ -246,155 +238,139 @@ Kong的构建遵循以下主要原则：
 <li><strong>性能</strong>：Kong通过扩展和使用NGINX作为核心轻松处理负载。</li>
 <li><strong>插件</strong>：可扩展的体系结构，用于向Kong和API添加功能。</li>
 </ul>
-
-<p><img src="https://izcqi.com/images/image-20200727154809091.png#mid" alt="Kong layer" /></p>
-
-<h3 id="二-kong安装">二、Kong安装</h3>
-
+<p><img src="https://izcqi.com/images/image-20200727154809091.png#mid" alt="Kong layer"></p>
+<h3 id="二kong安装">二、Kong安装</h3>
 <blockquote>
 <p>这里重点讲解db模型的Kong安装，db-less的请自行查看官网。</p>
 </blockquote>
-
-<h4 id="1-环境准备">1、环境准备</h4>
-
+<h4 id="1环境准备">1、环境准备</h4>
 <ul>
 <li>操作系统 CentOS 7</li>
 <li>数据库 PostgreSQL</li>
 <li>kong版本2.1.3</li>
 </ul>
-
-<h4 id="2-安装kong">2、安装Kong</h4>
-
-<p>参考地址：<a href="https://docs.konghq.com/install/centos/">https://docs.konghq.com/install/centos/</a></p>
-
-<h5 id="2-1-使用rpm包安装">2.1 使用rpm包安装</h5>
-
+<h4 id="2安装kong">2、安装Kong</h4>
+<p>参考地址：https://docs.konghq.com/install/centos/</p>
+<h5 id="21-使用rpm包安装">2.1 使用rpm包安装</h5>
 <p>下载rpm包 <a href="https://bintray.com/kong/kong-rpm/download_file?file_path=centos/7/kong-2.1.3.el7.amd64.rpm">https://bintray.com/kong/kong-rpm/download_file?file_path=centos/7/kong-2.1.3.el7.amd64.rpm</a></p>
-
 <p>使用命令安装：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo yum install epel-release
-$ sudo yum install kong-2.1.3.*.noarch.rpm --nogpgcheck</code></pre></div>
-<h5 id="2-2-使用repository安装-执行如下命令">2.2、使用repository安装，执行如下命令</h5>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo yum update -y
-$ sudo yum install -y wget
-$ wget https://bintray.com/kong/kong-rpm/rpm -O bintray-kong-kong-rpm.repo
-$ <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">major_version</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">`</span>grep -oE <span style="color:#f1fa8c">&#39;[0-9]+\.[0-9]+&#39;</span> /etc/redhat-release | cut -d <span style="color:#f1fa8c">&#34;.&#34;</span> -f1<span style="color:#f1fa8c">`</span>
-$ sed -i -e <span style="color:#f1fa8c">&#39;s/baseurl.*/&amp;\/centos\/&#39;</span><span style="color:#8be9fd;font-style:italic">$major_version</span><span style="color:#f1fa8c">&#39;&#39;</span>/ bintray-kong-kong-rpm.repo
-$ sudo mv bintray-kong-kong-rpm.repo /etc/yum.repos.d/
-$ sudo yum update -y
-$ sudo yum install -y kong</code></pre></div>
-<h4 id="3-安装postgresql">3、安装PostgreSQL</h4>
-
-<h5 id="3-1-安装postgresql">3.1 安装PostgreSQL</h5>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo yum install epel-release
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>$ sudo yum install kong-2.1.3.*.noarch.rpm --nogpgcheck
+</code></pre></div><h5 id="22使用repository安装执行如下命令">2.2、使用repository安装，执行如下命令</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo yum update -y
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>$ sudo yum install -y wget
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>$ wget https://bintray.com/kong/kong-rpm/rpm -O bintray-kong-kong-rpm.repo
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>$ <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">major_version</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">`</span>grep -oE <span style="color:#f1fa8c">&#39;[0-9]+\.[0-9]+&#39;</span> /etc/redhat-release | cut -d <span style="color:#f1fa8c">&#34;.&#34;</span> -f1<span style="color:#f1fa8c">`</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>$ sed -i -e <span style="color:#f1fa8c">&#39;s/baseurl.*/&amp;\/centos\/&#39;</span><span style="color:#8be9fd;font-style:italic">$major_version</span><span style="color:#f1fa8c">&#39;&#39;</span>/ bintray-kong-kong-rpm.repo
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>$ sudo mv bintray-kong-kong-rpm.repo /etc/yum.repos.d/
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>$ sudo yum update -y
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span>$ sudo yum install -y kong
+</code></pre></div><h4 id="3安装postgresql">3、安装PostgreSQL</h4>
+<h5 id="31-安装postgresql">3.1 安装PostgreSQL</h5>
 <blockquote>
 <p>安装9.5以上版本即可，这里使用PostgreSQL最新版本。</p>
 </blockquote>
-
-<p>参考地址：<a href="https://www.postgresql.org/download/linux/redhat/">https://www.postgresql.org/download/linux/redhat/</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4"># Install the repository RPM:</span>
-yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-
-<span style="color:#6272a4"># Install PostgreSQL:</span>
-yum install -y postgresql12-server
-
-<span style="color:#6272a4"># Optionally initialize the database and enable automatic start:</span>
-/usr/pgsql-12/bin/postgresql-12-setup initdb
-systemctl <span style="color:#8be9fd;font-style:italic">enable</span> postgresql-12
-systemctl start postgresql-12</code></pre></div>
-<blockquote>
+<p>参考地址：https://www.postgresql.org/download/linux/redhat/</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#6272a4"># Install the repository RPM:</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#6272a4"># Install PostgreSQL:</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>yum install -y postgresql12-server
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#6272a4"># Optionally initialize the database and enable automatic start:</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>/usr/pgsql-12/bin/postgresql-12-setup initdb
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>systemctl <span style="color:#8be9fd;font-style:italic">enable</span> postgresql-12
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>systemctl start postgresql-12
+</code></pre></div><blockquote>
 <p>需要获得sudo权限。</p>
 </blockquote>
-
-<h5 id="3-2-用户角色">3.2 用户角色</h5>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ su - postgres <span style="color:#f1fa8c">&lt;&lt; EOF
-</span><span style="color:#f1fa8c">psql &lt;&lt; XOF
-</span><span style="color:#f1fa8c">CREATE USER kong; CREATE DATABASE kong OWNER kong;
-</span><span style="color:#f1fa8c">XOF
-</span><span style="color:#f1fa8c">EOF</span></code></pre></div>
-<h5 id="3-3-导入kong的数据">3.3 导入Kong的数据</h5>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kong migrations bootstrap <span style="color:#ff79c6">[</span>-c /path/to/kong.conf<span style="color:#ff79c6">]</span></code></pre></div>
-<h4 id="4-kong目录结构">4、Kong目录结构</h4>
-
-<h5 id="4-1-默认安装目录-usr-local-kong">4.1 默认安装目录：<code>/usr/local/kong</code></h5>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">.
-├── bin
-│   ├── c_rehash
-│   └── openssl
-├── client_body_temp
-├── COPYRIGHT
-├── fastcgi_temp
-├── include
-│   └── openssl
-│       ├── aes.h
-│       ├── asn1err.h
-│       ├── asn1.h
-│       ├── asn1_mac.h
-│       ├── ...
-│       ├── x509v3.h
-│       └── x509_vfy.h
-├── lib
-│   ├── engines-1.1
-│   │   ├── afalg.so
-│   │   ├── capi.so
-│   │   └── padlock.so
-│   ├── libcrypto.a
-│   ├── libcrypto.so -&gt; libcrypto.so.1.1
-│   ├── libcrypto.so.1.1
-│   ├── libssl.a
-│   ├── libssl.so -&gt; libssl.so.1.1
-│   ├── libssl.so.1.1
-│   ├── libyaml-0.so.2 -&gt; libyaml-0.so.2.0.7
-│   ├── libyaml-0.so.2.0.7
-│   ├── libyaml.a
-│   ├── libyaml.la
-│   ├── libyaml.so -&gt; libyaml-0.so.2.0.7
-│   └── pkgconfig
-│       ├── libcrypto.pc
-│       ├── libssl.pc
-│       ├── openssl.pc
-│       └── yaml-0.1.pc
-├── logs
-│   ├── access.log
-│   ├── admin_access.log
-│   └── error.log
-├── nginx.conf
-├── nginx-kong.conf
-├── nginx-kong-stream.conf
-├── pids
-│   └── nginx.pid
-├── proxy_temp
-│   └── <span style="color:#bd93f9">1</span>
-│       └── <span style="color:#bd93f9">00</span>
-├── scgi_temp
-├── ssl
-│   ├── admin-kong-default.crt
-│   ├── admin-kong-default.key
-│   ├── kong-default.crt
-│   └── kong-default.key
-└── uwsgi_temp</code></pre></div>
-<h5 id="4-2-kong-conf所在目录-etc-kong">4.2 kong.conf所在目录<code>/etc/kong</code></h5>
-
-<h4 id="5-kong启动">5、Kong启动</h4>
-
-<h5 id="5-1-直接启动">5.1 直接启动</h5>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kong start <span style="color:#ff79c6">[</span>-c /path/to/kong.conf<span style="color:#ff79c6">]</span></code></pre></div>
-<h5 id="5-2-使用systemd启动">5.2 使用systemd启动</h5>
-
+<h5 id="32-用户角色">3.2 用户角色</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ su - postgres <span style="color:#f1fa8c">&lt;&lt; EOF
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#f1fa8c">psql &lt;&lt; XOF
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span style="color:#f1fa8c">CREATE USER kong; CREATE DATABASE kong OWNER kong;
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span style="color:#f1fa8c">XOF
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span style="color:#f1fa8c">EOF</span>
+</code></pre></div><h5 id="33-导入kong的数据">3.3 导入Kong的数据</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ kong migrations bootstrap <span style="color:#ff79c6">[</span>-c /path/to/kong.conf<span style="color:#ff79c6">]</span>
+</code></pre></div><h4 id="4kong目录结构">4、Kong目录结构</h4>
+<h5 id="41-默认安装目录usrlocalkong">4.1 默认安装目录：<code>/usr/local/kong</code></h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>.
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>├── bin
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>│   ├── c_rehash
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>│   └── openssl
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>├── client_body_temp
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>├── COPYRIGHT
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>├── fastcgi_temp
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>├── include
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>│   └── openssl
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>│       ├── aes.h
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>│       ├── asn1err.h
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>│       ├── asn1.h
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>│       ├── asn1_mac.h
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>│       ├── ...
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>│       ├── x509v3.h
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>│       └── x509_vfy.h
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>├── lib
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>│   ├── engines-1.1
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>│   │   ├── afalg.so
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>│   │   ├── capi.so
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>│   │   └── padlock.so
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>│   ├── libcrypto.a
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>│   ├── libcrypto.so -&gt; libcrypto.so.1.1
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>│   ├── libcrypto.so.1.1
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>│   ├── libssl.a
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>│   ├── libssl.so -&gt; libssl.so.1.1
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>│   ├── libssl.so.1.1
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>│   ├── libyaml-0.so.2 -&gt; libyaml-0.so.2.0.7
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span>│   ├── libyaml-0.so.2.0.7
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span>│   ├── libyaml.a
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>│   ├── libyaml.la
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>│   ├── libyaml.so -&gt; libyaml-0.so.2.0.7
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span>│   └── pkgconfig
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span>│       ├── libcrypto.pc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span>│       ├── libssl.pc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span>│       ├── openssl.pc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span>│       └── yaml-0.1.pc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span>├── logs
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span>│   ├── access.log
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span>│   ├── admin_access.log
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span>│   └── error.log
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span>├── nginx.conf
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span>├── nginx-kong.conf
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span>├── nginx-kong-stream.conf
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span>├── pids
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span>│   └── nginx.pid
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span>├── proxy_temp
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span>│   └── <span style="color:#bd93f9">1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span>│       └── <span style="color:#bd93f9">00</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span>├── scgi_temp
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span>├── ssl
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span>│   ├── admin-kong-default.crt
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span>│   ├── admin-kong-default.key
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span>│   ├── kong-default.crt
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span>│   └── kong-default.key
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56</span>└── uwsgi_temp
+</code></pre></div><h5 id="42-kongconf所在目录etckong">4.2 kong.conf所在目录<code>/etc/kong</code></h5>
+<h4 id="5kong启动">5、Kong启动</h4>
+<h5 id="51-直接启动">5.1 直接启动</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ kong start <span style="color:#ff79c6">[</span>-c /path/to/kong.conf<span style="color:#ff79c6">]</span>
+</code></pre></div><h5 id="52-使用systemd启动">5.2 使用systemd启动</h5>
 <h6 id="start-kong">Start Kong</h6>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl start kong</code></pre></div>
-<h6 id="stop-kong">Stop Kong</h6>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl stop kong</code></pre></div>
-<h6 id="随系统一起启动">随系统一起启动</h6>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl <span style="color:#8be9fd;font-style:italic">enable</span> kong</code></pre></div>
-<h6 id="关闭随系统启动">关闭随系统启动</h6>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl disable kong</code></pre></div>
-<h6 id="restart-kong">Restart Kong</h6>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl restart kong</code></pre></div>
-<h6 id="查看kong状态">查看Kong状态</h6>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl status kong</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl start kong
+</code></pre></div><h6 id="stop-kong">Stop Kong</h6>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl stop kong
+</code></pre></div><h6 id="随系统一起启动">随系统一起启动</h6>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl <span style="color:#8be9fd;font-style:italic">enable</span> kong
+</code></pre></div><h6 id="关闭随系统启动">关闭随系统启动</h6>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl disable kong
+</code></pre></div><h6 id="restart-kong">Restart Kong</h6>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl restart kong
+</code></pre></div><h6 id="查看kong状态">查看Kong状态</h6>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl status kong
+</code></pre></div>
 
 </article>
+
 
 <script src="https://utteranc.es/client.js"
     repo="qicz/ThoughtsHUB"
@@ -425,7 +401,7 @@ systemctl start postgresql-12</code></pre></div>
 
 </main>
     <footer>
-        <h6>&copy; 2012 - 2021 Qicz 
+        <h6>© 2012 - 2021 Qicz 
             - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
             | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
             | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -54,7 +54,7 @@ FatJar  FatJar又叫做UberJar，就是一种超级Jar，其实就是把一个�
  下面就该看看如何瘦身了。从一本书开始说起，书叫《SpringBoot 2 Recipes》。在书中看了一个thinjar的章节（11-3 Reduce Archive Size Through the Thin Launcher
 Problem）。
  Spring Boot, by default, generates a so-called fat JAR, a JAR with all the dependencies inside it."/>
-<meta name="generator" content="Hugo 0.59.1" />
+<meta name="generator" content="Hugo 0.68.3" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
@@ -94,7 +94,7 @@ Problem）。
              </li>
       </ul>
       
-      <p><em>The creative and technical writing. <br> Do more, challenge more, know more, be more.</em></p>
+      <p><em>The creative and technical writing. <!-- raw HTML omitted --> Do more, challenge more, know more, be more.</em></p>
       
     </header>
 
@@ -167,62 +167,57 @@ Problem）。
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
     
 
     
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#fatjar">FatJar</a></li>
+        <li><a href="#thinjar">ThinJar</a></li>
+        <li><a href="#springboot-thin-launcher原理">SpringBoot Thin Launcher原理</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
-<p>什么是FatJar和ThinJar？</p>
-
+    <p>什么是FatJar和ThinJar？</p>
 <h3 id="fatjar">FatJar</h3>
-
 <blockquote>
 <p>FatJar又叫做UberJar，就是一种<strong>超级Jar</strong>，其实就是把一个基础Jar及其依赖都打包到一个Jar里面，然后用了它就可以独立工作的Jar。总数很“重”。</p>
 </blockquote>
-
 <h3 id="thinjar">ThinJar</h3>
-
 <blockquote>
 <p>ThinJar就是对超级Jar相对应的Jar，“纤瘦”的Jar。只有自身的资源组合（.class，properties等等）。</p>
 </blockquote>
-
 <p>从二者的“身段”来看，和字面来看，FatJar就是一种肥Jar，ThinJar就是一种瘦Jar。在SpringBoot中二者的对比就会更加的明显。因为一个通常的SpringBoot应用（Jar）万万都在几MB，而ThinJar的Jar可能就在几KB，大点也就是几十KB的样子。</p>
-
 <p>如果有一种方式可以让SpringBoot瘦身，你要不要？</p>
-
 <p>我们先看看为什么要瘦身？</p>
-
 <blockquote>
 <p>因为ThinJar很小，易于部署到服务器（可能是因为我网速慢@.@）。想想如果在一台服务器上部署多个服务的话（也会你不会这样用，但是不一定就不会存在），相同的很多依赖包在网速贼慢的情况下，还得慢慢悠悠的传。</p>
 </blockquote>
-
 <p>下面就该看看如何瘦身了。从一本书开始说起，书叫<a href="https://izcqi.com/ebooks/SpringBoot-2-Recipes.pdf">《SpringBoot 2 Recipes》</a>。在书中看了一个thinjar的章节（11-3 Reduce Archive Size Through the Thin Launcher</p>
-
 <p>Problem）。</p>
-
 <blockquote>
 <p>Spring Boot, by default, generates a so-called fat JAR, a JAR with all the dependencies inside it. This has some obvious benefits, as the JAR is fully self-contained. However, the JAR size can grow considerably, and when using multiple applications you might want to reuse already downloaded dependencies to reduce the overall footprint.</p>
 </blockquote>
-
 <p>然后就看到了这个项目<a href="https://github.com/spring-projects-experimental/spring-boot-thin-launcher">Spring Boot Thin Launcher</a>。</p>
-
 <p>然后整合到了<a href="https://github.com/LearnedHub/learning-springboot2-LTS">Learning SpringBoot2 LTS</a>项目中。先用的thin-layout-1.0.22.RELEASE一直出错，找不到ThinJarLauncher，后来改为thin-layout-1.0.23.RELEASE之后，就ok了(<strong>这个问题耽误了我一天的太多的时间了，不过不尝试怎么知道问题呢！</strong>)。FatJar从尽30MB，变成了20KB不到。启动方式一样:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -jar xx.jar</code></pre></div>
-<h3 id="springboot-thin-launcher原理">SpringBoot Thin Launcher原理</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>java -jar xx.jar
+</code></pre></div><h3 id="springboot-thin-launcher原理">SpringBoot Thin Launcher原理</h3>
 <p>我查看了ThinJarLauncher的源码，就是解析生成的ThinJar中的pom.xml，来下载或者直接引用本地的~/.m2/repository中的libs。</p>
-
 <p>具体怎么使用，参考项目<a href="https://github.com/LearnedHub/learning-springboot2-LTS">Learning SpringBoot2 LTS</a>，参考：<a href="https://beldon.me/posts/2019/05/22/spring-boot-thin-jar.html">https://beldon.me/posts/2019/05/22/spring-boot-thin-jar.html</a></p>
-
 <p>在这种版本<a href="https://github.com/LearnedHub/learning-springboot2-LTS/tree/31408f802570371a3c16010bdeb6f537adb365a1">https://github.com/LearnedHub/learning-springboot2-LTS/tree/31408f802570371a3c16010bdeb6f537adb365a1</a>中使用另外的一种方式，也可以让让Jar小些，但不如thin-launcher效果好。不过在特定情景下（比如web项目的静态资源不需要打包到Jar中时），还是可以用的。参考：<a href="https://blog.csdn.net/ssrc0604hx/article/details/54175027">https://blog.csdn.net/ssrc0604hx/article/details/54175027</a>。在这个参考中，作者使用了excludeGroupIds来去除需要独立出来的libs，其实使用include，仅包括少数需要（比如子module）的即可。比如在<a href="https://github.com/LearnedHub/learning-springboot2-LTS/blob/31408f802570371a3c16010bdeb6f537adb365a1/web/pom.xml">Learning SpringBoot2 LTS</a>中我的做法是：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#6272a4">&lt;!-- just include self --&gt;</span>
-<span style="color:#ff79c6">&lt;include&gt;</span>
-		<span style="color:#ff79c6">&lt;groupId&gt;</span>${groupId}<span style="color:#ff79c6">&lt;/groupId&gt;</span>
-  	<span style="color:#ff79c6">&lt;artifactId&gt;</span>${artifactId}<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
-<span style="color:#ff79c6">&lt;/include&gt;</span></code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#6272a4">&lt;!-- just include self --&gt;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#ff79c6">&lt;include&gt;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>		<span style="color:#ff79c6">&lt;groupId&gt;</span>${groupId}<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>  	<span style="color:#ff79c6">&lt;artifactId&gt;</span>${artifactId}<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span style="color:#ff79c6">&lt;/include&gt;</span>
+</code></pre></div>
 
 </article>
+
 
 <script src="https://utteranc.es/client.js"
     repo="qicz/ThoughtsHUB"
@@ -253,7 +248,7 @@ Problem）。
 
 </main>
     <footer>
-        <h6>&copy; 2012 - 2021 Qicz 
+        <h6>© 2012 - 2021 Qicz 
             - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
             | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
             | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>

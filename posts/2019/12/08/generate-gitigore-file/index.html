@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -36,7 +36,7 @@
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="快速的生成你需要的.gitignore文件"/>
 <meta name="twitter:description" content="使用git过程中，重视需要加入gitignore忽略文件把项目中不必要的文件忽略掉。但是每次都拷贝之前旧的文件很不方便。而且，针对不同的环境，不同的程序语言，使用的忽略文件可能还不一样，如何快速的生成对应的ignore文件呢？"/>
-<meta name="generator" content="Hugo 0.59.1" />
+<meta name="generator" content="Hugo 0.68.3" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
@@ -76,7 +76,7 @@
              </li>
       </ul>
       
-      <p><em>The creative and technical writing. <br> Do more, challenge more, know more, be more.</em></p>
+      <p><em>The creative and technical writing. <!-- raw HTML omitted --> Do more, challenge more, know more, be more.</em></p>
       
     </header>
 
@@ -149,39 +149,45 @@
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> One minute read</em> </span>
 </aside>
-
-
     
 
     
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#怎样在项目中快速的生成gitignore文件呢">怎样在项目中快速的生成.gitignore文件呢？</a></li>
+        <li><a href="#gitignoreio-帮助完成ignore文件的自动化生成">gitignore.io 帮助完成ignore文件的自动化生成</a></li>
+        <li><a href="#使用举例">使用举例</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
-<h3 id="怎样在项目中快速的生成-gitignore文件呢">怎样在项目中快速的生成.gitignore文件呢？</h3>
-
+    <h3 id="怎样在项目中快速的生成gitignore文件呢">怎样在项目中快速的生成.gitignore文件呢？</h3>
 <p>使用git过程中，重视需要加入gitignore忽略文件把项目中不必要的文件忽略掉。但是每次都拷贝之前旧的文件很不方便。而且，针对不同的环境，不同的程序语言，使用的忽略文件可能还不一样，如何快速的生成对应的 ignore 文件呢？</p>
-
 <p>ps：因为我在 mac 平台，我就以 mac 平台举例了。</p>
-
-<h3 id="gitignore-io-帮助完成ignore文件的自动化生成">gitignore.io 帮助完成ignore文件的自动化生成</h3>
-
+<h3 id="gitignoreio-帮助完成ignore文件的自动化生成">gitignore.io 帮助完成ignore文件的自动化生成</h3>
 <p>在Terminal中执行如下操作</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;function gi() { curl -sL https://www.gitignore.io/api/\$@ ;}&#34;</span> &gt;&gt; <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>~/.bash_profile <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">source</span> ~/.bash_profile</code></pre></div>
-<h3 id="使用举例">使用举例</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;function gi() { curl -sL https://www.gitignore.io/api/\$@ ;}&#34;</span> &gt;&gt; <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#f1fa8c"></span>~/.bash_profile <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">source</span> ~/.bash_profile
+</code></pre></div><h3 id="使用举例">使用举例</h3>
 <ul>
-<li><p>需要macOS下使用Idea(intellij)、Maven开发 Java的ignore，在项目根目录下（.git 文件夹所在目录）执行如下操作</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gi java,macos,maven,intellij &gt;&gt; .gitignore</code></pre></div></li>
-
-<li><p>需要 macOS下使用XCode,Objective-C开发App的ignore</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gi macos,xcode,objective-c &gt;&gt; .gitignore</code></pre></div></li>
-
-<li><p>特别注意：<strong>gi使用时，均为小写</strong>。</p></li>
+<li>需要macOS下使用Idea(intellij)、Maven开发 Java的ignore，在项目根目录下（.git 文件夹所在目录）执行如下操作</li>
 </ul>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>gi java,macos,maven,intellij &gt;&gt; .gitignore
+</code></pre></div><ul>
+<li>需要 macOS下使用XCode,Objective-C开发App的ignore</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>gi macos,xcode,objective-c &gt;&gt; .gitignore
+</code></pre></div><ul>
+<li>特别注意：<strong>gi使用时，均为小写</strong>。</li>
+</ul>
 <p>更多查看这里 <a href="https://docs.gitignore.io/install/command-line">https://docs.gitignore.io/install/command-line</a></p>
 
 
 </article>
+
 
 <script src="https://utteranc.es/client.js"
     repo="qicz/ThoughtsHUB"
@@ -212,7 +218,7 @@
 
 </main>
     <footer>
-        <h6>&copy; 2012 - 2021 Qicz 
+        <h6>© 2012 - 2021 Qicz 
             - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
             | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
             | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>

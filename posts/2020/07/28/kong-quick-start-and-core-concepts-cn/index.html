@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -32,7 +32,7 @@
 Kong是一个基于云的、快速的、可伸缩的分布式微服务抽象层(也称为API网关或API中间件)。2015年作为开源项目发布，其核心价值是高性能和可扩展性。
 为何选择Kong？ 如果您正在为web、移动或物联网构建服务，那们您可能还需要通用功能来运行您的实际软件。Kong可以充当微服务请求的网关(或侧卡)，同时通过插件提供负载平衡、日志记录、身份验证、速率限制、转换等功能。
 Kong的构建遵循以下主要原则：
- 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  Features  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 &#43; L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 运行状况检查：主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2." />
+ 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  Features  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 &#43; L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 **运行状况检查：**主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://izcqi.com/posts/2020/07/28/kong-quick-start-and-core-concepts-cn/" />
 <meta property="article:published_time" content="2020-07-28T22:23:39+08:00" />
@@ -45,8 +45,8 @@ Kong的构建遵循以下主要原则：
 Kong是一个基于云的、快速的、可伸缩的分布式微服务抽象层(也称为API网关或API中间件)。2015年作为开源项目发布，其核心价值是高性能和可扩展性。
 为何选择Kong？ 如果您正在为web、移动或物联网构建服务，那们您可能还需要通用功能来运行您的实际软件。Kong可以充当微服务请求的网关(或侧卡)，同时通过插件提供负载平衡、日志记录、身份验证、速率限制、转换等功能。
 Kong的构建遵循以下主要原则：
- 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  Features  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 &#43; L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 运行状况检查：主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2."/>
-<meta name="generator" content="Hugo 0.59.1" />
+ 高性能：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。 可扩展性：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。 可移植性：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。  Features  Cloud-Native：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。 Kubernetes-Native：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 &#43; L7通信。 动态负载平衡：在多个上游服务之间平衡流量。 基于哈希的负载平衡：具有一致的哈希/粘性会话的负载平衡。 断路器：智能跟踪不健康的上游服务。 **运行状况检查：**主动和被动监视上游服务。 服务发现：在第三方DNS解析器（例如Consul）中解析SRV记录。 无服务器：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。 WebSockets：通过WebSockets与您的上游服务进行通信。 gRPC：与gRPC服务进行通信，并通过日志记录和可观察性插件观察流量 OAuth2."/>
+<meta name="generator" content="Hugo 0.68.3" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
@@ -86,7 +86,7 @@ Kong的构建遵循以下主要原则：
              </li>
       </ul>
       
-      <p><em>The creative and technical writing. <br> Do more, challenge more, know more, be more.</em></p>
+      <p><em>The creative and technical writing. <!-- raw HTML omitted --> Do more, challenge more, know more, be more.</em></p>
       
     </header>
 
@@ -159,45 +159,55 @@ Kong的构建遵循以下主要原则：
     &nbsp; | &nbsp; 
     <span class="fa fa-plane"><em> 5 minutes read</em> </span>
 </aside>
-
-
     
 
     
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#从技术的角度来说kong是什么因为kong也有金刚意思-httpsdocskonghqcom21xgetting-startedintroduction">从技术的角度来说，Kong是什么（因为Kong也有金刚意思）? (<a href="https://docs.konghq.com/2.1.x/getting-started/introduction/">https://docs.konghq.com/2.1.x/getting-started/introduction/</a>)</a></li>
+        <li><a href="#concepts">Concepts</a></li>
+        <li><a href="#plugins">Plugins</a></li>
+        <li><a href="#自定义nginx模板并嵌入kong-httpsdocskonghqcom21xconfiguration">自定义Nginx模板并嵌入Kong (<a href="https://docs.konghq.com/2.1.x/configuration/">https://docs.konghq.com/2.1.x/configuration/</a>)</a></li>
+        <li><a href="#术语">术语</a></li>
+        <li><a href="#ports">Ports</a></li>
+        <li><a href="#路由及其匹配">路由及其匹配</a></li>
+        <li><a href="#负载均衡-httpsdocskonghqcom21xloadbalancing">负载均衡 (<a href="https://docs.konghq.com/2.1.x/loadbalancing/">https://docs.konghq.com/2.1.x/loadbalancing/</a>)</a></li>
+        <li><a href="#健康检查和断路器-httpsdocskonghqcom21xhealth-checks-circuit-breakers">健康检查和断路器 (<a href="https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/">https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/</a>)</a></li>
+        <li><a href="#集群--httpsdocskonghqcom21xclustering">集群  (<a href="https://docs.konghq.com/2.1.x/clustering/">https://docs.konghq.com/2.1.x/clustering/</a>)</a></li>
+        <li><a href="#防火墙--httpsdocskonghqcom21xnetworkfirewall">防火墙  (<a href="https://docs.konghq.com/2.1.x/network/#firewall">https://docs.konghq.com/2.1.x/network/#firewall</a>)</a></li>
+        <li><a href="#通过systemd管理kong">通过systemd管理Kong</a></li>
+        <li><a href="#插件的执行顺序">插件的执行顺序</a></li>
+        <li><a href="#重要的配置">重要的配置</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
-<blockquote>
+    <blockquote>
 <p>说明：作者Qicz将有可能随时的修订本文的内容，为了保证内容的一致性和严谨性，作者Qicz保留本文的所有权利。未经作者Qicz本人同意，不得转载或者以其他方式使用这些内容。</p>
 </blockquote>
-
-<h3 id="从技术的角度来说-kong是什么-因为kong也有金刚意思-https-docs-konghq-com-2-1-x-getting-started-introduction">从技术的角度来说，Kong是什么（因为Kong也有金刚意思）? (<a href="https://docs.konghq.com/2.1.x/getting-started/introduction/">https://docs.konghq.com/2.1.x/getting-started/introduction/</a>)</h3>
-
+<h3 id="从技术的角度来说kong是什么因为kong也有金刚意思-httpsdocskonghqcom21xgetting-startedintroduction">从技术的角度来说，Kong是什么（因为Kong也有金刚意思）? (<a href="https://docs.konghq.com/2.1.x/getting-started/introduction/">https://docs.konghq.com/2.1.x/getting-started/introduction/</a>)</h3>
 <p>Kong是一个运行在Nginx中的基于Lua - Nginx模块实现的Lua应用程序。Kong与OpenResty一起发布的，以此替代在Nginx中还需编译Lua - Nginx模块，OpenResty已经包含了lua- Nginx模块。OpenResty不是Nginx的一个分支，而是一组扩展其功能的模块。</p>
-
 <p>Kong是一个基于云的、快速的、可伸缩的分布式微服务抽象层(也称为API网关或API中间件)。2015年作为开源项目发布，其核心价值是高性能和可扩展性。</p>
-
 <h4 id="为何选择kong">为何选择Kong？</h4>
-
 <p>如果您正在为web、移动或物联网构建服务，那们您可能还需要通用功能来运行您的实际软件。Kong可以充当微服务请求的网关(或侧卡)，同时通过插件提供负载平衡、日志记录、身份验证、速率限制、转换等功能。</p>
-
-<p><img src="https://izcqi.com/images/image-20200728111142106.png#mid" alt="Different architecture compare" /></p>
-
+<p><img src="https://izcqi.com/images/image-20200728111142106.png#mid" alt="Different architecture compare"></p>
 <p>Kong的构建遵循以下主要原则：</p>
-
 <ul>
 <li><strong>高性能</strong>：亚毫秒级处理延迟，可支持关键任务用例和高吞吐量。</li>
 <li><strong>可扩展性</strong>：带有可插拔的体系结构，可通过Kong的Plugin SDK扩展Lua或GoLang中的Kong。</li>
 <li><strong>可移植性</strong>：要在每个平台，每个云上运行，并通过我们的现代Ingress Controller本地支持Kubernetes。</li>
 </ul>
-
 <h4 id="features">Features</h4>
-
 <ul>
 <li><strong>Cloud-Native</strong>：与平台无关，Kong可以在任何平台上运行-从裸机到容器-并且可以在本机上的每个云上运行。</li>
 <li><strong>Kubernetes-Native</strong>：使用官方的Ingress Controller通过本地Kubernetes CRD声明性地配置Kong，以路由和连接所有L4 + L7通信。</li>
 <li><strong>动态负载平衡</strong>：在多个上游服务之间平衡流量。</li>
 <li><strong>基于哈希的负载平衡</strong>：具有一致的哈希/粘性会话的负载平衡。</li>
 <li><strong>断路器</strong>：智能跟踪不健康的上游服务。</li>
-<li><strong>运行状况检查：</strong>主动和被动监视上游服务。</li>
+<li>**运行状况检查：**主动和被动监视上游服务。</li>
 <li><strong>服务发现</strong>：在第三方DNS解析器（例如Consul）中解析SRV记录。</li>
 <li><strong>无服务器</strong>：直接从Kong调用和保护AWS Lambda或OpenWhisk功能。</li>
 <li><strong>WebSockets</strong>：通过WebSockets与您的上游服务进行通信。</li>
@@ -222,11 +232,8 @@ Kong的构建遵循以下主要原则：
 <li><strong>性能</strong>：Kong通过扩展和使用NGINX作为核心轻松处理负载。</li>
 <li><strong>插件</strong>：可扩展的体系结构，用于向Kong和API添加功能。</li>
 </ul>
-
-<p><img src="https://izcqi.com/images/image-20200727154809091.png#mid" alt="Kong layer" /></p>
-
+<p><img src="https://izcqi.com/images/image-20200727154809091.png#mid" alt="Kong layer"></p>
 <h3 id="concepts">Concepts</h3>
-
 <ul>
 <li>Services</li>
 <li>Routes</li>
@@ -236,92 +243,77 @@ Kong的构建遵循以下主要原则：
 <li>Consumers</li>
 <li>Plugins</li>
 <li>Others
-
 <ul>
 <li>Certificate Object</li>
 <li>CA Certificate Object</li>
 <li>SNI Object</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h3 id="plugins">Plugins</h3>
-
-<h4 id="proxy-cache-plugin-https-docs-konghq-com-hub-kong-inc-proxy-cache">proxy-cache plugin (<a href="https://docs.konghq.com/hub/kong-inc/proxy-cache/">https://docs.konghq.com/hub/kong-inc/proxy-cache/</a>)</h4>
-
+<h4 id="proxy-cache-plugin-httpsdocskonghqcomhubkong-incproxy-cache">proxy-cache plugin (<a href="https://docs.konghq.com/hub/kong-inc/proxy-cache/">https://docs.konghq.com/hub/kong-inc/proxy-cache/</a>)</h4>
 <ul>
 <li>主要参数
-
 <ul>
 <li><code>config.content_type</code> 缓存某指定的<code>content_type</code>类型的数据</li>
 <li><code>config.cache_ttl</code> 缓存存活时间，默认 <code>300秒</code></li>
 <li><code>config.strategy</code>  缓存策略，社区版本只支持<code>memory</code></li>
 <li><code>config.request_method</code>  默认取值 <code>[&quot;GET&quot;,&quot;HEAD&quot;]</code></li>
 <li><code>config.response_code</code>  默认取值 <code>200, 301, 404</code></li>
-</ul></li>
+</ul>
+</li>
 <li>缓存状态
-
 <ul>
 <li><code>Miss</code>: 在缓存中没有找到数据，向上游服务请求以获取数据，并缓存返回数据。</li>
 <li><code>Hit</code>: 请求中缓存中命中数据。</li>
 <li><code>Refresh</code>: 由于在Cache-Control行为或达到其硬编码cache_ttl阈值，因此在缓存中找到了资源，但无法满足请求。</li>
 <li><code>Bypass</code>: 根据插件配置，缓存无法满足该请求。</li>
-</ul></li>
 </ul>
-
-<h4 id="rote-limiting-plugin-https-docs-konghq-com-hub-kong-inc-rate-limiting">Rote Limiting plugin (<a href="https://docs.konghq.com/hub/kong-inc/rate-limiting/">https://docs.konghq.com/hub/kong-inc/rate-limiting/</a>)</h4>
-
+</li>
+</ul>
+<h4 id="rote-limiting-plugin-httpsdocskonghqcomhubkong-incrate-limiting">Rote Limiting plugin (<a href="https://docs.konghq.com/hub/kong-inc/rate-limiting/">https://docs.konghq.com/hub/kong-inc/rate-limiting/</a>)</h4>
 <ul>
-<li><p>主要参数</p>
-
+<li>
+<p>主要参数</p>
 <ul>
 <li><code>config.policy</code>用于检索和增加限制的速率限制策略。可用值为<code>local</code>（计数器将存储在本地内存中的节点上），<code>cluster</code>（计数器存储在数据存储区中并在节点上共享）和<code>redis</code>（计数器存储在Redis服务器上并在节点之间共享）。在无DB模式下，必须至少指定<code>local</code>或之一<code>redis</code>。请参阅<a href="https://docs.konghq.com/hub/kong-inc/rate-limiting/#implementation-considerations">实施注意事项，</a>以了解有关应使用哪种策略的详细信息。</li>
-</ul></li>
 </ul>
-
 <blockquote>
 <p><code>config.policy=redis</code></p>
-
 <p>使用 <code>config.redis*</code> =&gt;<code>redis_host|redis_password|redis_database|redis_timeout</code></p>
 </blockquote>
-
 <ul>
 <li><code>config.</code> <code>second|minute|hour|day|month|year</code> 配置对应单位时间内的请求限制数</li>
 </ul>
-
-<h4 id="key-auth-plugin-https-docs-konghq-com-hub-kong-inc-key-auth">Key Auth plugin (<a href="https://docs.konghq.com/hub/kong-inc/key-auth/">https://docs.konghq.com/hub/kong-inc/key-auth/</a>)</h4>
-
+</li>
+</ul>
+<h4 id="key-auth-plugin-httpsdocskonghqcomhubkong-inckey-auth">Key Auth plugin (<a href="https://docs.konghq.com/hub/kong-inc/key-auth/">https://docs.konghq.com/hub/kong-inc/key-auth/</a>)</h4>
 <ul>
 <li>主要参数
-
 <ul>
 <li><code>config.key_names</code> 默认名称 <code>apikey</code>，可以配置修改</li>
-</ul></li>
+</ul>
+</li>
 <li>使用步骤
-
 <ul>
 <li>创建 a Consumer</li>
 <li>创建一个  Key</li>
 <li>然后使用 Key</li>
-</ul></li>
 </ul>
-
-<h4 id="load-balancing-plugin-https-docs-konghq-com-getting-started-guide-2-1-x-load-balancing">Load Balancing plugin (<a href="https://docs.konghq.com/getting-started-guide/2.1.x/load-balancing/">https://docs.konghq.com/getting-started-guide/2.1.x/load-balancing/</a>)</h4>
-
+</li>
+</ul>
+<h4 id="load-balancing-plugin-httpsdocskonghqcomgetting-started-guide21xload-balancing">Load Balancing plugin (<a href="https://docs.konghq.com/getting-started-guide/2.1.x/load-balancing/">https://docs.konghq.com/getting-started-guide/2.1.x/load-balancing/</a>)</h4>
 <ul>
 <li>Concepts
-
 <ul>
 <li>Upstreams</li>
 <li>Targets</li>
-</ul></li>
 </ul>
-
-<h3 id="自定义nginx模板并嵌入kong-https-docs-konghq-com-2-1-x-configuration">自定义Nginx模板并嵌入Kong (<a href="https://docs.konghq.com/2.1.x/configuration/">https://docs.konghq.com/2.1.x/configuration/</a>)</h3>
-
+</li>
+</ul>
+<h3 id="自定义nginx模板并嵌入kong-httpsdocskonghqcom21xconfiguration">自定义Nginx模板并嵌入Kong (<a href="https://docs.konghq.com/2.1.x/configuration/">https://docs.konghq.com/2.1.x/configuration/</a>)</h3>
 <p><code>$ kong start -c kong.conf --nginx-conf custom_nginx.template</code></p>
-
 <h3 id="术语">术语</h3>
-
 <ul>
 <li><code>client</code>:  向Kong的代理接口发起请求的下游客户端。</li>
 <li><code>upstream service</code>:  Kong代理的上游服务，也就是具体的业务服务。</li>
@@ -329,221 +321,192 @@ Kong的构建遵循以下主要原则：
 <li><code>Route</code>:  client进入Kong的入口，定义对应的匹配规则，并将匹配的路由到对应的上游服务。</li>
 <li><code>Plugin</code>:  Kong“插件”，它们是在代理生命周期中运行的业务逻辑。可以通过Admin API配置插件-全局（所有传入流量）或特定的路由和服务上。</li>
 </ul>
-
 <h3 id="ports">Ports</h3>
-
 <ul>
 <li>proxy：默认http端口<code>8000</code>，https端口<code>8443</code> ，下游的服务经过此接口进入Kong。</li>
-<li>admin：默认http端口<code>8001</code>，https端口<code>8444</code> ，对Kong的动态配置的RestfulApi</li>
+<li>admin：默认http端口<code>8001</code>，https端口<code>8444 </code> ，对Kong的动态配置的RestfulApi</li>
 </ul>
-
 <blockquote>
 <p>均可通过 <code>/etc/kong/kong.conf</code>进行修改。</p>
 </blockquote>
-
 <h3 id="路由及其匹配">路由及其匹配</h3>
-
 <p>Kong支持HTTP / HTTPS，TCL / TLS和GRPC / GRPCS协议的本机代理；如前所述，这些协议中的每一个都接受一组不同的路由属性：</p>
-
 <ul>
 <li><code>http</code>: <code>methods</code>, <code>hosts</code>, <code>headers</code>, <code>paths</code> (and <code>snis</code>, if <code>https</code>)</li>
 <li><code>tcp</code>: <code>sources</code>, <code>destinations</code> (and <code>snis</code>, if <code>tls</code>)</li>
 <li><code>grpc</code>: <code>hosts</code>, <code>headers</code>, <code>paths</code> (and <code>snis</code>, if <code>grpcs</code>)</li>
 </ul>
-
 <blockquote>
 <p>请注意，这三个字段都是<strong>可选</strong>字段，但必须至少指定<strong>其中一个</strong>。</p>
 </blockquote>
-
 <p>一个可以被匹配的请求，需满足:</p>
-
 <ul>
 <li>该请求<strong>必须</strong>包含<strong>所有</strong>已配置的字段。</li>
 <li>请求中字段的值<strong>必须</strong>至少与配置的值之一匹配（虽然字段配置接受一个或多个值，但请求仅需要将其中一个值视为匹配项）。</li>
 </ul>
-
 <p>举例说明：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">{
-    <span style="color:#f1fa8c">&#34;hosts&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;example.com&#34;</span>, <span style="color:#f1fa8c">&#34;foo-service.com&#34;</span>],
-    <span style="color:#f1fa8c">&#34;paths&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;/foo&#34;</span>, <span style="color:#f1fa8c">&#34;/bar&#34;</span>],
-    <span style="color:#f1fa8c">&#34;methods&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;GET&#34;</span>]
-}</code></pre></div>
-<p>与此路由匹配的一些可能请求如下所示:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /foo <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> example.com</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /bar <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> foo-service.com</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /foo/hello/world <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> example.com</code></pre></div>
-<p>所有这三个请求都满足“路由定义”中设置的所有条件。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#f1fa8c">&#34;hosts&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;example.com&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;foo-service.com&#34;</span><span style="color:#ff79c6">],</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#f1fa8c">&#34;paths&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;/foo&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;/bar&#34;</span><span style="color:#ff79c6">],</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    <span style="color:#f1fa8c">&#34;methods&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;GET&#34;</span><span style="color:#ff79c6">]</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>与此路由匹配的一些可能请求如下所示:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /foo <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> example.com
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /bar <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> foo-service.com
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /foo/hello/world <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> example.com
+</code></pre></div><p>所有这三个请求都满足“路由定义”中设置的所有条件。</p>
 <p>但是，以下请求将<strong>不</strong>符合配置的条件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> example.com</code></pre></div>
-<blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> example.com
+</code></pre></div><blockquote>
 <p>路径未匹配。</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">POST</span> /foo <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> example.com</code></pre></div>
-<blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">POST</span> /foo <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> example.com
+</code></pre></div><blockquote>
 <p>请求方法未匹配。</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /foo <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> foo.com</code></pre></div>
-<blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /foo <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> foo.com
+</code></pre></div><blockquote>
 <p>URL未匹配。</p>
 </blockquote>
-
 <p>所有这三个请求仅满足两个已配置的条件。第一个请求的路径与任何已配置的都不匹配，<code>paths</code>第二个请求的HTTP方法与第三个请求的Host标头相同。</p>
-
 <p>现在我们了解了路由属性如何协同工作，让我们分别探讨每个属性。</p>
-
-<h4 id="preserve-host-属性"><code>preserve_host</code> 属性</h4>
-
+<h4 id="preserve_host-属性"><code>preserve_host</code> 属性</h4>
 <p>代理时，Kong的默认行为是将上游请求的Host标头设置为Service的中指定的主机名<code>host</code>。该<code>preserve_host</code>字段接受一个布尔型标志，指示Kong不这样做。</p>
-
 <p>例如，当<code>preserve_host</code>属性未更改且路由配置如下时：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">{
-    <span style="color:#f1fa8c">&#34;hosts&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;service.com&#34;</span>],
-    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> {
-        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
-    }
-}</code></pre></div>
-<p>客户对Kong的可能请求可能是：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> service.com</code></pre></div>
-<p>Kong将从Service的<code>host</code>属性中提取Host标头值，并将发送以下上游请求：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> &lt;my-service-host.com&gt;</code></pre></div>
-<p>但是，通过显式配置Route <code>preserve_host=true</code>：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">{
-    <span style="color:#f1fa8c">&#34;hosts&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;service.com&#34;</span>],
-    <span style="color:#f1fa8c">&#34;preserve_host&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">true</span>,
-    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> {
-        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
-    }
-}</code></pre></div>
-<p>并假设来自客户端的相同请求：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> service.com</code></pre></div>
-<p>Kong将保留客户端请求上的主机，并改为发送以下上游请求：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> service.com</code></pre></div>
-<h4 id="扩展request-headers-except-host">扩展Request headers (except Host)</h4>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#f1fa8c">&#34;hosts&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;service.com&#34;</span><span style="color:#ff79c6">],</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>客户对Kong的可能请求可能是：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> service.com
+</code></pre></div><p>Kong将从Service的<code>host</code>属性中提取Host标头值，并将发送以下上游请求：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> &lt;my-service-host.com&gt;
+</code></pre></div><p>但是，通过显式配置Route <code>preserve_host=true</code>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#f1fa8c">&#34;hosts&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;service.com&#34;</span><span style="color:#ff79c6">],</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#f1fa8c">&#34;preserve_host&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>并假设来自客户端的相同请求：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> service.com
+</code></pre></div><p>Kong将保留客户端请求上的主机，并改为发送以下上游请求：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> service.com
+</code></pre></div><h4 id="扩展request-headers-except-host">扩展Request headers (except Host)</h4>
 <p>从Kong 1.3.0开始，可以通过以外的其他报头来路由请求<code>Host</code>。</p>
-
 <p>为此，可以通过<code>headers</code>来配置扩展的信息，如下扩展了<code>version</code>信息：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">{
-    <span style="color:#f1fa8c">&#34;headers&#34;</span><span style="color:#ff79c6">:</span> { <span style="color:#f1fa8c">&#34;version&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;v1&#34;</span>, <span style="color:#f1fa8c">&#34;v2&#34;</span>] },
-    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> {
-        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
-    }
-}</code></pre></div>
-<p>给定带有扩展header的请求，例如：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-version<span style="color:#ff79c6">:</span> v1</code></pre></div>
-<p>如下的请求也将被路由到服务：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-version<span style="color:#ff79c6">:</span> v2</code></pre></div>
-<p>但是，如下的请求不会路由到服务：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-version<span style="color:#ff79c6">:</span> v3</code></pre></div>
-<p><strong>注意</strong>：<code>headers</code>键是逻辑<code>AND</code>关系，其值是逻辑<code>OR</code>关系。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#f1fa8c">&#34;headers&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">{</span> <span style="color:#f1fa8c">&#34;version&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;v1&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;v2&#34;</span><span style="color:#ff79c6">]</span> <span style="color:#ff79c6">},</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>给定带有扩展header的请求，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>version<span style="color:#ff79c6">:</span> v1
+</code></pre></div><p>如下的请求也将被路由到服务：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>version<span style="color:#ff79c6">:</span> v2
+</code></pre></div><p>但是，如下的请求不会路由到服务：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>version<span style="color:#ff79c6">:</span> v3
+</code></pre></div><p><strong>注意</strong>：<code>headers</code>键是逻辑<code>AND</code>关系，其值是逻辑<code>OR</code>关系。</p>
 <h4 id="请求路径paths">请求路径paths</h4>
-
 <p>路由匹配的另一种方法是通过请求路径。为了满足此路由条件，客户端请求的路径<strong>必须</strong>以<code>paths</code>属性值之一为前缀。</p>
-
 <p>例如，使用如下配置的路由：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http">{
-    &#34;paths&#34;: [&#34;/service&#34;, &#34;/hello/world&#34;]
-}</code></pre></div>
-<p>以下请求将被匹配：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /service <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> example.com</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /service/resource?param=value <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> example.com</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /hello/world/resource <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> anything.com</code></pre></div>
-<p>对于这些请求中的每一个，Kong都会检测到其URL路径以 <code>paths</code>值之一为前缀。默认情况下，Kong然后将在不更改URL路径的情况下向上游代理请求。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    &#34;paths&#34;: [&#34;/service&#34;, &#34;/hello/world&#34;]
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>}
+</code></pre></div><p>以下请求将被匹配：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /service <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> example.com
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /service/resource?param=value <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> example.com
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /hello/world/resource <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> anything.com
+</code></pre></div><p>对于这些请求中的每一个，Kong都会检测到其URL路径以 <code>paths</code>值之一为前缀。默认情况下，Kong然后将在不更改URL路径的情况下向上游代理请求。</p>
 <p>使用路径前缀代理时，<strong>最长的路径将首先被评估</strong>。也就是这样的两个路径：<code>/service</code>和<code>/service/resource</code>，前者并不会“覆盖”后者。</p>
-
-<h4 id="在-paths-中使用正则表达式">在<code>paths</code>中使用正则表达式</h4>
-
+<h4 id="在paths中使用正则表达式">在<code>paths</code>中使用正则表达式</h4>
 <p>Kong <code>paths</code>通过<a href="http://pcre.org/">PCRE</a>（Perl兼容正则表达式）支持路由字段的正则表达式模式匹配。您可以同时将路径作为前缀和正则表达式分配给路由。</p>
-
 <p>例如，如下的<code>paths</code>配置：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">{
-    <span style="color:#f1fa8c">&#34;paths&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;/users/\d+/profile&#34;</span>, <span style="color:#f1fa8c">&#34;/following&#34;</span>]
-}</code></pre></div>
-<p>下列的请求将被匹配：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /following <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> ...</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /users/123/profile <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> ...</code></pre></div>
-<p>所提供的正则表达式使用<code>a</code>PCRE标志（<code>PCRE_ANCHORED</code>）进行评估，也就是它们将被约束为在路径的第一个匹配点（根<code>/</code>字符）匹配。</p>
-
-<h4 id="strip-path-属性"><code>strip_path</code> 属性</h4>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#f1fa8c">&#34;paths&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;/users/\d+/profile&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;/following&#34;</span><span style="color:#ff79c6">]</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>下列的请求将被匹配：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /following <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> ...
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /users/123/profile <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> ...
+</code></pre></div><p>所提供的正则表达式使用<code>a</code>PCRE标志（<code>PCRE_ANCHORED</code>）进行评估，也就是它们将被约束为在路径的第一个匹配点（根<code>/</code>字符）匹配。</p>
+<h4 id="strip_path-属性"><code>strip_path</code> 属性</h4>
 <p>在配置路由时，指定了对应的路径前缀，但又不希望其包括在上游请求中。为此，可<code>strip_path</code>通过配置Route来使用boolean属性，如下所示：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">{
-    <span style="color:#f1fa8c">&#34;paths&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;/service&#34;</span>],
-    <span style="color:#f1fa8c">&#34;strip_path&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">true</span>,
-    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> {
-        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
-    }
-}</code></pre></div>
-<p>启用此标志指示Kong所匹配的路由<code>paths</code>信息，在代理处理时它<strong>不</strong>应该包括在上游请求的URL的URL路径的匹配部分。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#f1fa8c">&#34;paths&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;/service&#34;</span><span style="color:#ff79c6">],</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#f1fa8c">&#34;strip_path&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>启用此标志指示Kong所匹配的路由<code>paths</code>信息，在代理处理时它<strong>不</strong>应该包括在上游请求的URL的URL路径的匹配部分。</p>
 <p>例如，如下的请求：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /service/path/to/resource <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> ...</code></pre></div>
-<p>Kong将发送以下上游请求：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /path/to/resource <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> ...</code></pre></div>
-<p>同样，如果在已<code>strip_path</code>启用的Route上定义了正则表达式路径，则将剥离请求URL匹配序列的全部。例：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">{
-    <span style="color:#f1fa8c">&#34;paths&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;/version/\d+/service&#34;</span>],
-    <span style="color:#f1fa8c">&#34;strip_path&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">true</span>,
-    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> {
-        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
-    }
-}</code></pre></div>
-<p>以下HTTP请求与提供的正则表达式路径匹配：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /version/1/service/path/to/resource <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> ...</code></pre></div>
-<p>Kong将在上游代理为：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> /path/to/resource <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> ...</code></pre></div>
-<h4 id="匹配优先级规则">匹配优先级规则</h4>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /service/path/to/resource <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> ...
+</code></pre></div><p>Kong将发送以下上游请求：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /path/to/resource <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> ...
+</code></pre></div><p>同样，如果在已<code>strip_path</code>启用的Route上定义了正则表达式路径，则将剥离请求URL匹配序列的全部。例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#f1fa8c">&#34;paths&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;/version/\d+/service&#34;</span><span style="color:#ff79c6">],</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#f1fa8c">&#34;strip_path&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>以下HTTP请求与提供的正则表达式路径匹配：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /version/1/service/path/to/resource <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> ...
+</code></pre></div><p>Kong将在上游代理为：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> /path/to/resource <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> ...
+</code></pre></div><h4 id="匹配优先级规则">匹配优先级规则</h4>
 <p>一条路线可以基于其定义匹配规则<code>headers</code>，<code>hosts</code>，<code>paths</code>，和<code>methods</code>（加<code>snis</code>-用于安全的路线<code>&quot;https&quot;</code>，<code>&quot;grpcs&quot;</code>，<code>&quot;tls&quot;</code>字段）。为了使Kong将传入请求匹配到Route，必须满足所有现有字段。但是，Kong允许通过使用包含相同值的字段配置两个或更多路由来提供相当大的灵活性-发生这种情况时，Kong将应用优先级规则。</p>
-
 <p>规则是：<strong>在匹配评估请求时，Kong首先会尝试将规则最多的路线进行匹配</strong>。</p>
-
 <p>例如，有两个路由配置如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">{
-    <span style="color:#f1fa8c">&#34;hosts&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;example.com&#34;</span>],
-    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> {
-        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
-    }
-},
-{
-    <span style="color:#f1fa8c">&#34;hosts&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;example.com&#34;</span>],
-    <span style="color:#f1fa8c">&#34;methods&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;POST&#34;</span>],
-    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> {
-        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
-    }
-}</code></pre></div>
-<p>第二条路线有一个<code>hosts</code>字段<strong>和</strong>一个<code>methods</code>字段，因此它将首先由Kong进行匹配评估。这样，我们避免了针对第二个路线的第一个路线“影子”调用。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    <span style="color:#f1fa8c">&#34;hosts&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;example.com&#34;</span><span style="color:#ff79c6">],</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#ff79c6">},</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#f1fa8c">&#34;hosts&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;example.com&#34;</span><span style="color:#ff79c6">],</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    <span style="color:#f1fa8c">&#34;methods&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;POST&#34;</span><span style="color:#ff79c6">],</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>第二条路线有一个<code>hosts</code>字段<strong>和</strong>一个<code>methods</code>字段，因此它将首先由Kong进行匹配评估。这样，我们避免了针对第二个路线的第一个路线“影子”调用。</p>
 <p>如下请求将匹配第一个路线</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> example.com</code></pre></div>
-<p>如下请求将匹配第二个请求：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#50fa7b">POST</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
-Host<span style="color:#ff79c6">:</span> example.com</code></pre></div>
-<p>按照此逻辑，如果要为第三条路线配置一个<code>hosts</code>字段，一个<code>methods</code>字段和一个<code>uris</code>字段，则Kong将首先对其进行评估。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">GET</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> example.com
+</code></pre></div><p>如下请求将匹配第二个请求：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#50fa7b">POST</span> / <span style="color:#ff79c6">HTTP</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1.1</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Host<span style="color:#ff79c6">:</span> example.com
+</code></pre></div><p>按照此逻辑，如果要为第三条路线配置一个<code>hosts</code>字段，一个<code>methods</code>字段和一个<code>uris</code>字段，则Kong将首先对其进行评估。</p>
 <p>如果给定请求的规则数在<code>A</code>和<code>B</code>两个路由相同，则以下所列规则将按照列出的顺序匹配。如果满足以下条件，<code>A</code>将优先于<code>B</code>：</p>
-
 <ul>
 <li><code>A</code>仅具有“普通”header配置，<code>B</code>并且具有一个或多个“通配符”header配置。</li>
 <li><code>A</code> 比 <code>B</code>有更多的非<code>hosts</code>的属性.</li>
@@ -551,269 +514,204 @@ Host<span style="color:#ff79c6">:</span> example.com</code></pre></div>
 <li><code>A</code>的更长路径比<code>B</code>更长的路径更长。</li>
 <li><code>A.created_at &lt; B.created_at</code></li>
 </ul>
-
-<h4 id="代理行为-https-docs-konghq-com-2-1-x-proxy-proxying-behavior">代理行为 (<a href="https://docs.konghq.com/2.1.x/proxy/#proxying-behavior">https://docs.konghq.com/2.1.x/proxy/#proxying-behavior</a>)</h4>
-
-<h4 id="配置一个备用路由-https-docs-konghq-com-2-1-x-proxy-configuring-a-fallback-route">配置一个备用路由 (<a href="https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route">https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route</a>)</h4>
-
+<h4 id="代理行为-httpsdocskonghqcom21xproxyproxying-behavior">代理行为 (<a href="https://docs.konghq.com/2.1.x/proxy/#proxying-behavior">https://docs.konghq.com/2.1.x/proxy/#proxying-behavior</a>)</h4>
+<h4 id="配置一个备用路由-httpsdocskonghqcom21xproxyconfiguring-a-fallback-route">配置一个备用路由 (<a href="https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route">https://docs.konghq.com/2.1.x/proxy/#configuring-a-fallback-route</a>)</h4>
 <p>实现“后备路由”，可以避免Kong在HTTP响应<code>404</code>时出现“找不到路由”，我们可以捕获此类请求并将其代理到特殊的上游服务，或对其应用插件（例如，该插件可以使用其他状态代码或响应终止请求，而无需代理请求）。</p>
-
 <p>一个后备路由的示例：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">{
-    <span style="color:#f1fa8c">&#34;paths&#34;</span><span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#34;/&#34;</span>],
-    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> {
-        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
-    }
-}</code></pre></div>
-<p>当向Kong发出的任何HTTP请求实际上都将与此路由匹配，因为所有URI都以根字符为前缀<code>/</code>。从“请求路径”部分我们知道，最长的URL路径首先由Kong评估，因此该<code>/</code>路径最终将最终由Kong评估，并有效地提供了“后备”路线，仅在万不得已时才进行匹配。然后，您可以将流量发送到特殊服务，或在此路线上应用您希望的任何插件。</p>
-
-<h4 id="websocket-代理-https-docs-konghq-com-2-1-x-proxy-proxy-websocket-traffic-todo">WebSocket 代理 (<a href="https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic)(TODO">https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic)(TODO</a>)</h4>
-
-<h3 id="负载均衡-https-docs-konghq-com-2-1-x-loadbalancing">负载均衡 (<a href="https://docs.konghq.com/2.1.x/loadbalancing/">https://docs.konghq.com/2.1.x/loadbalancing/</a>)</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#f1fa8c">&#34;paths&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">[</span><span style="color:#f1fa8c">&#34;/&#34;</span><span style="color:#ff79c6">],</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#f1fa8c">&#34;service&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>        <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;...&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>当向Kong发出的任何HTTP请求实际上都将与此路由匹配，因为所有URI都以根字符为前缀<code>/</code>。从“请求路径”部分我们知道，最长的URL路径首先由Kong评估，因此该<code>/</code>路径最终将最终由Kong评估，并有效地提供了“后备”路线，仅在万不得已时才进行匹配。然后，您可以将流量发送到特殊服务，或在此路线上应用您希望的任何插件。</p>
+<h4 id="websocket-代理-httpsdocskonghqcom21xproxyproxy-websocket-traffictodo">WebSocket 代理 (<a href="https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic)(TODO">https://docs.konghq.com/2.1.x/proxy/#proxy-websocket-traffic)(TODO</a>)</h4>
+<h3 id="负载均衡-httpsdocskonghqcom21xloadbalancing">负载均衡 (<a href="https://docs.konghq.com/2.1.x/loadbalancing/">https://docs.konghq.com/2.1.x/loadbalancing/</a>)</h3>
 <h4 id="基于dns的负载平衡">基于DNS的负载平衡</h4>
-
 <blockquote>
 <p>后端服务的注册是在Kong之外进行的。</p>
 </blockquote>
-
 <h4 id="ring-balancer">Ring-balancer</h4>
-
 <p>算法选择: <code>consistent-hashing</code>, <code>least-connections</code>, <code>round-robin</code></p>
-
-<h4 id="blue-green-发布-https-docs-konghq-com-2-1-x-loadbalancing-blue-green-deployments">Blue-Green 发布 (<a href="https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments">https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments</a>)</h4>
-
+<h4 id="blue-green-发布-httpsdocskonghqcom21xloadbalancingblue-green-deployments">Blue-Green 发布 (<a href="https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments">https://docs.konghq.com/2.1.x/loadbalancing/#blue-green-deployments</a>)</h4>
 <p>扩展: (<a href="https://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/">https://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/</a>)</p>
-
-<p><img src="https://izcqi.com/images/image-20200728144535998.png#mid" alt="Blue-Green Deployment" /></p>
-
+<p><img src="https://izcqi.com/images/image-20200728144535998.png#mid" alt="Blue-Green Deployment"></p>
 <p>使用 ring-balance，可以轻松地为服务编排蓝绿色部署。切换目标基础架构仅需要<code>PATCH</code>对服务的请求即可更改其<code>host</code>价值。</p>
-
 <ul>
-<li><p>设置“Blue”环境，运行地址服务的版本1：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4"># create an upstream</span>
-$ curl -X POST http://kong:8001/upstreams <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>  --data <span style="color:#f1fa8c">&#34;name=address.v1.service&#34;</span>
-  
-<span style="color:#6272a4"># add two targets to the upstream</span>
-$ curl -X POST http://kong:8001/upstreams/address.v1.service/targets <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>  --data <span style="color:#f1fa8c">&#34;target=192.168.34.15:80&#34;</span>
-  --data <span style="color:#f1fa8c">&#34;weight=100&#34;</span>
-$ curl -X POST http://kong:8001/upstreams/address.v1.service/targets <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>  --data <span style="color:#f1fa8c">&#34;target=192.168.34.16:80&#34;</span>
-  --data <span style="color:#f1fa8c">&#34;weight=50&#34;</span>
-  
-<span style="color:#6272a4"># create a Service targeting the Blue upstream</span>
-$ curl -X POST http://kong:8001/services/ <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>  --data <span style="color:#f1fa8c">&#34;name=address-service&#34;</span> <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>  --data <span style="color:#f1fa8c">&#34;host=address.v1.service&#34;</span> <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>  --data <span style="color:#f1fa8c">&#34;path=/address&#34;</span>
-  
-<span style="color:#6272a4"># finally, add a Route as an entry-point into the Service</span>
-$ curl -X POST http://kong:8001/services/address-service/routes/ <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>  --data <span style="color:#f1fa8c">&#34;hosts[]=address.mydomain.com&#34;</span></code></pre></div></li>
-</ul>
-
-<blockquote>
+<li>
+<p>设置“Blue”环境，运行地址服务的版本1：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#6272a4"># create an upstream</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>$ curl -X POST http://kong:8001/upstreams <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;name=address.v1.service&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#6272a4"># add two targets to the upstream</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>$ curl -X POST http://kong:8001/upstreams/address.v1.service/targets <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.15:80&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    --data <span style="color:#f1fa8c">&#34;weight=100&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>$ curl -X POST http://kong:8001/upstreams/address.v1.service/targets <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.16:80&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    --data <span style="color:#f1fa8c">&#34;weight=50&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#6272a4"># create a Service targeting the Blue upstream</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>$ curl -X POST http://kong:8001/services/ <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;name=address-service&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;host=address.v1.service&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;path=/address&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span style="color:#6272a4"># finally, add a Route as an entry-point into the Service</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>$ curl -X POST http://kong:8001/services/address-service/routes/ <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;hosts[]=address.mydomain.com&#34;</span>
+</code></pre></div><blockquote>
 <p>主机头设置为的请求<code>address.mydomain.com</code>将由Kong代理到两个已定义的目标；2 / 3的请求将去<code>http://192.168.34.15:80/address</code>（<code>weight=100</code>），和1 / 3将去<code>http://192.168.34.16:80/address</code>（<code>weight=50</code>）。</p>
 </blockquote>
-
-<ul>
-<li><p>在部署地址服务的版本2之前，请设置“Green”环境：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4"># create a new Green upstream for address service v2</span>
-$ curl -X POST http://kong:8001/upstreams <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>  --data <span style="color:#f1fa8c">&#34;name=address.v2.service&#34;</span>
-  
-<span style="color:#6272a4"># add targets to the upstream</span>
-$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>  --data <span style="color:#f1fa8c">&#34;target=192.168.34.17:80&#34;</span>
-  --data <span style="color:#f1fa8c">&#34;weight=100&#34;</span>
-$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>  --data <span style="color:#f1fa8c">&#34;target=192.168.34.18:80&#34;</span>
-  --data <span style="color:#f1fa8c">&#34;weight=100&#34;</span></code></pre></div></li>
-</ul>
-
-<p>要激活Blue/Green 开关，我们现在只需要更新服务：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  <span style="color:#6272a4"># Switch the Service from Blue to Green upstream, v1 -&gt; v2</span>
-  $ curl -X PATCH http://kong:8001/services/address-service <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>      --data <span style="color:#f1fa8c">&#34;host=address.v2.service&#34;</span></code></pre></div>
-<blockquote>
+</li>
+<li>
+<p>在部署地址服务的版本2之前，请设置“Green”环境：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#6272a4"># create a new Green upstream for address service v2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>$ curl -X POST http://kong:8001/upstreams <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;name=address.v2.service&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#6272a4"># add targets to the upstream</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.17:80&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    --data <span style="color:#f1fa8c">&#34;weight=100&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.18:80&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    --data <span style="color:#f1fa8c">&#34;weight=100&#34;</span>
+</code></pre></div><p>要激活Blue/Green 开关，我们现在只需要更新服务：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#6272a4"># Switch the Service from Blue to Green upstream, v1 -&gt; v2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>$ curl -X PATCH http://kong:8001/services/address-service <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;host=address.v2.service&#34;</span>
+</code></pre></div><blockquote>
 <p>主机头设置为的传入请求<code>address.mydomain.com</code>将由Kong代理到新目标；1 / 2的请求将去<code>http://192.168.34.17:80/address</code>（<code>weight=100</code>），以及其它1 / 2将去<code>http://192.168.34.18:80/address</code>（<code>weight=100</code>）。</p>
 </blockquote>
-
-<h4 id="金丝雀版本发布-https-docs-konghq-com-2-1-x-loadbalancing-canary-releases">金丝雀版本发布 (<a href="https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases">https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases</a>)</h4>
-
+</li>
+</ul>
+<h4 id="金丝雀版本发布-httpsdocskonghqcom21xloadbalancingcanary-releases">金丝雀版本发布 (<a href="https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases">https://docs.konghq.com/2.1.x/loadbalancing/#canary-releases</a>)</h4>
 <p>扩展: (<a href="http://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/">http://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/</a>)</p>
-
 <p>使用ring-balancer，可以精确调整目标权重实现平稳，控制的金丝雀版本的发布。</p>
-
 <p>一个非常简单2个目标的示例：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4"># first target at 1000</span>
-$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.17:80&#34;</span>
-    --data <span style="color:#f1fa8c">&#34;weight=1000&#34;</span>
-
-<span style="color:#6272a4"># second target at 0</span>
-$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.18:80&#34;</span>
-    --data <span style="color:#f1fa8c">&#34;weight=0&#34;</span></code></pre></div>
-<p>通过重复请求，但每次更改权重，流量将缓慢地路由到另一个目标。例如，将其设置为10％：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4"># first target at 900</span>
-$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.17:80&#34;</span>
-    --data <span style="color:#f1fa8c">&#34;weight=900&#34;</span>
-
-<span style="color:#6272a4"># second target at 100</span>
-$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
-</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.18:80&#34;</span>
-    --data <span style="color:#f1fa8c">&#34;weight=100&#34;</span></code></pre></div>
-<p>通过Kong Admin API进行的更改是动态的，将立即生效。无需重新加载或重启，也不会丢弃任何进行中的请求。</p>
-
-<h3 id="健康检查和断路器-https-docs-konghq-com-2-1-x-health-checks-circuit-breakers">健康检查和断路器 (<a href="https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/">https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/</a>)</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#6272a4"># first target at 1000</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.17:80&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    --data <span style="color:#f1fa8c">&#34;weight=1000&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span style="color:#6272a4"># second target at 0</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.18:80&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span>    --data <span style="color:#f1fa8c">&#34;weight=0&#34;</span>
+</code></pre></div><p>通过重复请求，但每次更改权重，流量将缓慢地路由到另一个目标。例如，将其设置为10％：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#6272a4"># first target at 900</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.17:80&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    --data <span style="color:#f1fa8c">&#34;weight=900&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span style="color:#6272a4"># second target at 100</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>$ curl -X POST http://kong:8001/upstreams/address.v2.service/targets <span style="color:#f1fa8c">\
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span style="color:#f1fa8c"></span>    --data <span style="color:#f1fa8c">&#34;target=192.168.34.18:80&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span>    --data <span style="color:#f1fa8c">&#34;weight=100&#34;</span>
+</code></pre></div><p>通过Kong Admin API进行的更改是动态的，将立即生效。无需重新加载或重启，也不会丢弃任何进行中的请求。</p>
+<h3 id="健康检查和断路器-httpsdocskonghqcom21xhealth-checks-circuit-breakers">健康检查和断路器 (<a href="https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/">https://docs.konghq.com/2.1.x/health-checks-circuit-breakers/</a>)</h3>
 <h4 id="upstreams上游服务">Upstreams上游服务</h4>
-
 <p>除了针对单个目标的运行状况检查功能之外，上游还具有运行状况概念。上游的运行状况取决于其目标的状态。</p>
-
 <p>通过属性可以配置上游的运行状况<code>healthchecks.threshold</code>。这是被认为是健康的上游最小可用目标“权重”（容量）的百分比。</p>
-
 <p>一个简单示例：</p>
-
 <ul>
 <li>假设配置了的上游<code>healthchecks.threshold=55</code>。</li>
 <li>它有5个目标，每个目标都有<code>weight=100</code>，因此ring-balancer的总权重为500。</li>
 </ul>
-
 <p>当故障开始发生时，第一个目标的断路器跳闸。现在认为它不健康。这意味着在ring-balancer中，现在有20％的容量不正常（500权重中有100权重）。该阈值仍高于55的阈值，因此其余目标将为失败目标的流量提供服务。</p>
-
 <p>当第二次失败发生时，另一个目标失败，另外100权重的服务作为不健康服务而丢失。现在，ring-balancer以其容量的60％运行，但仍在配置的阈值内。</p>
-
 <p>如果我们假设这2个故障是由于系统过载而发生的，那么现在我们可以假设剩余的60％也将无法应付满负荷，并且很快第三个节点将发生故障，从而将正常容量减少到40％。此时，上游健康状况将小于其阈值，并且自身将被标记为不健康。</p>
-
 <p>一旦进入不正常状态，上游只会返回错误。这可使目标/服务从遇到的级联故障中恢复。</p>
-
 <p>一旦目标开始恢复并且上游的可用容量再次超过阈值，则ring-balancer 的运行状况将自动更新。</p>
-
 <h4 id="健康检查类型">健康检查类型</h4>
-
 <ul>
-<li>主动健康检查</li>
-</ul>
-
+<li>
+<p>主动健康检查</p>
 <p>顾名思义，主动健康检查会主动探测其健康目标。在上游实体中启用主动健康检查后，Kong会定期向上游的每个目标处的已配置路径发出HTTP或HTTPS请求。这样，Kong可以根据探测结果自动启用和禁用平衡器中的目标。</p>
-
 <p>可以针对目标健康或不健康分别配置主动健康检查的周期。如果将<code>interval</code>其中一个的值设置为零，则在相应的情况下将禁用检查。当两者均为零时，将完全禁用活动的健康检查。</p>
-
-<ul>
-<li>被动健康检查（断路器）</li>
-</ul>
-
+</li>
+<li>
+<p>被动健康检查（断路器）</p>
 <p>被动健康检查（也称为断路器）是根据Kong（HTTP / HTTPS / TCP）代理的请求执行的检查，不会生成其他流量。当目标变得无响应时，被动健康检查器将检测到该目标并将其标记为不健康。ring-balancer将开始跳过此目标，因此不再有流量路由到该目标。</p>
-
 <p>解决目标问题并准备再次接收流量后，Kong管理员可以通过Admin API端点手动通知运行状况检查器应再次启用目标：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  $ curl -i -X POST http://localhost:8001/upstreams/my_upstream/targets/10.1.2.3:1234/healthy
-  HTTP/1.1 <span style="color:#bd93f9">204</span> No Content</code></pre></div>
-<p>此命令将广播整个群集的消息，以便将“健康”状态传播到整个<a href="https://docs.konghq.com/2.1.x/clustering">Kong集群</a>。这将导致Kong节点重置在Kong节点的所有工作程序中运行的运行状况检查器的运行状况计数器，从而允许环形平衡器再次将流量路由到目标。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ curl -i -X POST http://localhost:8001/upstreams/my_upstream/targets/10.1.2.3:1234/healthy
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>HTTP/1.1 <span style="color:#bd93f9">204</span> No Content
+</code></pre></div><p>此命令将广播整个群集的消息，以便将“健康”状态传播到整个<a href="https://docs.konghq.com/2.1.x/clustering">Kong集群</a>。这将导致Kong节点重置在Kong节点的所有工作程序中运行的运行状况检查器的运行状况计数器，从而允许环形平衡器再次将流量路由到目标。</p>
 <p>被动运行状况检查的优点是不会产生额外的流量，但是它们无法自动将目标再次标记为运行状况良好：“电路已断开”，系统管理员需要重新启用目标。</p>
-
-<h3 id="集群-https-docs-konghq-com-2-1-x-clustering">集群  (<a href="https://docs.konghq.com/2.1.x/clustering/">https://docs.konghq.com/2.1.x/clustering/</a>)</h3>
-
-<p>Kong群集允许您通过添加更多计算机来处理更多传入请求来水平扩展系统。它们都指向相同的数据库，因此它们将共享相同的配置。指向<strong>同一数据存储的</strong> Kong节点将属于同一Kong集群。</p>
-
-<p>您需要在Kong群集前面安装一个负载平衡器，以在可用节点之间分配流量。</p>
-
-<h4 id="多节点kong集群">多节点Kong集群</h4>
-
-<p>每<code>db_update_frequency</code>秒钟，所有运行中的Kong节点将轮询数据库是否有更新，并在必要时从其缓存中清除相关实体。</p>
-
-<p>如果我们从<code>A</code>节点删除了一个服务，这个变化在节点<code>B</code>轮训数据库变化前，不会在节点<code>B</code>上生效。该轮询可能会在<code>db_update_frequency</code>几秒钟后发生（尽管可能会更快发生）。</p>
-
-<h4 id="哪些内容将被缓存">哪些内容将被缓存?</h4>
-
-<p>所有核心实体（如服务，路由，插件，使用者，凭证）都由Kong缓存在内存中，并依赖于它们通过要更新的轮询机制的失效。</p>
-
-<h4 id="怎样配置数据库缓存">怎样配置数据库缓存?</h4>
-
-<p>您可以在Kong配置文件中配置3个属性，其中最重要的是<code>db_update_frequency</code>，它确定您的Kong节点在性能与一致性之间的权衡。</p>
-
-<p>Kong带有为一致性而调整的默认值，以便让您尝试其群集功能同时避免“意外”。在准备生产设置时，应考虑调整这些值，以确保遵守性能约束。</p>
-
-<ul>
-<li><code>db_update_frequency</code> (默认: 5s)
-这个值确定您的Kong节点将轮询数据库中的无效事件的频率。较低的值表示轮询作业将更频繁地执行，但是Kong节点将跟上您应用的更改。较高的值表示您的Kong节点将花费较少的时间来运行轮询作业，并将专注于代理您的流量。</li>
+</li>
 </ul>
-
+<h3 id="集群--httpsdocskonghqcom21xclustering">集群  (<a href="https://docs.konghq.com/2.1.x/clustering/">https://docs.konghq.com/2.1.x/clustering/</a>)</h3>
+<p>Kong群集允许您通过添加更多计算机来处理更多传入请求来水平扩展系统。它们都指向相同的数据库，因此它们将共享相同的配置。指向<strong>同一数据存储的</strong> Kong节点将属于同一Kong集群。</p>
+<p>您需要在Kong群集前面安装一个负载平衡器，以在可用节点之间分配流量。</p>
+<h4 id="多节点kong集群">多节点Kong集群</h4>
+<p>每<code>db_update_frequency</code>秒钟，所有运行中的Kong节点将轮询数据库是否有更新，并在必要时从其缓存中清除相关实体。</p>
+<p>如果我们从<code>A</code>节点删除了一个服务，这个变化在节点<code>B</code>轮训数据库变化前，不会在节点<code>B</code>上生效。该轮询可能会在<code>db_update_frequency</code>几秒钟后发生（尽管可能会更快发生）。</p>
+<h4 id="哪些内容将被缓存">哪些内容将被缓存?</h4>
+<p>所有核心实体（如服务，路由，插件，使用者，凭证）都由Kong缓存在内存中，并依赖于它们通过要更新的轮询机制的失效。</p>
+<h4 id="怎样配置数据库缓存">怎样配置数据库缓存?</h4>
+<p>您可以在Kong配置文件中配置3个属性，其中最重要的是<code>db_update_frequency</code>，它确定您的Kong节点在性能与一致性之间的权衡。</p>
+<p>Kong带有为一致性而调整的默认值，以便让您尝试其群集功能同时避免“意外”。在准备生产设置时，应考虑调整这些值，以确保遵守性能约束。</p>
+<ul>
+<li>
+<p><code>db_update_frequency</code> (默认: 5s)
+这个值确定您的Kong节点将轮询数据库中的无效事件的频率。较低的值表示轮询作业将更频繁地执行，但是Kong节点将跟上您应用的更改。较高的值表示您的Kong节点将花费较少的时间来运行轮询作业，并将专注于代理您的流量。</p>
 <blockquote>
 <p>注意：更改最多在db_update_frequency秒内在整个群集中传播。</p>
 </blockquote>
-
-<ul>
-<li><code>db_update_propagation</code> (默认: 0s)
-如果数据库本身最终是一致的（即：Cassandra），则必须配置该值。这是为了确保更改有时间在数据库节点之间传播。设置后，从轮询作业接收到无效事件的Kong节点将使清除其缓存的时间延迟<code>db_update_propagation</code>秒。</li>
-</ul>
-
+</li>
+<li>
+<p><code>db_update_propagation</code> (默认: 0s)
+如果数据库本身最终是一致的（即：Cassandra），则必须配置该值。这是为了确保更改有时间在数据库节点之间传播。设置后，从轮询作业接收到无效事件的Kong节点将使清除其缓存的时间延迟<code>db_update_propagation</code>秒。</p>
 <p>如果连接到最终一致数据库的Kong节点没有延迟事件处理，则它可以清除其缓存，仅再次缓存未更新的值（因为更改尚未在数据库中传播）！</p>
-
 <p>您应该将此值设置为数据库集群传播更改所花费的时间的估计值。</p>
-
 <blockquote>
 <p>注意：设置此值后，更改将在整个db_update_frequency + db_update_propagation秒内传播。</p>
 </blockquote>
-
-<ul>
-<li><code>db_cache_ttl</code> (默认: 0s)
-Kong将缓存数据库实体（命中和未命中）的时间（以秒为单位）。此生存时间值可作为安全措施，以防Kong节点错过失效事件，从而避免其在陈旧数据上运行太长时间。当达到TTL时，将从其缓存中清除该值，并再次缓存下一个数据库结果（其实就是上游服务返回的结果）。</li>
-</ul>
-
+</li>
+<li>
+<p><code>db_cache_ttl</code> (默认: 0s)
+Kong将缓存数据库实体（命中和未命中）的时间（以秒为单位）。此生存时间值可作为安全措施，以防Kong节点错过失效事件，从而避免其在陈旧数据上运行太长时间。当达到TTL时，将从其缓存中清除该值，并再次缓存下一个数据库结果（其实就是上游服务返回的结果）。</p>
 <p>默认情况下，没有数据基于此TTL无效（默认值为0）。通常这是一个很好选择：Kong节点依赖于无效事件，这些事件在数据库存储级别（Cassandra / PosgreSQL）处理。如果您担心Kong节点可能因任何原因错过失效事件，则应设置TTL。否则，节点可能会在其缓存中以陈旧值运行不确定的时间，直到手动清除缓存或重新启动节点为止。即就是允许一定时间范围内的数据不一致性。</p>
-
-<ul>
-<li>使用Cassandra时</li>
-</ul>
-
+</li>
+<li>
+<p>使用Cassandra时</p>
 <p>如果将Cassandra用作Kong数据库，则<strong>必须</strong>设置<code>db_update_propagation</code>为非零值。由于Cassandra最终在本质上是一致的，因此这将确保Kong节点不会过早地使它们的缓存失效，而只是再次获取并捕获不最新的实体。如果您在使用Cassandra时未配置此值，则Kong将向您显示警告日志。</p>
-
 <p>此外，您可能需要配置<code>cassandra_consistency</code>为<code>QUORUM</code>或<code>LOCAL_QUORUM</code>，以确保Kong节点缓存的值是数据库中的最新值。</p>
-
 <p>建议不要将<code>cassandra_refresh_frequency</code>选项设置<code>0</code>为，因为需要重启Kong才能发现对Cassandra群集拓扑的任何更改。</p>
-
-<h3 id="防火墙-https-docs-konghq-com-2-1-x-network-firewall">防火墙  (<a href="https://docs.konghq.com/2.1.x/network/#firewall">https://docs.konghq.com/2.1.x/network/#firewall</a>)</h3>
-
-<h4 id="透明代理-https-blog-stackpath-com-transparent-proxy">透明代理  (<a href="https://blog.stackpath.com/transparent-proxy/">https://blog.stackpath.com/transparent-proxy/</a>)</h4>
-
-<p>例如一个HTTP请求目的地址<code>10.0.0.1</code>端口<code>80</code>需要能跳转到<code>127.0.0.1</code>端口为<code>8000</code>。要实现这样的网络，您需要（对于Linux）将<code>transparent</code>侦听选项添加到Kong代理<code>proxy_listen=8000 transparent</code>。这使Kong可以看到请求（<code>10.0.0.1:80</code>）的原始目的地，即使Kong并未实际直接收听它。有了这些信息，Kong可以正确地路由请求。在<code>transparent</code>听取选项只能在Linux中使用。macOS / BSD允许没有<code>transparent</code>侦听选项的透明代理。使用Linux，您可能还需要以<code>root</code>用户身份启动Kong 或为可执行文件设置所需的功能。</p>
-
-<p><img src="https://izcqi.com/images/image-20200728094209364.png#mid" alt="Transparent Proxy" /></p>
-
-<h3 id="通过systemd管理kong">通过systemd管理Kong</h3>
-
-<h5 id="start-kong">Start Kong</h5>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl start kong</code></pre></div>
-<h5 id="stop-kong">Stop Kong</h5>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl stop kong</code></pre></div>
-<h5 id="随系统一起启动">随系统一起启动</h5>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl <span style="color:#8be9fd;font-style:italic">enable</span> kong</code></pre></div>
-<h5 id="关闭随系统启动">关闭随系统启动</h5>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl disable kong</code></pre></div>
-<h5 id="restart-kong">Restart Kong</h5>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl restart kong</code></pre></div>
-<h5 id="查看kong状态">查看Kong状态</h5>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl status kong</code></pre></div>
-<h5 id="通过包含的nginx指令的文件来自定义kong的nginx实例-https-docs-konghq-com-2-1-x-systemd-customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives">通过包含的Nginx指令的文件来自定义Kong的Nginx实例  (<a href="https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives">https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives</a>)</h5>
-
-<ul>
-<li><p>在<code>/etc/systemd/system/kong.service</code>文件中定义</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http">Environment=KONG_NGINX_HTTP_INCLUDE=/path/to/your/my-server.kong.conf</code></pre></div></li>
-
-<li><p>在<code>/etc/kong/kong.config</code>中定义</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-properties" data-lang="properties">nginx_http_include=/path/to/your/my-server.kong.config</code></pre></div></li>
+</li>
 </ul>
-
+<h3 id="防火墙--httpsdocskonghqcom21xnetworkfirewall">防火墙  (<a href="https://docs.konghq.com/2.1.x/network/#firewall">https://docs.konghq.com/2.1.x/network/#firewall</a>)</h3>
+<h4 id="透明代理--httpsblogstackpathcomtransparent-proxy">透明代理  (<a href="https://blog.stackpath.com/transparent-proxy/">https://blog.stackpath.com/transparent-proxy/</a>)</h4>
+<p>例如一个HTTP请求目的地址<code>10.0.0.1</code>端口<code>80</code>需要能跳转到<code>127.0.0.1</code>端口为<code>8000</code>。要实现这样的网络，您需要（对于Linux）将<code>transparent</code>侦听选项添加到Kong代理<code>proxy_listen=8000 transparent</code>。这使Kong可以看到请求（<code>10.0.0.1:80</code>）的原始目的地，即使Kong并未实际直接收听它。有了这些信息，Kong可以正确地路由请求。在<code>transparent</code>听取选项只能在Linux中使用。macOS / BSD允许没有<code>transparent</code>侦听选项的透明代理。使用Linux，您可能还需要以<code>root</code>用户身份启动Kong 或为可执行文件设置所需的功能。</p>
+<p><img src="https://izcqi.com/images/image-20200728094209364.png#mid" alt="Transparent Proxy"></p>
+<h3 id="通过systemd管理kong">通过systemd管理Kong</h3>
+<h5 id="start-kong">Start Kong</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl start kong
+</code></pre></div><h5 id="stop-kong">Stop Kong</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl stop kong
+</code></pre></div><h5 id="随系统一起启动">随系统一起启动</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl <span style="color:#8be9fd;font-style:italic">enable</span> kong
+</code></pre></div><h5 id="关闭随系统启动">关闭随系统启动</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl disable kong
+</code></pre></div><h5 id="restart-kong">Restart Kong</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl restart kong
+</code></pre></div><h5 id="查看kong状态">查看Kong状态</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>$ sudo systemctl status kong
+</code></pre></div><h5 id="通过包含的nginx指令的文件来自定义kong的nginx实例--httpsdocskonghqcom21xsystemdcustomize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives">通过包含的Nginx指令的文件来自定义Kong的Nginx实例  (<a href="https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives">https://docs.konghq.com/2.1.x/systemd/#customize-kongs-nginx-instance-including-files-via-the-injected-nginx-directives</a>)</h5>
+<ul>
+<li>
+<p>在<code>/etc/systemd/system/kong.service</code>文件中定义</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>Environment=KONG_NGINX_HTTP_INCLUDE=/path/to/your/my-server.kong.conf
+</code></pre></div></li>
+<li>
+<p>在<code>/etc/kong/kong.config</code>中定义</p>
+<pre><code class="language-properties" data-lang="properties">nginx_http_include=/path/to/your/my-server.kong.config
+</code></pre></li>
+</ul>
 <h3 id="插件的执行顺序">插件的执行顺序</h3>
-
 <p>内置插件的顺序为:</p>
-
 <table>
 <thead>
 <tr>
@@ -821,186 +719,151 @@ Kong将缓存数据库实体（命中和未命中）的时间（以秒为单位�
 <th align="left">Priority</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td align="left">pre-function</td>
 <td align="left"><code>+inf</code></td>
 </tr>
-
 <tr>
 <td align="left">zipkin</td>
 <td align="left">100000</td>
 </tr>
-
 <tr>
 <td align="left">ip-restriction</td>
 <td align="left">3000</td>
 </tr>
-
 <tr>
 <td align="left">bot-detection</td>
 <td align="left">2500</td>
 </tr>
-
 <tr>
 <td align="left">cors</td>
 <td align="left">2000</td>
 </tr>
-
 <tr>
 <td align="left">session</td>
 <td align="left">1900</td>
 </tr>
-
 <tr>
 <td align="left">kubernetes-sidecar-injector</td>
 <td align="left">1006</td>
 </tr>
-
 <tr>
 <td align="left">jwt</td>
 <td align="left">1005</td>
 </tr>
-
 <tr>
 <td align="left">oauth2</td>
 <td align="left">1004</td>
 </tr>
-
 <tr>
 <td align="left">key-auth</td>
 <td align="left">1003</td>
 </tr>
-
 <tr>
 <td align="left">ldap-auth</td>
 <td align="left">1002</td>
 </tr>
-
 <tr>
 <td align="left">basic-auth</td>
 <td align="left">1001</td>
 </tr>
-
 <tr>
 <td align="left">hmac-auth</td>
 <td align="left">1000</td>
 </tr>
-
 <tr>
 <td align="left">request-size-limiting</td>
 <td align="left">951</td>
 </tr>
-
 <tr>
 <td align="left">acl</td>
 <td align="left">950</td>
 </tr>
-
 <tr>
 <td align="left">rate-limiting</td>
 <td align="left">901</td>
 </tr>
-
 <tr>
 <td align="left">response-ratelimiting</td>
 <td align="left">900</td>
 </tr>
-
 <tr>
 <td align="left">request-transformer</td>
 <td align="left">801</td>
 </tr>
-
 <tr>
 <td align="left">response-transformer</td>
 <td align="left">800</td>
 </tr>
-
 <tr>
 <td align="left">aws-lambda</td>
 <td align="left">750</td>
 </tr>
-
 <tr>
 <td align="left">azure-functions</td>
 <td align="left">749</td>
 </tr>
-
 <tr>
 <td align="left">prometheus</td>
 <td align="left">13</td>
 </tr>
-
 <tr>
 <td align="left">http-log</td>
 <td align="left">12</td>
 </tr>
-
 <tr>
 <td align="left">statsd</td>
 <td align="left">11</td>
 </tr>
-
 <tr>
 <td align="left">datadog</td>
 <td align="left">10</td>
 </tr>
-
 <tr>
 <td align="left">file-log</td>
 <td align="left">9</td>
 </tr>
-
 <tr>
 <td align="left">udp-log</td>
 <td align="left">8</td>
 </tr>
-
 <tr>
 <td align="left">tcp-log</td>
 <td align="left">7</td>
 </tr>
-
 <tr>
 <td align="left">loggly</td>
 <td align="left">6</td>
 </tr>
-
 <tr>
 <td align="left">syslog</td>
 <td align="left">4</td>
 </tr>
-
 <tr>
 <td align="left">request-termination</td>
 <td align="left">2</td>
 </tr>
-
 <tr>
 <td align="left">correlation-id</td>
 <td align="left">1</td>
 </tr>
-
 <tr>
 <td align="left">post-function</td>
 <td align="left">-1000</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="重要的配置">重要的配置</h3>
-
 <h4 id="upstreams">Upstreams</h4>
-
 <ul>
 <li><code>healthchecks.active.healthy.interval</code> 默认和设置为 <code>0</code>时， 不会进行健康目标的探测。</li>
-<li><code>healthchecks.active.unhealthy.interval</code> 默认和设置为 <code>0</code>时， 不会进行不健康目标的探测。</li>
+<li><code>healthchecks.active.unhealthy.interval </code> 默认和设置为 <code>0</code>时， 不会进行不健康目标的探测。</li>
 </ul>
 
 
 </article>
+
 
 <script src="https://utteranc.es/client.js"
     repo="qicz/ThoughtsHUB"
@@ -1031,7 +894,7 @@ Kong将缓存数据库实体（命中和未命中）的时间（以秒为单位�
 
 </main>
     <footer>
-        <h6>&copy; 2012 - 2021 Qicz 
+        <h6>© 2012 - 2021 Qicz 
             - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
             | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
             | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>

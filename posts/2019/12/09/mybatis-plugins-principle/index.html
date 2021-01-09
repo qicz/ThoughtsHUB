@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -29,7 +29,7 @@
   <meta property="og:title" content="MyBatis Plugin工作机理" />
 <meta property="og:description" content="故事开头： 在使用MyBatis的RowBounds时，发现结果没有和理论的一致，然后深入研究RowBounds的实现原理：MyBatis仅借助RowBounds在内存中完成了数据的分页处理——逻辑分页。还有一种是物理分页，就是常见的Limit offset, limit的方式（MySQL）。然后查资料，研究找到了很多的实现方式。我先尝试了一下其中的一种：使用Interceptor的方式。大体的逻辑是在当前执行的SQL后面把RowBounds的offset，limit按照limit offset,limit的方式拼接在SQL后面。
 实现如下：
-@Intercepts({@Signature(type = Executor.class, method = &#34;query&#34;, args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})}) public class PageInterceptor implements Interceptor { @Override public Object intercept(Invocation invocation) throws Throwable { Object[] args = invocation." />
+1@Intercepts({@Signature(type = Executor.class, method = &#34;query&#34;, args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})}) 2public class PageInterceptor implements Interceptor { 3 4 @Override 5 public Object intercept(Invocation invocation) throws Throwable { 6 Object[] args = invocation." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://izcqi.com/posts/2019/12/09/mybatis-plugins-principle/" />
 <meta property="article:published_time" content="2019-12-09T22:00:43+08:00" />
@@ -39,8 +39,8 @@
 <meta name="twitter:title" content="MyBatis Plugin工作机理"/>
 <meta name="twitter:description" content="故事开头： 在使用MyBatis的RowBounds时，发现结果没有和理论的一致，然后深入研究RowBounds的实现原理：MyBatis仅借助RowBounds在内存中完成了数据的分页处理——逻辑分页。还有一种是物理分页，就是常见的Limit offset, limit的方式（MySQL）。然后查资料，研究找到了很多的实现方式。我先尝试了一下其中的一种：使用Interceptor的方式。大体的逻辑是在当前执行的SQL后面把RowBounds的offset，limit按照limit offset,limit的方式拼接在SQL后面。
 实现如下：
-@Intercepts({@Signature(type = Executor.class, method = &#34;query&#34;, args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})}) public class PageInterceptor implements Interceptor { @Override public Object intercept(Invocation invocation) throws Throwable { Object[] args = invocation."/>
-<meta name="generator" content="Hugo 0.59.1" />
+1@Intercepts({@Signature(type = Executor.class, method = &#34;query&#34;, args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})}) 2public class PageInterceptor implements Interceptor { 3 4 @Override 5 public Object intercept(Invocation invocation) throws Throwable { 6 Object[] args = invocation."/>
+<meta name="generator" content="Hugo 0.68.3" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
@@ -80,7 +80,7 @@
              </li>
       </ul>
       
-      <p><em>The creative and technical writing. <br> Do more, challenge more, know more, be more.</em></p>
+      <p><em>The creative and technical writing. <!-- raw HTML omitted --> Do more, challenge more, know more, be more.</em></p>
       
     </header>
 
@@ -157,205 +157,210 @@
     </span>
     
     &nbsp; | &nbsp; 
-    <span class="fa fa-plane"><em> 3 minutes read</em> </span>
+    <span class="fa fa-plane"><em> 4 minutes read</em> </span>
 </aside>
-
+    
 
     
+    <nav id="TableOfContents"></nav>
 
     <p>故事开头：
 在使用MyBatis的RowBounds时，发现结果没有和理论的一致，然后深入研究RowBounds的实现原理：<strong>MyBatis仅借助RowBounds在内存中完成了数据的分页处理——逻辑分页</strong>。还有一种是<strong>物理分页</strong>，就是常见的Limit offset, limit的方式（MySQL）。然后查资料，研究找到了很多的实现方式。我先尝试了一下其中的一种：使用Interceptor的方式。大体的逻辑是在当前执行的SQL后面把RowBounds的offset，limit按照<strong>limit offset,limit</strong>的方式拼接在SQL后面。</p>
-
 <p>实现如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Intercepts({@Signature(type <span style="color:#ff79c6">=</span> Executor.<span style="color:#50fa7b">class</span>, method <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;query&#34;</span>, args <span style="color:#ff79c6">=</span> {MappedStatement.<span style="color:#50fa7b">class</span>, Object.<span style="color:#50fa7b">class</span>, RowBounds.<span style="color:#50fa7b">class</span>, ResultHandler.<span style="color:#50fa7b">class</span>})})
-public class PageInterceptor implements Interceptor {
-
-    @Override
-    public Object intercept(Invocation invocation) throws Throwable {
-        Object[] args <span style="color:#ff79c6">=</span> invocation.<span style="color:#50fa7b">getArgs</span>();
-        MappedStatement ms <span style="color:#ff79c6">=</span> (MappedStatement) args[0]; <span style="color:#6272a4">// MappedStatement
-</span><span style="color:#6272a4"></span>        BoundSql boundSql <span style="color:#ff79c6">=</span> ms.<span style="color:#50fa7b">getBoundSql</span>(args[1]); <span style="color:#6272a4">// Object parameter
-</span><span style="color:#6272a4"></span>        RowBounds rb <span style="color:#ff79c6">=</span> (RowBounds) args[2]; <span style="color:#6272a4">// RowBounds
-</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> rb <span style="color:#ff79c6">||</span> rb <span style="color:#ff79c6">==</span> RowBounds.<span style="color:#50fa7b">DEFAULT</span>) {
-            <span style="color:#ff79c6">return</span> invocation.<span style="color:#50fa7b">proceed</span>();
-        }
-
-        <span style="color:#6272a4">// append limit statement
-</span><span style="color:#6272a4"></span>        StringBuilder sqlBuidler <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringBuilder(boundSql.<span style="color:#50fa7b">getSql</span>());
-        String limit <span style="color:#ff79c6">=</span> String.<span style="color:#50fa7b">format</span>(<span style="color:#f1fa8c">&#34; limit %d,%d&#34;</span>, rb.<span style="color:#50fa7b">getOffset</span>(), rb.<span style="color:#50fa7b">getLimit</span>());
-        sqlBuidler.<span style="color:#50fa7b">append</span>(limit);
-
-        <span style="color:#6272a4">// replace sqlSource by reflection
-</span><span style="color:#6272a4"></span>        SqlSource sqlSource <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StaticSqlSource(ms.<span style="color:#50fa7b">getConfiguration</span>(), sqlBuidler.<span style="color:#50fa7b">toString</span>(), boundSql.<span style="color:#50fa7b">getParameterMappings</span>());
-        Field field <span style="color:#ff79c6">=</span> MappedStatement.<span style="color:#50fa7b">class</span>.<span style="color:#50fa7b">getDeclaredField</span>(<span style="color:#f1fa8c">&#34;sqlSource&#34;</span>);
-        field.<span style="color:#50fa7b">setAccessible</span>(<span style="color:#ff79c6">true</span>);
-        field.<span style="color:#50fa7b">set</span>(ms, sqlSource);
-        <span style="color:#ff79c6">return</span> invocation.<span style="color:#50fa7b">proceed</span>();
-    }
-
-    @Override
-    public Object plugin(Object target) {
-        <span style="color:#ff79c6">return</span> Plugin.<span style="color:#50fa7b">wrap</span>(target, <span style="color:#ff79c6">this</span>);
-    }
-
-    @Override
-    public void setProperties(Properties properties) {
-
-    }
-}</code></pre></div>
-<p>别忘记在<strong>mybatis-config.xml</strong>中配置plugins：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">  <span style="color:#ff79c6">&lt;plugins&gt;</span>
-        <span style="color:#ff79c6">&lt;plugin</span> <span style="color:#50fa7b">interceptor=</span><span style="color:#f1fa8c">&#34;cn.zhucongqi.interceptor.PageInterceptor&#34;</span><span style="color:#ff79c6">/&gt;</span>
-  <span style="color:#ff79c6">&lt;/plugins&gt;</span></code></pre></div>
-<p>然后测试，成功了。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@Intercepts<span style="color:#ff79c6">({</span>@Signature<span style="color:#ff79c6">(</span>type <span style="color:#ff79c6">=</span> Executor<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> method <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;query&#34;</span><span style="color:#ff79c6">,</span> args <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">{</span>MappedStatement<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> Object<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> RowBounds<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> ResultHandler<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">})})</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">PageInterceptor</span> <span style="color:#8be9fd;font-style:italic">implements</span> Interceptor <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    @Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">public</span> Object <span style="color:#50fa7b">intercept</span><span style="color:#ff79c6">(</span>Invocation invocation<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Throwable <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>        Object<span style="color:#ff79c6">[]</span> args <span style="color:#ff79c6">=</span> invocation<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getArgs</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        MappedStatement ms <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>MappedStatement<span style="color:#ff79c6">)</span> args<span style="color:#ff79c6">[</span>0<span style="color:#ff79c6">];</span> <span style="color:#6272a4">// MappedStatement
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#6272a4"></span>        BoundSql boundSql <span style="color:#ff79c6">=</span> ms<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getBoundSql</span><span style="color:#ff79c6">(</span>args<span style="color:#ff79c6">[</span>1<span style="color:#ff79c6">]);</span> <span style="color:#6272a4">// Object parameter
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span style="color:#6272a4"></span>        RowBounds rb <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>RowBounds<span style="color:#ff79c6">)</span> args<span style="color:#ff79c6">[</span>2<span style="color:#ff79c6">];</span> <span style="color:#6272a4">// RowBounds
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span> <span style="color:#ff79c6">==</span> rb <span style="color:#ff79c6">||</span> rb <span style="color:#ff79c6">==</span> RowBounds<span style="color:#ff79c6">.</span><span style="color:#50fa7b">DEFAULT</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>            <span style="color:#ff79c6">return</span> invocation<span style="color:#ff79c6">.</span><span style="color:#50fa7b">proceed</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>        <span style="color:#6272a4">// append limit statement
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span style="color:#6272a4"></span>        StringBuilder sqlBuidler <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringBuilder<span style="color:#ff79c6">(</span>boundSql<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSql</span><span style="color:#ff79c6">());</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>        String limit <span style="color:#ff79c6">=</span> String<span style="color:#ff79c6">.</span><span style="color:#50fa7b">format</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; limit %d,%d&#34;</span><span style="color:#ff79c6">,</span> rb<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getOffset</span><span style="color:#ff79c6">(),</span> rb<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getLimit</span><span style="color:#ff79c6">());</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>        sqlBuidler<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span>limit<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>        <span style="color:#6272a4">// replace sqlSource by reflection
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span style="color:#6272a4"></span>        SqlSource sqlSource <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StaticSqlSource<span style="color:#ff79c6">(</span>ms<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getConfiguration</span><span style="color:#ff79c6">(),</span> sqlBuidler<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(),</span> boundSql<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getParameterMappings</span><span style="color:#ff79c6">());</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>        Field field <span style="color:#ff79c6">=</span> MappedStatement<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getDeclaredField</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;sqlSource&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>        field<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setAccessible</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>        field<span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span>ms<span style="color:#ff79c6">,</span> sqlSource<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>        <span style="color:#ff79c6">return</span> invocation<span style="color:#ff79c6">.</span><span style="color:#50fa7b">proceed</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>    @Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>    <span style="color:#8be9fd;font-style:italic">public</span> Object <span style="color:#50fa7b">plugin</span><span style="color:#ff79c6">(</span>Object target<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span>        <span style="color:#ff79c6">return</span> Plugin<span style="color:#ff79c6">.</span><span style="color:#50fa7b">wrap</span><span style="color:#ff79c6">(</span>target<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>    @Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">setProperties</span><span style="color:#ff79c6">(</span>Properties properties<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>别忘记在<strong>mybatis-config.xml</strong>中配置plugins：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>  <span style="color:#ff79c6">&lt;plugins&gt;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>        <span style="color:#ff79c6">&lt;plugin</span> <span style="color:#50fa7b">interceptor=</span><span style="color:#f1fa8c">&#34;cn.zhucongqi.interceptor.PageInterceptor&#34;</span><span style="color:#ff79c6">/&gt;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>  <span style="color:#ff79c6">&lt;/plugins&gt;</span>
+</code></pre></div><p>然后测试，成功了。</p>
 <p>那么下面问题来了？这Interceptor是如何工作的，工作原理是什么？ 然后就开始打断点跟踪如何实现的，然后一步步发现了MyBatis设计真的精妙得很哟。</p>
-
 <p>正式进入正题，来说说Interceptor的工作原理。</p>
-
 <p>Interceptor字面意思是拦截器，在很多得很有用应用。顾名思义，就是在do一件事之前先拦截一下，所以我们再做物理分页时，才有机会去干预，去拼接SQL。</p>
-
 <p>从MyBatis-config.xml的配置文件来看，其属于MyBatis的Plugin范畴。</p>
-
 <p>所以研究Plugin成为了重头戏。</p>
-
-<p>从SqlSession入手，openSession时在DefaultSqlSessionFactory的私有方法<strong>openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit)</strong>中有这样一段代码</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> final Executor executor <span style="color:#ff79c6">=</span> configuration.<span style="color:#50fa7b">newExecutor</span>(tx, execType);</code></pre></div>
-<p>这段代码成了一个开头。再深入卡一下newExecutor的实现</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public Executor newExecutor(Transaction transaction, ExecutorType executorType) {
-	<span style="color:#6272a4">// 确保ExecutorType合法
-</span><span style="color:#6272a4"></span>    executorType <span style="color:#ff79c6">=</span> executorType <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">?</span> defaultExecutorType <span style="color:#ff79c6">:</span> executorType;
-    executorType <span style="color:#ff79c6">=</span> executorType <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">?</span> ExecutorType.<span style="color:#50fa7b">SIMPLE</span> <span style="color:#ff79c6">:</span> executorType;
-    Executor executor;
-    <span style="color:#ff79c6">if</span> (ExecutorType.<span style="color:#50fa7b">BATCH</span> <span style="color:#ff79c6">==</span> executorType) { <span style="color:#6272a4">// 如果是Batch类型选择BatchExecutor
-</span><span style="color:#6272a4"></span>      executor <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> BatchExecutor(<span style="color:#ff79c6">this</span>, transaction);
-    } <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (ExecutorType.<span style="color:#50fa7b">REUSE</span> <span style="color:#ff79c6">==</span> executorType) { <span style="color:#6272a4">// 如果是Reuse类型选择ReuseExecutor
-</span><span style="color:#6272a4"></span>      executor <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ReuseExecutor(<span style="color:#ff79c6">this</span>, transaction);
-    } <span style="color:#ff79c6">else</span> {
-      executor <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> SimpleExecutor(<span style="color:#ff79c6">this</span>, transaction);<span style="color:#6272a4">// 否则是默认的SimpleExecutor
-</span><span style="color:#6272a4"></span>    }
-    <span style="color:#ff79c6">if</span> (cacheEnabled) {
-      executor <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> CachingExecutor(executor); <span style="color:#6272a4">// 二级缓存，用CachingExecutor包装一下
-</span><span style="color:#6272a4"></span>    }
-    <span style="color:#6272a4">// 这里⬇️重要了
-</span><span style="color:#6272a4"></span>    executor <span style="color:#ff79c6">=</span> (Executor) interceptorChain.<span style="color:#50fa7b">pluginAll</span>(executor);
-    <span style="color:#ff79c6">return</span> executor;
-  }</code></pre></div>
-<p>重点就在这里了<code>executor = (Executor) interceptorChain.pluginAll(executor);</code>。</p>
-
+<p>从SqlSession入手，openSession时在DefaultSqlSessionFactory的私有方法**openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit)**中有这样一段代码</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span> <span style="color:#8be9fd;font-style:italic">final</span> Executor executor <span style="color:#ff79c6">=</span> configuration<span style="color:#ff79c6">.</span><span style="color:#50fa7b">newExecutor</span><span style="color:#ff79c6">(</span>tx<span style="color:#ff79c6">,</span> execType<span style="color:#ff79c6">);</span>
+</code></pre></div><p>这段代码成了一个开头。再深入卡一下newExecutor的实现</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">public</span> Executor <span style="color:#50fa7b">newExecutor</span><span style="color:#ff79c6">(</span>Transaction transaction<span style="color:#ff79c6">,</span> ExecutorType executorType<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>	<span style="color:#6272a4">// 确保ExecutorType合法
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#6272a4"></span>    executorType <span style="color:#ff79c6">=</span> executorType <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">?</span> defaultExecutorType <span style="color:#ff79c6">:</span> executorType<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    executorType <span style="color:#ff79c6">=</span> executorType <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">?</span> ExecutorType<span style="color:#ff79c6">.</span><span style="color:#50fa7b">SIMPLE</span> <span style="color:#ff79c6">:</span> executorType<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    Executor executor<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>ExecutorType<span style="color:#ff79c6">.</span><span style="color:#50fa7b">BATCH</span> <span style="color:#ff79c6">==</span> executorType<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span> <span style="color:#6272a4">// 如果是Batch类型选择BatchExecutor
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#6272a4"></span>      executor <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> BatchExecutor<span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> transaction<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>ExecutorType<span style="color:#ff79c6">.</span><span style="color:#50fa7b">REUSE</span> <span style="color:#ff79c6">==</span> executorType<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span> <span style="color:#6272a4">// 如果是Reuse类型选择ReuseExecutor
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span style="color:#6272a4"></span>      executor <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ReuseExecutor<span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> transaction<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>      executor <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> SimpleExecutor<span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> transaction<span style="color:#ff79c6">);</span><span style="color:#6272a4">// 否则是默认的SimpleExecutor
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>cacheEnabled<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>      executor <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> CachingExecutor<span style="color:#ff79c6">(</span>executor<span style="color:#ff79c6">);</span> <span style="color:#6272a4">// 二级缓存，用CachingExecutor包装一下
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>    <span style="color:#6272a4">// 这里⬇️重要了
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span style="color:#6272a4"></span>    executor <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Executor<span style="color:#ff79c6">)</span> interceptorChain<span style="color:#ff79c6">.</span><span style="color:#50fa7b">pluginAll</span><span style="color:#ff79c6">(</span>executor<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>    <span style="color:#ff79c6">return</span> executor<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>  <span style="color:#ff79c6">}</span>
+</code></pre></div><p>重点就在这里了<code>executor = (Executor) interceptorChain.pluginAll(executor);</code>。</p>
 <p>再看看这里做了什么？</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  public Object pluginAll(Object target) {
-    <span style="color:#ff79c6">for</span> (Interceptor interceptor <span style="color:#ff79c6">:</span> interceptors) {
-      target <span style="color:#ff79c6">=</span> interceptor.<span style="color:#50fa7b">plugin</span>(target);
-    }
-    <span style="color:#ff79c6">return</span> target;
-  }</code></pre></div>
-<p>好像又找到了一线索，这个的plugin方法和PageInterceptor中的plugin方法很像？看调用关系，果然就是它。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>  <span style="color:#8be9fd;font-style:italic">public</span> Object <span style="color:#50fa7b">pluginAll</span><span style="color:#ff79c6">(</span>Object target<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>Interceptor interceptor <span style="color:#ff79c6">:</span> interceptors<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>      target <span style="color:#ff79c6">=</span> interceptor<span style="color:#ff79c6">.</span><span style="color:#50fa7b">plugin</span><span style="color:#ff79c6">(</span>target<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>    <span style="color:#ff79c6">return</span> target<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>  <span style="color:#ff79c6">}</span>
+</code></pre></div><p>好像又找到了一线索，这个的plugin方法和PageInterceptor中的plugin方法很像？看调用关系，果然就是它。</p>
 <p>那么Plugin成了下一个线索。然后发现Plugin implements InvocationHandler，看来Proxy了。往下走，先来看看Plugin.wrap其实现：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public static Object wrap(Object target, Interceptor interceptor) {
-    Map<span style="color:#ff79c6">&lt;</span>Class<span style="color:#ff79c6">&lt;?&gt;</span>, Set&lt;Method&gt;&gt; signatureMap <span style="color:#ff79c6">=</span> getSignatureMap(interceptor);
-    Class<span style="color:#ff79c6">&lt;?&gt;</span> type <span style="color:#ff79c6">=</span> target.<span style="color:#50fa7b">getClass</span>();
-    Class<span style="color:#ff79c6">&lt;?&gt;</span>[] interfaces <span style="color:#ff79c6">=</span> getAllInterfaces(type, signatureMap);
-    <span style="color:#ff79c6">if</span> (interfaces.<span style="color:#50fa7b">length</span> <span style="color:#ff79c6">&gt;</span> 0) {
-      <span style="color:#ff79c6">return</span> Proxy.<span style="color:#50fa7b">newProxyInstance</span>(
-          type.<span style="color:#50fa7b">getClassLoader</span>(),
-          interfaces,
-          <span style="color:#ff79c6">new</span> Plugin(target, interceptor, signatureMap));
-    }
-    <span style="color:#ff79c6">return</span> target;
-  }</code></pre></div>
-<p>果然发现了<code>Proxy.newProxyInstance</code>，这就是jdk动态代理了。那么这里的target就是interceptorChain.pluginAll(executor)中的executor了。那么对应type.getClassLoader()就是BatchExecutor或SimpleExecutor或ReuseExecutor或CachingExecutor的classloader了，那么在这里又动态创建了一个xxExecutor？继续往下找答案。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> Object <span style="color:#50fa7b">wrap</span><span style="color:#ff79c6">(</span>Object target<span style="color:#ff79c6">,</span> Interceptor interceptor<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    Map<span style="color:#ff79c6">&lt;</span>Class<span style="color:#ff79c6">&lt;?&gt;,</span> Set<span style="color:#ff79c6">&lt;</span>Method<span style="color:#ff79c6">&gt;&gt;</span> signatureMap <span style="color:#ff79c6">=</span> getSignatureMap<span style="color:#ff79c6">(</span>interceptor<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    Class<span style="color:#ff79c6">&lt;?&gt;</span> type <span style="color:#ff79c6">=</span> target<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    Class<span style="color:#ff79c6">&lt;?&gt;[]</span> interfaces <span style="color:#ff79c6">=</span> getAllInterfaces<span style="color:#ff79c6">(</span>type<span style="color:#ff79c6">,</span> signatureMap<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>interfaces<span style="color:#ff79c6">.</span><span style="color:#50fa7b">length</span> <span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>      <span style="color:#ff79c6">return</span> Proxy<span style="color:#ff79c6">.</span><span style="color:#50fa7b">newProxyInstance</span><span style="color:#ff79c6">(</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>          type<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(),</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>          interfaces<span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>          <span style="color:#ff79c6">new</span> Plugin<span style="color:#ff79c6">(</span>target<span style="color:#ff79c6">,</span> interceptor<span style="color:#ff79c6">,</span> signatureMap<span style="color:#ff79c6">));</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    <span style="color:#ff79c6">return</span> target<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>  <span style="color:#ff79c6">}</span>
+</code></pre></div><p>果然发现了<code>Proxy.newProxyInstance</code>，这就是jdk动态代理了。那么这里的target就是interceptorChain.pluginAll(executor)中的executor了。那么对应type.getClassLoader()就是BatchExecutor或SimpleExecutor或ReuseExecutor或CachingExecutor的classloader了，那么在这里又动态创建了一个xxExecutor？继续往下找答案。</p>
 <p>在这个wrap方法中，还有两个本地方法的调用一个是getSignatureMap，一个是getAllInterfaces。先看看代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">private static Map<span style="color:#ff79c6">&lt;</span>Class<span style="color:#ff79c6">&lt;?&gt;</span>, Set&lt;Method&gt;&gt; getSignatureMap(Interceptor interceptor) {
-    Intercepts interceptsAnnotation <span style="color:#ff79c6">=</span> interceptor.<span style="color:#50fa7b">getClass</span>().<span style="color:#50fa7b">getAnnotation</span>(Intercepts.<span style="color:#50fa7b">class</span>);
-    <span style="color:#6272a4">// issue #251
-</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">if</span> (interceptsAnnotation <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span>) {
-      <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> PluginException(<span style="color:#f1fa8c">&#34;No @Intercepts annotation was found in interceptor &#34;</span> <span style="color:#ff79c6">+</span> interceptor.<span style="color:#50fa7b">getClass</span>().<span style="color:#50fa7b">getName</span>());
-    }
-    Signature[] sigs <span style="color:#ff79c6">=</span> interceptsAnnotation.<span style="color:#50fa7b">value</span>();
-    Map<span style="color:#ff79c6">&lt;</span>Class<span style="color:#ff79c6">&lt;?&gt;</span>, Set&lt;Method&gt;&gt; signatureMap <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HashMap<span style="color:#ff79c6">&lt;&gt;</span>();
-    <span style="color:#ff79c6">for</span> (Signature sig <span style="color:#ff79c6">:</span> sigs) {
-      Set&lt;Method&gt; methods <span style="color:#ff79c6">=</span> signatureMap.<span style="color:#50fa7b">computeIfAbsent</span>(sig.<span style="color:#50fa7b">type</span>(), k <span style="color:#ff79c6">-&gt;</span> <span style="color:#ff79c6">new</span> HashSet<span style="color:#ff79c6">&lt;&gt;</span>());
-      <span style="color:#ff79c6">try</span> {
-        Method method <span style="color:#ff79c6">=</span> sig.<span style="color:#50fa7b">type</span>().<span style="color:#50fa7b">getMethod</span>(sig.<span style="color:#50fa7b">method</span>(), sig.<span style="color:#50fa7b">args</span>());
-        methods.<span style="color:#50fa7b">add</span>(method);
-      } <span style="color:#ff79c6">catch</span> (NoSuchMethodException e) {
-        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> PluginException(<span style="color:#f1fa8c">&#34;Could not find method on &#34;</span> <span style="color:#ff79c6">+</span> sig.<span style="color:#50fa7b">type</span>() <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34; named &#34;</span> <span style="color:#ff79c6">+</span> sig.<span style="color:#50fa7b">method</span>() <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;. Cause: &#34;</span> <span style="color:#ff79c6">+</span> e, e);
-      }
-    }
-    <span style="color:#ff79c6">return</span> signatureMap;
-  }
-
-  private static Class<span style="color:#ff79c6">&lt;?&gt;</span>[] getAllInterfaces(Class<span style="color:#ff79c6">&lt;?&gt;</span> type, Map<span style="color:#ff79c6">&lt;</span>Class<span style="color:#ff79c6">&lt;?&gt;</span>, Set&lt;Method&gt;&gt; signatureMap) {
-    Set<span style="color:#ff79c6">&lt;</span>Class<span style="color:#ff79c6">&lt;?&gt;&gt;</span> interfaces <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HashSet<span style="color:#ff79c6">&lt;&gt;</span>();
-    <span style="color:#ff79c6">while</span> (type <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">null</span>) {
-      <span style="color:#ff79c6">for</span> (Class<span style="color:#ff79c6">&lt;?&gt;</span> c <span style="color:#ff79c6">:</span> type.<span style="color:#50fa7b">getInterfaces</span>()) {
-        <span style="color:#ff79c6">if</span> (signatureMap.<span style="color:#50fa7b">containsKey</span>(c)) {
-          interfaces.<span style="color:#50fa7b">add</span>(c);
-        }
-      }
-      type <span style="color:#ff79c6">=</span> type.<span style="color:#50fa7b">getSuperclass</span>();
-    }
-    <span style="color:#ff79c6">return</span> interfaces.<span style="color:#50fa7b">toArray</span>(<span style="color:#ff79c6">new</span> Class<span style="color:#ff79c6">&lt;?&gt;</span>[interfaces.<span style="color:#50fa7b">size</span>()]);
-  }</code></pre></div>
-<p>从代码实现来看，是根据Intercepts的注解来获取对应的Signature和Method信息，果然在PagerInterceptor的class上有这样的一个注解：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Intercepts({@Signature(type <span style="color:#ff79c6">=</span> Executor.<span style="color:#50fa7b">class</span>, method <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;query&#34;</span>, args <span style="color:#ff79c6">=</span> {MappedStatement.<span style="color:#50fa7b">class</span>, Object.<span style="color:#50fa7b">class</span>, RowBounds.<span style="color:#50fa7b">class</span>, ResultHandler.<span style="color:#50fa7b">class</span>})})</code></pre></div>
-<p>结合getSignatureMap和getAllInterfaces两个方法，看到目的是为了找到Executor.class的一个query方法，其定义是这样的：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">query(MappedStatement ms, Object obj, RowBounds rowBounds, ResultHandler resultHandler);</code></pre></div>
-<p>原来越接近真相咯。这个方法在Executor接口中的确有对应的声明，如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">&lt;</span>E&gt; List<span style="color:#ff79c6">&lt;</span>E&gt; query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException;</code></pre></div>
-<p>其在各个Executor也有对应的实现。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> Map<span style="color:#ff79c6">&lt;</span>Class<span style="color:#ff79c6">&lt;?&gt;,</span> Set<span style="color:#ff79c6">&lt;</span>Method<span style="color:#ff79c6">&gt;&gt;</span> <span style="color:#50fa7b">getSignatureMap</span><span style="color:#ff79c6">(</span>Interceptor interceptor<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    Intercepts interceptsAnnotation <span style="color:#ff79c6">=</span> interceptor<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">().</span><span style="color:#50fa7b">getAnnotation</span><span style="color:#ff79c6">(</span>Intercepts<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#6272a4">// issue #251
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>interceptsAnnotation <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>      <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> PluginException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;No @Intercepts annotation was found in interceptor &#34;</span> <span style="color:#ff79c6">+</span> interceptor<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">().</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">());</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    Signature<span style="color:#ff79c6">[]</span> sigs <span style="color:#ff79c6">=</span> interceptsAnnotation<span style="color:#ff79c6">.</span><span style="color:#50fa7b">value</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    Map<span style="color:#ff79c6">&lt;</span>Class<span style="color:#ff79c6">&lt;?&gt;,</span> Set<span style="color:#ff79c6">&lt;</span>Method<span style="color:#ff79c6">&gt;&gt;</span> signatureMap <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HashMap<span style="color:#ff79c6">&lt;&gt;();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>Signature sig <span style="color:#ff79c6">:</span> sigs<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>      Set<span style="color:#ff79c6">&lt;</span>Method<span style="color:#ff79c6">&gt;</span> methods <span style="color:#ff79c6">=</span> signatureMap<span style="color:#ff79c6">.</span><span style="color:#50fa7b">computeIfAbsent</span><span style="color:#ff79c6">(</span>sig<span style="color:#ff79c6">.</span><span style="color:#50fa7b">type</span><span style="color:#ff79c6">(),</span> k <span style="color:#ff79c6">-&gt;</span> <span style="color:#ff79c6">new</span> HashSet<span style="color:#ff79c6">&lt;&gt;());</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>      <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        Method method <span style="color:#ff79c6">=</span> sig<span style="color:#ff79c6">.</span><span style="color:#50fa7b">type</span><span style="color:#ff79c6">().</span><span style="color:#50fa7b">getMethod</span><span style="color:#ff79c6">(</span>sig<span style="color:#ff79c6">.</span><span style="color:#50fa7b">method</span><span style="color:#ff79c6">(),</span> sig<span style="color:#ff79c6">.</span><span style="color:#50fa7b">args</span><span style="color:#ff79c6">());</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>        methods<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>method<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>      <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>NoSuchMethodException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> PluginException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Could not find method on &#34;</span> <span style="color:#ff79c6">+</span> sig<span style="color:#ff79c6">.</span><span style="color:#50fa7b">type</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34; named &#34;</span> <span style="color:#ff79c6">+</span> sig<span style="color:#ff79c6">.</span><span style="color:#50fa7b">method</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;. Cause: &#34;</span> <span style="color:#ff79c6">+</span> e<span style="color:#ff79c6">,</span> e<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>      <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>    <span style="color:#ff79c6">return</span> signatureMap<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>  <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>  <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> Class<span style="color:#ff79c6">&lt;?&gt;[]</span> getAllInterfaces<span style="color:#ff79c6">(</span>Class<span style="color:#ff79c6">&lt;?&gt;</span> type<span style="color:#ff79c6">,</span> Map<span style="color:#ff79c6">&lt;</span>Class<span style="color:#ff79c6">&lt;?&gt;,</span> Set<span style="color:#ff79c6">&lt;</span>Method<span style="color:#ff79c6">&gt;&gt;</span> signatureMap<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>    Set<span style="color:#ff79c6">&lt;</span>Class<span style="color:#ff79c6">&lt;?&gt;&gt;</span> interfaces <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HashSet<span style="color:#ff79c6">&lt;&gt;();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>    <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span>type <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>      <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>Class<span style="color:#ff79c6">&lt;?&gt;</span> c <span style="color:#ff79c6">:</span> type<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getInterfaces</span><span style="color:#ff79c6">())</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>signatureMap<span style="color:#ff79c6">.</span><span style="color:#50fa7b">containsKey</span><span style="color:#ff79c6">(</span>c<span style="color:#ff79c6">))</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>          interfaces<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>c<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>        <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>      <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span>      type <span style="color:#ff79c6">=</span> type<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSuperclass</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>    <span style="color:#ff79c6">return</span> interfaces<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toArray</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Class<span style="color:#ff79c6">&lt;?&gt;[</span>interfaces<span style="color:#ff79c6">.</span><span style="color:#50fa7b">size</span><span style="color:#ff79c6">()]);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>  <span style="color:#ff79c6">}</span>
+</code></pre></div><p>从代码实现来看，是根据Intercepts的注解来获取对应的Signature和Method信息，果然在PagerInterceptor的class上有这样的一个注解：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>@Intercepts<span style="color:#ff79c6">({</span>@Signature<span style="color:#ff79c6">(</span>type <span style="color:#ff79c6">=</span> Executor<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> method <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;query&#34;</span><span style="color:#ff79c6">,</span> args <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">{</span>MappedStatement<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> Object<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> RowBounds<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> ResultHandler<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">})})</span>
+</code></pre></div><p>结合getSignatureMap和getAllInterfaces两个方法，看到目的是为了找到Executor.class的一个query方法，其定义是这样的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>query<span style="color:#ff79c6">(</span>MappedStatement ms<span style="color:#ff79c6">,</span> Object obj<span style="color:#ff79c6">,</span> RowBounds rowBounds<span style="color:#ff79c6">,</span> ResultHandler resultHandler<span style="color:#ff79c6">);</span>
+</code></pre></div><p>原来越接近真相咯。这个方法在Executor接口中的确有对应的声明，如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> List<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">query</span><span style="color:#ff79c6">(</span>MappedStatement ms<span style="color:#ff79c6">,</span> Object parameter<span style="color:#ff79c6">,</span> RowBounds rowBounds<span style="color:#ff79c6">,</span> ResultHandler resultHandler<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> SQLException<span style="color:#ff79c6">;</span>
+</code></pre></div><p>其在各个Executor也有对应的实现。</p>
 <p>解开真相前，再看看Plugin的invoke方法实现：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-    <span style="color:#ff79c6">try</span> {
-      Set&lt;Method&gt; methods <span style="color:#ff79c6">=</span> signatureMap.<span style="color:#50fa7b">get</span>(method.<span style="color:#50fa7b">getDeclaringClass</span>());
-      <span style="color:#ff79c6">if</span> (methods <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">&amp;&amp;</span> methods.<span style="color:#50fa7b">contains</span>(method)) {
-        <span style="color:#ff79c6">return</span> interceptor.<span style="color:#50fa7b">intercept</span>(<span style="color:#ff79c6">new</span> Invocation(target, method, args));
-      }
-      <span style="color:#ff79c6">return</span> method.<span style="color:#50fa7b">invoke</span>(target, args);
-    } <span style="color:#ff79c6">catch</span> (Exception e) {
-      <span style="color:#ff79c6">throw</span> ExceptionUtil.<span style="color:#50fa7b">unwrapThrowable</span>(e);
-    }
-  }</code></pre></div>
-<p>那么真相就来咯。路径是这样的：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">public</span> Object <span style="color:#50fa7b">invoke</span><span style="color:#ff79c6">(</span>Object proxy<span style="color:#ff79c6">,</span> Method method<span style="color:#ff79c6">,</span> Object<span style="color:#ff79c6">[]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Throwable <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>      Set<span style="color:#ff79c6">&lt;</span>Method<span style="color:#ff79c6">&gt;</span> methods <span style="color:#ff79c6">=</span> signatureMap<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span>method<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getDeclaringClass</span><span style="color:#ff79c6">());</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>      <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>methods <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">&amp;&amp;</span> methods<span style="color:#ff79c6">.</span><span style="color:#50fa7b">contains</span><span style="color:#ff79c6">(</span>method<span style="color:#ff79c6">))</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        <span style="color:#ff79c6">return</span> interceptor<span style="color:#ff79c6">.</span><span style="color:#50fa7b">intercept</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Invocation<span style="color:#ff79c6">(</span>target<span style="color:#ff79c6">,</span> method<span style="color:#ff79c6">,</span> args<span style="color:#ff79c6">));</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>      <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>      <span style="color:#ff79c6">return</span> method<span style="color:#ff79c6">.</span><span style="color:#50fa7b">invoke</span><span style="color:#ff79c6">(</span>target<span style="color:#ff79c6">,</span> args<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>Exception e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>      <span style="color:#ff79c6">throw</span> ExceptionUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">unwrapThrowable</span><span style="color:#ff79c6">(</span>e<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>  <span style="color:#ff79c6">}</span>
+</code></pre></div><p>那么真相就来咯。路径是这样的：</p>
 <ul>
-<li>1. openSession时，在DefaultSqlSessionFactory中根据executorType获取对应的Executor；</li>
-<li>2. 如果有配置Plugin，那么executor = (Executor) interceptorChain.pluginAll(executor);就会工作，会在创建好对应的Executor后，在使用Plugin的wrap方法wrap一下，其实就是获取其Intercepts注解的Signature，以此获取对应的Method；</li>
-<li>3. 根据Executor——target的type和对应的Interfaces，使用jdk的动态代理生成一个新的Executor；</li>
-<li>4. 动态生成了新的Executor，那么mapper调用时会触发它的任意方法时，都会触发对应的InnovationHandler也就Plugin的invoke方法；</li>
-<li>5. 在invoke方法中，根据对应的有@Intercepts注解的Interceptor的SignatureMap和当前调用的method来判断，将与Intercepts的Signature对应的方法调用进行<strong>拦截</strong>——调用Interceptor的intercept方法。</li>
+<li>
+<ol>
+<li>openSession时，在DefaultSqlSessionFactory中根据executorType获取对应的Executor；</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>如果有配置Plugin，那么executor = (Executor) interceptorChain.pluginAll(executor);就会工作，会在创建好对应的Executor后，在使用Plugin的wrap方法wrap一下，其实就是获取其Intercepts注解的Signature，以此获取对应的Method；</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>根据Executor——target的type和对应的Interfaces，使用jdk的动态代理生成一个新的Executor；</li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li>动态生成了新的Executor，那么mapper调用时会触发它的任意方法时，都会触发对应的InnovationHandler也就Plugin的invoke方法；</li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li>在invoke方法中，根据对应的有@Intercepts注解的Interceptor的SignatureMap和当前调用的method来判断，将与Intercepts的Signature对应的方法调用进行<strong>拦截</strong>——调用Interceptor的intercept方法。</li>
+</ol>
+</li>
 </ul>
-
 <p>那么在PageInterceptor中，就是Executor调动query(MappedStatement ms, Object obj, RowBounds rowBounds, ResultHandler resultHandler)<strong>前</strong>就会先调用PageInterceptor的intercept方法，从而实现对操作的拦截。</p>
-
 <p>搞定！！！</p>
-
 <p>ref: <a href="https://pagehelper.github.io/docs/interceptor/">https://pagehelper.github.io/docs/interceptor/</a></p>
-
 <p>2019.12.10更新</p>
-
 <p>在拦截相似方法，仅参数列表不一样的interceptor时，如：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">&lt;</span>E&gt; List<span style="color:#ff79c6">&lt;</span>E&gt; query(
-      MappedStatement ms,
-      Object parameter,
-      RowBounds rowBounds,
-      ResultHandler resultHandler,
-      CacheKey cacheKey,
-      BoundSql boundSql) throws SQLException;
-
-<span style="color:#ff79c6">&lt;</span>E&gt; List<span style="color:#ff79c6">&lt;</span>E&gt; query(
-      MappedStatement ms,
-      Object parameter,
-      RowBounds rowBounds,
-      ResultHandler resultHandler) throws SQLException;</code></pre></div>
-<p>需要注意插件配置顺序：按照参数数量，倒序在MyBatis-config.xml中配置，这样能确保，每一个interceptor都能正常工作。因为对应不同的参数的方法，在拦截时，对应的调用顺序会被打乱，导致部分拦截无法工作。比如query拦截，直接调用了query的6参方法，那么对4参的方法拦截就不能生效——因为跳过了4参方法的调用。所以按照参数数量倒序配置，执行时会按照参数数量从少到多的顺序执行，保证每个interceptor都能正常工作。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> List<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">query</span><span style="color:#ff79c6">(</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>      MappedStatement ms<span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>      Object parameter<span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>      RowBounds rowBounds<span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>      ResultHandler resultHandler<span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>      CacheKey cacheKey<span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>      BoundSql boundSql<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> SQLException<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> List<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">query</span><span style="color:#ff79c6">(</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>      MappedStatement ms<span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>      Object parameter<span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>      RowBounds rowBounds<span style="color:#ff79c6">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>      ResultHandler resultHandler<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> SQLException<span style="color:#ff79c6">;</span>
+</code></pre></div><p>需要注意插件配置顺序：按照参数数量，倒序在MyBatis-config.xml中配置，这样能确保，每一个interceptor都能正常工作。因为对应不同的参数的方法，在拦截时，对应的调用顺序会被打乱，导致部分拦截无法工作。比如query拦截，直接调用了query的6参方法，那么对4参的方法拦截就不能生效——因为跳过了4参方法的调用。所以按照参数数量倒序配置，执行时会按照参数数量从少到多的顺序执行，保证每个interceptor都能正常工作。</p>
 
 
 </article>
+
 
 <script src="https://utteranc.es/client.js"
     repo="qicz/ThoughtsHUB"
@@ -386,7 +391,7 @@ public class PageInterceptor implements Interceptor {
 
 </main>
     <footer>
-        <h6>&copy; 2012 - 2021 Qicz 
+        <h6>© 2012 - 2021 Qicz 
             - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
             | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
             | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>
