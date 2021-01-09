@@ -537,7 +537,7 @@
 &lt;p&gt;引入项目依赖；&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;在启动类中使用SpringApplicationX即可：&lt;/p&gt;
+&lt;p&gt;在启动类中使用&lt;code&gt;SpringApplicationX&lt;/code&gt;，如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
 &lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * App
 &lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; *
@@ -554,6 +554,9 @@
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;14&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;若仅拷贝资源，使用&lt;code&gt;java -jar xx.jar ccp&lt;/code&gt; 即可。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
 &lt;p&gt;以上对项目的现有的核心功能进行了简单说明，具体可查看项目源码或待后续在针对性的详细说明实现思路。&lt;/p&gt;
 &lt;p&gt;此项目在设计之初，经过了多番反复的调整，才有了现在的模样，在打磨过程中，对&lt;code&gt;SpringBoot&lt;/code&gt;又进一步的加深的了解，提升了许多。接下来，会继续将常见的功能不断的完善和加入。&lt;/p&gt;
