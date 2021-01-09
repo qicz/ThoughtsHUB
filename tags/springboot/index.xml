@@ -1120,27 +1120,6 @@
      </item>
    
      <item>
-       <title>Spring-boot-x开发日志</title>
-       <link>https://izcqi.com/posts/2020/09/18/spring-boot-x-develop-note/</link>
-       <pubDate>Fri, 18 Sep 2020 16:35:49 +0800</pubDate>
-       <author>zcq#zhucongqi.cn (Qicz)</author>
-       <guid>https://izcqi.com/posts/2020/09/18/spring-boot-x-develop-note/</guid>
-       <description>&lt;h3 id=&#34;起源&#34;&gt;起源&lt;/h3&gt;
-&lt;p&gt;​		一月前，做了这样的一个东西，这个东西目标是打破SpringBoot的Application启动时，在不指定扫描包路径时，扫描启动类所在的包及其子包。实现这个，就可以完成简单的引入一个外部的jar，这样就可以在这个外部的jar中来扩展各种功能了。在这样的情况下，spring-boot-x就一点点的诞生了。&lt;/p&gt;
-&lt;p&gt;​		说到一点点的诞生是因为在开发过程中，对它的源码和设计经历了从复杂到简化，从代码多到代码少一点点的不断的改进。&lt;/p&gt;
-&lt;h3 id=&#34;支持的功能&#34;&gt;支持的功能&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;pretty请求日志&lt;/li&gt;
-&lt;li&gt;自定义Error的异常处理，Error View&lt;/li&gt;
-&lt;li&gt;Redis Command风格的RedisTemplate&lt;/li&gt;
-&lt;li&gt;Redis Keynaming&lt;/li&gt;
-&lt;li&gt;feign header 包装&lt;/li&gt;
-&lt;li&gt;TODO&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-     </item>
-   
-     <item>
        <title>Kong系列之入门(上)</title>
        <link>https://izcqi.com/posts/2020/08/31/kong-primer-0/</link>
        <pubDate>Mon, 31 Aug 2020 13:24:55 +0800</pubDate>
