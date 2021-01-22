@@ -289,7 +289,7 @@
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8&lt;/span&gt;        KeyNamingKit&lt;span style=&#34;color:#ff79c6&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;remove&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;();&lt;/span&gt;
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9&lt;/span&gt;    &lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在业务中，通常我们会对写入redis的数据进行region的处理，也就是从key的角度对数据进行划分，以上看到的&lt;code&gt;KeyNamingKit&lt;/code&gt;就是进行了这样的操作。当然了，仅仅使用&lt;code&gt;KeyNamingKit&lt;/code&gt;是不能完成这个功能的，还需要定义一个&lt;code&gt;keyNamingPolicy&lt;/code&gt;，当然项目已提供了一个默认的&lt;code&gt;keyNamingPolicy&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在业务中，通常我们会对写入&lt;code&gt;redis&lt;/code&gt;的数据进行region的处理，也就是从&lt;code&gt;key&lt;/code&gt;的角度对数据进行划分，以上看到的&lt;code&gt;KeyNamingKit&lt;/code&gt;就是进行了这样的操作。当然了，仅仅使用&lt;code&gt;KeyNamingKit&lt;/code&gt;是不能完成这个功能的，还需要定义一个&lt;code&gt;keyNamingPolicy&lt;/code&gt;，当然项目已提供了一个默认的&lt;code&gt;keyNamingPolicy&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
 &lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * DefaultKeyNamingPolicy
 &lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; *
@@ -481,11 +481,11 @@
 &lt;li&gt;引入项目依赖及&lt;code&gt;spring-boot-starter-data-elasticsearch&lt;/code&gt;及&lt;code&gt;elasticsearch-rest-high-level-client&lt;/code&gt;，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;基于druid和hikari的动态路由routingdatasource&#34;&gt;基于Druid和Hikari的动态路由RoutingDataSource&lt;/h3&gt;
-&lt;p&gt;spring官方提供了&lt;code&gt;org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource&lt;/code&gt;用于支持动态路由，但他对数据源本身的处理很少，越是基于此对其从根上进行了扩展，于是有了&lt;code&gt;org.openingo.spring.datasource.routing.RoutingDataSource&lt;/code&gt;，可以便捷的加入移除关闭数据源，且支持Druid及Hikari。&lt;/p&gt;
+&lt;p&gt;spring官方提供了&lt;code&gt;org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource&lt;/code&gt;用于支持动态路由，但其对数据源本身的处理很少，故基于此对其从根上进行了扩展，于是有了&lt;code&gt;org.openingo.spring.datasource.routing.RoutingDataSource&lt;/code&gt;，可以便捷的加入移除关闭数据源，且支持&lt;code&gt;Druid&lt;/code&gt;及&lt;code&gt;Hikari&lt;/code&gt;。&lt;/p&gt;
 &lt;h4 id=&#34;如何使用-5&#34;&gt;如何使用？&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;引入项目依赖（使用druid时加入其依赖），在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用；&lt;/p&gt;
+&lt;p&gt;引入项目依赖（使用&lt;code&gt;druid&lt;/code&gt;时加入其依赖），在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用；&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;示例：&lt;/p&gt;
@@ -530,7 +530,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;springboot应用的配置信息的自动拷贝&#34;&gt;SpringBoot应用的配置信息的自动拷贝&lt;/h3&gt;
-&lt;p&gt;通常情况下，我们的SpringBoot应用都会有各种的配置文件或&lt;code&gt;yaml&lt;/code&gt;或&lt;code&gt;properties&lt;/code&gt;，而在项目部署时有需要将他们进行外部化，便于动态配置，项目的此特性就基于此而实现。&lt;/p&gt;
+&lt;p&gt;通常情况下，我们的&lt;code&gt;SpringBoot&lt;/code&gt;应用都会有各种的配置文件或&lt;code&gt;yaml&lt;/code&gt;或&lt;code&gt;properties&lt;/code&gt;，而在项目部署时有需要将他们进行外部化，便于动态配置，项目的此特性就基于此而实现。&lt;/p&gt;
 &lt;h4 id=&#34;如何使用-6&#34;&gt;如何使用？&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;

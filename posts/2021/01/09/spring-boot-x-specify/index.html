@@ -465,7 +465,7 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        KeyNamingKit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">remove</span><span style="color:#ff79c6">();</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    <span style="color:#ff79c6">}</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#ff79c6">}</span>
-</code></pre></div><p>在业务中，通常我们会对写入redis的数据进行region的处理，也就是从key的角度对数据进行划分，以上看到的<code>KeyNamingKit</code>就是进行了这样的操作。当然了，仅仅使用<code>KeyNamingKit</code>是不能完成这个功能的，还需要定义一个<code>keyNamingPolicy</code>，当然项目已提供了一个默认的<code>keyNamingPolicy</code></p>
+</code></pre></div><p>在业务中，通常我们会对写入<code>redis</code>的数据进行region的处理，也就是从<code>key</code>的角度对数据进行划分，以上看到的<code>KeyNamingKit</code>就是进行了这样的操作。当然了，仅仅使用<code>KeyNamingKit</code>是不能完成这个功能的，还需要定义一个<code>keyNamingPolicy</code>，当然项目已提供了一个默认的<code>keyNamingPolicy</code></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#6272a4">/**
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#6272a4"> * DefaultKeyNamingPolicy
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#6272a4"> *
@@ -657,11 +657,11 @@
 <li>引入项目依赖及<code>spring-boot-starter-data-elasticsearch</code>及<code>elasticsearch-rest-high-level-client</code>，在启动类上加入<code>@EnableExtension</code>，即可使用。</li>
 </ul>
 <h3 id="基于druid和hikari的动态路由routingdatasource">基于Druid和Hikari的动态路由RoutingDataSource</h3>
-<p>spring官方提供了<code>org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource</code>用于支持动态路由，但他对数据源本身的处理很少，越是基于此对其从根上进行了扩展，于是有了<code>org.openingo.spring.datasource.routing.RoutingDataSource</code>，可以便捷的加入移除关闭数据源，且支持Druid及Hikari。</p>
+<p>spring官方提供了<code>org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource</code>用于支持动态路由，但其对数据源本身的处理很少，故基于此对其从根上进行了扩展，于是有了<code>org.openingo.spring.datasource.routing.RoutingDataSource</code>，可以便捷的加入移除关闭数据源，且支持<code>Druid</code>及<code>Hikari</code>。</p>
 <h4 id="如何使用-5">如何使用？</h4>
 <ul>
 <li>
-<p>引入项目依赖（使用druid时加入其依赖），在启动类上加入<code>@EnableExtension</code>，即可使用；</p>
+<p>引入项目依赖（使用<code>druid</code>时加入其依赖），在启动类上加入<code>@EnableExtension</code>，即可使用；</p>
 </li>
 <li>
 <p>示例：</p>
@@ -706,7 +706,7 @@
 </code></pre></div></li>
 </ul>
 <h3 id="springboot应用的配置信息的自动拷贝">SpringBoot应用的配置信息的自动拷贝</h3>
-<p>通常情况下，我们的SpringBoot应用都会有各种的配置文件或<code>yaml</code>或<code>properties</code>，而在项目部署时有需要将他们进行外部化，便于动态配置，项目的此特性就基于此而实现。</p>
+<p>通常情况下，我们的<code>SpringBoot</code>应用都会有各种的配置文件或<code>yaml</code>或<code>properties</code>，而在项目部署时有需要将他们进行外部化，便于动态配置，项目的此特性就基于此而实现。</p>
 <h4 id="如何使用-6">如何使用？</h4>
 <ul>
 <li>
