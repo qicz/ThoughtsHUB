@@ -1,0 +1,564 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta name="generator" content="Hugo 0.68.3" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>Spring Boot Bean动态校验 | Qicz&#39;s Thoughts HUB</title>
+  <meta property="og:title" content="Spring Boot Bean动态校验 - Qicz&#39;s Thoughts HUB">
+  <meta property="og:type" content="article">
+      
+  <meta property="article:published_time" content="2021-04-21T11:01:47&#43;08:00">
+      
+      
+  <meta property="article:modified_time" content="2021-04-21T11:01:47&#43;08:00">
+      
+  <meta name="Keywords" content="Qicz,Jobsz,RD,technology,tech,learning,设计模式,分布式,架构设计,P6,P7,软件设计,数据库,大数据,MySQL,Zookeeper,MongoDB,redis,dubbo,ServiceMesh,SOFAMesh,Serverless,hugo,Java,Mybatis,Spring,Spring Boot,Spring Cloud,istio,Kong,Gateway">
+  <meta name="description" content="Spring Boot Bean动态校验">
+      
+  <meta name="author" content="Qicz">
+  <meta property="og:url" content="https://izcqi.com/posts/2021/04/21/spring-boot-bean-dynamic-validation/">
+  
+  <link rel="shortcut icon" href="https://izcqi.com/favicon.png" />
+  
+
+  <meta property="og:title" content="Spring Boot Bean动态校验" />
+<meta property="og:description" content="springboot中的bean校验使用的是hibernate-validator，相对来说，这种通过注解的校验，对业务代码的“污染”会很少很多很多了。但是，这种方式的局限也很明显：
+ 使用注解的方式，可以说是一种明确的、静态的校验方式，因为“校验”都通过注解呈现了，也就是已经固化了。当需要根据接口的入参去校验关联的属性时，就无法完成了。
+ 如果要实现这种“根据接口的入参去校验关联的属性”就不得不进行根据入参的动态校验，同时还不能影响原有的校验机制，就是静态校验和动态校验的并存，且不能对业务有过多的“污染”。这也是此文的由来了，接下来会讲解一种静态、动态校验可并存的机制。
+举例：校验用户的信息，如果用户是微信用户，需要校验微信用户相关的信息，如果用户18岁以上，还需要校验身份证信息；如果是微博用户，需要校验微博相关的信息。
+这个场景中，使用静态的方式就不能完成所有场景的校验了。那么传统的做法，可能需要根据org.openingo.account.User#userType的具体取值去判断，比如是org.openingo.account.UserTypeEnum#WECHAT时去校验org.openingo.account.User#weChatAccount等等，如果对应的数据不合法，则抛出对应的异常。这其实就是动态校验的核心逻辑了，下面看具体的源码:
+1@Getter 2@AllArgsConstructor 3public enum UserTypeEnum { 4 5 WECHAT(1), 6 WEIBO(2), 7 ; 8 9 private Integer code; 10 11 @JsonCreator 12 public static UserTypeEnum newByCode(Integer code) { 13 return Stream." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://izcqi.com/posts/2021/04/21/spring-boot-bean-dynamic-validation/" />
+<meta property="article:published_time" content="2021-04-21T11:01:47+08:00" />
+<meta property="article:modified_time" content="2021-04-21T11:01:47+08:00" />
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Spring Boot Bean动态校验"/>
+<meta name="twitter:description" content="springboot中的bean校验使用的是hibernate-validator，相对来说，这种通过注解的校验，对业务代码的“污染”会很少很多很多了。但是，这种方式的局限也很明显：
+ 使用注解的方式，可以说是一种明确的、静态的校验方式，因为“校验”都通过注解呈现了，也就是已经固化了。当需要根据接口的入参去校验关联的属性时，就无法完成了。
+ 如果要实现这种“根据接口的入参去校验关联的属性”就不得不进行根据入参的动态校验，同时还不能影响原有的校验机制，就是静态校验和动态校验的并存，且不能对业务有过多的“污染”。这也是此文的由来了，接下来会讲解一种静态、动态校验可并存的机制。
+举例：校验用户的信息，如果用户是微信用户，需要校验微信用户相关的信息，如果用户18岁以上，还需要校验身份证信息；如果是微博用户，需要校验微博相关的信息。
+这个场景中，使用静态的方式就不能完成所有场景的校验了。那么传统的做法，可能需要根据org.openingo.account.User#userType的具体取值去判断，比如是org.openingo.account.UserTypeEnum#WECHAT时去校验org.openingo.account.User#weChatAccount等等，如果对应的数据不合法，则抛出对应的异常。这其实就是动态校验的核心逻辑了，下面看具体的源码:
+1@Getter 2@AllArgsConstructor 3public enum UserTypeEnum { 4 5 WECHAT(1), 6 WEIBO(2), 7 ; 8 9 private Integer code; 10 11 @JsonCreator 12 public static UserTypeEnum newByCode(Integer code) { 13 return Stream."/>
+<meta name="generator" content="Hugo 0.68.3" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
+  <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="https://izcqi.com/css/styles.css" />
+  
+  <link href="https://izcqi.com/css/monokai.min.css" rel="stylesheet">
+  </head>
+
+<body>
+  <div id="container">
+    <header-container>
+    <header>
+      <h1>
+        <a href="https://izcqi.com/">Qicz&rsquo;s Thoughts HUB</a>
+      </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="mailto:zcq#zhucongqi.cn" title="Email me" target="_blank">
+               <i class="fas fa-envelope fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://github.com/qicz" title="GitHub" target="_blank">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://weibo.com/powerlinux" title="Weibo" target="_blank">
+               <i class="fab fa-weibo fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://douban.com/people/podevor" title="Douban" target="_blank">
+               <i class="fab fa-spotify fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>The creative and technical writing. <!-- raw HTML omitted --> Do more, challenge more, know more, be more.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://izcqi.com/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/categories/">
+                <i class="fa-li fa  fa-lg"></i><span>Categories</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/tags/">
+                <i class="fa-li fa  fa-lg"></i><span>Tags</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+  </header-container>
+    <main>
+
+
+
+
+<article>
+
+    <h1>Spring Boot Bean动态校验</h1>
+
+    
+        <aside>
+    
+    <span class="fa fa-calendar"><time class="post-date" datetime="2021-04-21T11:01:47&#43;08:00"> Apr 21, 2021 11:01</time>
+    &nbsp; | &nbsp; 
+    
+    <span class="fa fa-book">
+        <em class="categories">
+            
+                
+                <a href="https://izcqi.com/categories/spring">spring</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+     
+    <span class="fa fa-tags">
+        <em class="tags">
+            
+                
+                <a href="https://izcqi.com/tags/spring">#spring</a>
+            
+                , 
+                <a href="https://izcqi.com/tags/springboot">#springboot</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+    <span class="fa fa-plane"><em> 4 minutes read</em> </span>
+</aside>
+    
+
+    
+    <nav id="TableOfContents"></nav>
+
+    <p><code>springboot</code>中的<code>bean</code>校验使用的是<code>hibernate-validator</code>，相对来说，这种通过注解的校验，对业务代码的“污染”会很少很多很多了。但是，这种方式的局限也很明显：</p>
+<blockquote>
+<p>使用注解的方式，可以说是一种明确的、静态的校验方式，因为“校验”都通过注解呈现了，也就是已经固化了。当需要根据接口的入参去校验关联的属性时，就无法完成了。</p>
+</blockquote>
+<p>如果要实现这种“根据接口的入参去校验关联的属性”就不得不进行根据入参的动态校验，同时还不能影响原有的校验机制，就是静态校验和动态校验的并存，且不能对业务有过多的“污染”。这也是此文的由来了，接下来会讲解一种静态、动态校验可并存的机制。</p>
+<p>举例：校验用户的信息，如果用户是微信用户，需要校验微信用户相关的信息，如果用户18岁以上，还需要校验身份证信息；如果是微博用户，需要校验微博相关的信息。</p>
+<p>这个场景中，使用静态的方式就不能完成所有场景的校验了。那么传统的做法，可能需要根据<code>org.openingo.account.User#userType</code>的具体取值去判断，比如是<code>org.openingo.account.UserTypeEnum#WECHAT</code>时去校验<code>org.openingo.account.User#weChatAccount</code>等等，如果对应的数据不合法，则抛出对应的异常。这其实就是动态校验的核心逻辑了，下面看具体的源码:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@Getter
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>@AllArgsConstructor
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">enum</span> UserTypeEnum <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    WECHAT<span style="color:#ff79c6">(</span>1<span style="color:#ff79c6">),</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>    WEIBO<span style="color:#ff79c6">(</span>2<span style="color:#ff79c6">),</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    <span style="color:#8be9fd;font-style:italic">private</span> Integer code<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    @JsonCreator
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> UserTypeEnum <span style="color:#50fa7b">newByCode</span><span style="color:#ff79c6">(</span>Integer code<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>        <span style="color:#ff79c6">return</span> Stream<span style="color:#ff79c6">.</span><span style="color:#50fa7b">of</span><span style="color:#ff79c6">(</span>values<span style="color:#ff79c6">()).</span><span style="color:#50fa7b">filter</span><span style="color:#ff79c6">(</span>e <span style="color:#ff79c6">-&gt;</span> code<span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCode</span><span style="color:#ff79c6">())).</span><span style="color:#50fa7b">findFirst</span><span style="color:#ff79c6">().</span><span style="color:#50fa7b">orElse</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@Data
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">User</span> <span style="color:#8be9fd;font-style:italic">implements</span> Serializable <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    @NotNull<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;用户类型不可为null&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">private</span> UserTypeEnum userType<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#8be9fd;font-style:italic">private</span> WeChatAccount weChatAccount<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    <span style="color:#8be9fd;font-style:italic">private</span> WeiboAccount weiboAccount<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@Data
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">WeChatAccount</span> <span style="color:#8be9fd;font-style:italic">implements</span> Serializable <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;账号id不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">private</span> String accountId<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;昵称不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#8be9fd;font-style:italic">private</span> String nickname<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    @NotNull<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;性别不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    @Pattern<span style="color:#ff79c6">(</span>regexp <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;^man$|^woman$&#34;</span><span style="color:#ff79c6">,</span> message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;取值不合法&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#8be9fd;font-style:italic">private</span> String sex<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>    @NotNull<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;年龄不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>    <span style="color:#8be9fd;font-style:italic">private</span> Integer age<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;头像不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>    <span style="color:#8be9fd;font-style:italic">private</span> String avatarUri<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>    <span style="color:#8be9fd;font-style:italic">private</span> IdCard idCard<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>@Data
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">IdCard</span> <span style="color:#8be9fd;font-style:italic">implements</span> Serializable <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;id不能为null&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>    <span style="color:#8be9fd;font-style:italic">private</span> String id<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;address不能为null&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span>    <span style="color:#8be9fd;font-style:italic">private</span> String address<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@Data
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">WeiboAccount</span> <span style="color:#8be9fd;font-style:italic">implements</span> Serializable <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;账号id不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">private</span> String accountId<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;昵称不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#8be9fd;font-style:italic">private</span> String nickname<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    @NotNull<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;性别不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    @Pattern<span style="color:#ff79c6">(</span>regexp <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;^man$|^woman$&#34;</span><span style="color:#ff79c6">,</span> message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;取值不合法&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#8be9fd;font-style:italic">private</span> String sex<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>    @NotNull<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;年龄不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>    @Min<span style="color:#ff79c6">(</span>value <span style="color:#ff79c6">=</span> 18<span style="color:#ff79c6">,</span> message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;只能18岁以上用户可以使用&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>    <span style="color:#8be9fd;font-style:italic">private</span> Integer age<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;头像不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>    <span style="color:#8be9fd;font-style:italic">private</span> String avatarUri<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;签名不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>    <span style="color:#8be9fd;font-style:italic">private</span> String signature<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>要完成动态校验就需要对应的实体实现<code>DynamicValidator</code>。<code>DynamicValidator</code>已经集成到<code>spring-boot-x2.9.5及以上版本</code>。</p>
+<p><code>DynamicValidator</code>是建立在动态校验参数的基础之上完成的，把具体的细节都封装了，简化了使用。</p>
+<p>目前的<code>DynamicValidator</code>支持</p>
+<ul>
+<li>ABC——链式校验；</li>
+<li>ACD——跳跃式模式的校验。</li>
+</ul>
+<p>可以从<a href="https://github.com/OpeningO/spring-boot-x/blob/master/src/main/java/org/openingo/spring/validator/DynamicValidator.java">这里</a>看到具体的<code>DynamicValidator</code>实现，其提供了:</p>
+<ul>
+<li><code>org.openingo.spring.validator.DynamicValidator#silentDynamicValidate</code>静默校验，适合在<code>service</code>层使用，如果有不合法的数据，会返回错误的<code>message</code></li>
+<li><code>org.openingo.spring.validator.DynamicValidator#validateField</code>针对某个具体的字段的校验——  <code>throwValidationException</code></li>
+<li><code>org.openingo.spring.validator.DynamicValidator#validateSelf</code>(T, java.lang.Class&lt;?&gt;&hellip;)对实体自身的校验</li>
+<li><code>org.openingo.spring.validator.DynamicValidator#dynamicValidate(T, java.lang.String, java.lang.Class&lt;?&gt;...)</code>指定数据不合法返回错误的<code>message</code>及校验组<code>groups</code></li>
+<li><code>org.openingo.spring.validator.DynamicValidator#addConstraintViolation</code>自定义校验时，定义消息模板</li>
+</ul>
+<p>针对上面的场景，应该如何实现呢 ?  根据描述的场景适合ACD跳跃校验：<code>User</code>就是入口，<code>org.openingo.account.WeChatAccount#age</code>就是跳跃点。从入口着手，看看具体实现：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@Data
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">User</span> <span style="color:#8be9fd;font-style:italic">implements</span> Serializable<span style="color:#ff79c6">,</span> DynamicValidator <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    @NotNull<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;用户类型不可为null&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">private</span> UserTypeEnum userType<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#8be9fd;font-style:italic">private</span> WeChatAccount weChatAccount<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    <span style="color:#8be9fd;font-style:italic">private</span> WeiboAccount weiboAccount<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    @Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">dynamicValidate</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>        <span style="color:#6272a4">// 根据用户的类型确定要校验的数据
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>UserTypeEnum<span style="color:#ff79c6">.</span><span style="color:#50fa7b">WECHAT</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">userType</span><span style="color:#ff79c6">))</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>            <span style="color:#6272a4">// 直接调用dynamicValidate校验对应的字段，
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// 会进行非null及字段的dynamicValidate的进一步校验
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">dynamicValidate</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">weChatAccount</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;微信数据不合法&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>            <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">dynamicValidate</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">weiboAccount</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;微博数据不合法&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>        <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p><code>进一步校验</code>就会到具体的数据中进行了，那么看看<code>WeChatAccount</code>中的实现：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@Data
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">WeChatAccount</span> <span style="color:#8be9fd;font-style:italic">implements</span> Serializable<span style="color:#ff79c6">,</span> DynamicValidator <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;账号id不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">private</span> String accountId<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;昵称不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#8be9fd;font-style:italic">private</span> String nickname<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    @NotNull<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;性别不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    @Pattern<span style="color:#ff79c6">(</span>regexp <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;^man$|^woman$&#34;</span><span style="color:#ff79c6">,</span> message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;取值不合法&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#8be9fd;font-style:italic">private</span> String sex<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>    @NotNull<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;年龄不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>    <span style="color:#8be9fd;font-style:italic">private</span> Integer age<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;头像不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>    <span style="color:#8be9fd;font-style:italic">private</span> String avatarUri<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>    <span style="color:#8be9fd;font-style:italic">private</span> IdCard idCard<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>    @Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">dynamicValidate</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>        <span style="color:#6272a4">// 如果年龄大于18岁，需要校验身份信息是否合法
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">age</span> <span style="color:#ff79c6">&gt;=</span> 18<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>            <span style="color:#6272a4">// 同样的dynamicValidate将对idCard进行非null及进一步的校验
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">dynamicValidate</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">idCard</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;身份信息不合法&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>            <span style="color:#6272a4">// IdCard如未实现DynamicValidator可以按照如下方式进行校验
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// this.validateField(null == this.idCard, &#34;身份信息不合法&#34;);
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// this.validateSelf(this.idCard);
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span style="color:#ff79c6">}</span>
+</code></pre></div><blockquote>
+<p>如果到了最后一级校验，如此处的<code>IdCard</code>，其可不实现<code>DynamicValidator</code>。</p>
+</blockquote>
+<p>再来看看，实现<code>DynamicValidator</code>后的<code>IdCard</code>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@Data
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">IdCard</span> <span style="color:#8be9fd;font-style:italic">implements</span> Serializable<span style="color:#ff79c6">,</span> DynamicValidator <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;id不能为null&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">private</span> String id<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;address不能为null&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#8be9fd;font-style:italic">private</span> String address<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    @Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">dynamicValidate</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        <span style="color:#6272a4">// 啥也不用写
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#ff79c6">}</span>
+</code></pre></div><blockquote>
+<p>因为到了最后一级，这也是为什么说，到最后一级可不实现<code>DynamicValidator</code>的原因。</p>
+</blockquote>
+<p>最后看看，<code>WeiboAccount</code>的实现：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@Data
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">WeiboAccount</span> <span style="color:#8be9fd;font-style:italic">implements</span> Serializable<span style="color:#ff79c6">,</span> DynamicValidator <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;账号id不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8be9fd;font-style:italic">private</span> String accountId<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;昵称不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#8be9fd;font-style:italic">private</span> String nickname<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    @NotNull<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;性别不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    @Pattern<span style="color:#ff79c6">(</span>regexp <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;^man$|^woman$&#34;</span><span style="color:#ff79c6">,</span> message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;取值不合法&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#8be9fd;font-style:italic">private</span> String sex<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>    @NotNull<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;年龄不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>    @Min<span style="color:#ff79c6">(</span>value <span style="color:#ff79c6">=</span> 18<span style="color:#ff79c6">,</span> message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;只能18岁以上用户可以使用&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>    <span style="color:#8be9fd;font-style:italic">private</span> Integer age<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;头像不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>    <span style="color:#8be9fd;font-style:italic">private</span> String avatarUri<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>    @NotBlank<span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;签名不能为空&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>    <span style="color:#8be9fd;font-style:italic">private</span> String signature<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>    @Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">dynamicValidate</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>        <span style="color:#6272a4">// 在这个场景中，WeiboAccount其实与IdCard相当，都是最后一级校验，
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// 所以可以不必实现DynamicValidator
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span style="color:#ff79c6">}</span>
+</code></pre></div><blockquote>
+<p>在这个场景中，WeiboAccount其实与IdCard相当，都是最后一级校验，所以可以不必实现DynamicValidator。</p>
+</blockquote>
+<p>如何使用？</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@RestController
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>@Validated
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">UserController</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    @Autowired
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>    IUserService userService<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    @PostMapping<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/user/sync&#34;</span><span style="color:#ff79c6">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    <span style="color:#8be9fd;font-style:italic">public</span> RespData <span style="color:#50fa7b">syncUser</span><span style="color:#ff79c6">(</span>@RequestBody @Validated User user<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>        user<span style="color:#ff79c6">.</span><span style="color:#50fa7b">dynamicValidate</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">userService</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">syncUser</span><span style="color:#ff79c6">(</span>user<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        <span style="color:#ff79c6">return</span> RespData<span style="color:#ff79c6">.</span><span style="color:#50fa7b">success</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#ff79c6">}</span>
+</code></pre></div><p>可以看到与通常的使用几乎没有差异，只需在实际业务处理前，“手动”再次触发“dynamicValidate”即可。看看具体的效果：</p>
+<ul>
+<li>未提供为何数据时</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#ff79c6">&#34;sc&#34;</span>: <span style="color:#f1fa8c">&#34;400&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">&#34;sm&#34;</span>: <span style="color:#f1fa8c">&#34;用户类型不可为null&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>}
+</code></pre></div><ul>
+<li>用户类型为<code>Wechat</code>时</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#ff79c6">&#34;sc&#34;</span>: <span style="color:#f1fa8c">&#34;500&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">&#34;sm&#34;</span>: <span style="color:#f1fa8c">&#34;微信数据不合法&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>}
+</code></pre></div><ul>
+<li>用户类型为<code>Wechat</code>，提供了<code>wechatAccount</code>数据为空对象时</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#ff79c6">&#34;userType&#34;</span>: <span style="color:#bd93f9">1</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">&#34;weChatAccount&#34;</span>:{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>        
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>    }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#ff79c6">&#34;sc&#34;</span>: <span style="color:#f1fa8c">&#34;500&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">&#34;sm&#34;</span>: <span style="color:#f1fa8c">&#34;昵称不能为空&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>}
+</code></pre></div><ul>
+<li>用户类型为<code>Wechat</code>，<code>age &lt; 18</code>时</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    <span style="color:#ff79c6">&#34;userType&#34;</span>: <span style="color:#bd93f9">1</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#ff79c6">&#34;weChatAccount&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>        <span style="color:#ff79c6">&#34;nickname&#34;</span>: <span style="color:#f1fa8c">&#34;qicz&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        <span style="color:#ff79c6">&#34;avatarUri&#34;</span>: <span style="color:#f1fa8c">&#34;http://...&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>        <span style="color:#ff79c6">&#34;accountId&#34;</span>: <span style="color:#f1fa8c">&#34;123&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        <span style="color:#ff79c6">&#34;age&#34;</span>: <span style="color:#bd93f9">12</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#ff79c6">&#34;sex&#34;</span>: <span style="color:#f1fa8c">&#34;man&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#ff79c6">&#34;sc&#34;</span>: <span style="color:#f1fa8c">&#34;success&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">&#34;sm&#34;</span>: <span style="color:#f1fa8c">&#34;response successful&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>}
+</code></pre></div><ul>
+<li>用户类型为<code>Wechat</code>，<code>age &gt;= 18</code>时</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    <span style="color:#ff79c6">&#34;userType&#34;</span>: <span style="color:#bd93f9">1</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#ff79c6">&#34;weChatAccount&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>        <span style="color:#ff79c6">&#34;nickname&#34;</span>: <span style="color:#f1fa8c">&#34;qicz&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        <span style="color:#ff79c6">&#34;avatarUri&#34;</span>: <span style="color:#f1fa8c">&#34;http://...&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>        <span style="color:#ff79c6">&#34;accountId&#34;</span>: <span style="color:#f1fa8c">&#34;123&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        <span style="color:#ff79c6">&#34;age&#34;</span>: <span style="color:#bd93f9">19</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#ff79c6">&#34;sex&#34;</span>: <span style="color:#f1fa8c">&#34;man&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#ff79c6">&#34;sc&#34;</span>: <span style="color:#f1fa8c">&#34;500&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">&#34;sm&#34;</span>: <span style="color:#f1fa8c">&#34;身份信息不合法&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>}
+</code></pre></div><ul>
+<li>用户类型为<code>Wechat</code>，<code>age &gt;= 18</code>,提供了<code>idCard</code>数据为空对象时</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    <span style="color:#ff79c6">&#34;userType&#34;</span>: <span style="color:#bd93f9">1</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#ff79c6">&#34;weChatAccount&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>        <span style="color:#ff79c6">&#34;nickname&#34;</span>: <span style="color:#f1fa8c">&#34;qicz&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        <span style="color:#ff79c6">&#34;avatarUri&#34;</span>: <span style="color:#f1fa8c">&#34;http://...&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>        <span style="color:#ff79c6">&#34;accountId&#34;</span>: <span style="color:#f1fa8c">&#34;123&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        <span style="color:#ff79c6">&#34;age&#34;</span>: <span style="color:#bd93f9">19</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#ff79c6">&#34;sex&#34;</span>: <span style="color:#f1fa8c">&#34;man&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>        <span style="color:#ff79c6">&#34;idCard&#34;</span>: {}
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#ff79c6">&#34;sc&#34;</span>: <span style="color:#f1fa8c">&#34;500&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">&#34;sm&#34;</span>: <span style="color:#f1fa8c">&#34;id不能为null&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>}
+</code></pre></div><ul>
+<li>用户类型为<code>Wechat</code>，<code>age &gt;= 18</code>，仅提供了<code>idCard</code>的<code>id </code>数据时</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    <span style="color:#ff79c6">&#34;userType&#34;</span>: <span style="color:#bd93f9">1</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#ff79c6">&#34;weChatAccount&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>        <span style="color:#ff79c6">&#34;nickname&#34;</span>: <span style="color:#f1fa8c">&#34;qicz&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        <span style="color:#ff79c6">&#34;avatarUri&#34;</span>: <span style="color:#f1fa8c">&#34;http://...&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>        <span style="color:#ff79c6">&#34;accountId&#34;</span>: <span style="color:#f1fa8c">&#34;123&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        <span style="color:#ff79c6">&#34;age&#34;</span>: <span style="color:#bd93f9">19</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#ff79c6">&#34;sex&#34;</span>: <span style="color:#f1fa8c">&#34;man&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>        <span style="color:#ff79c6">&#34;idCard&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>            <span style="color:#ff79c6">&#34;id&#34;</span>: <span style="color:#f1fa8c">&#34;idddd&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#ff79c6">&#34;sc&#34;</span>: <span style="color:#f1fa8c">&#34;500&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">&#34;sm&#34;</span>: <span style="color:#f1fa8c">&#34;address不能为null&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>}
+</code></pre></div><ul>
+<li>用户类型为<code>Wechat</code>，<code>age &gt;= 18</code>，提供了完成的<code>idCard</code>数据时</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    <span style="color:#ff79c6">&#34;userType&#34;</span>: <span style="color:#bd93f9">1</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#ff79c6">&#34;weChatAccount&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>        <span style="color:#ff79c6">&#34;nickname&#34;</span>: <span style="color:#f1fa8c">&#34;qicz&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        <span style="color:#ff79c6">&#34;avatarUri&#34;</span>: <span style="color:#f1fa8c">&#34;http://...&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>        <span style="color:#ff79c6">&#34;accountId&#34;</span>: <span style="color:#f1fa8c">&#34;123&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        <span style="color:#ff79c6">&#34;age&#34;</span>: <span style="color:#bd93f9">19</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>        <span style="color:#ff79c6">&#34;sex&#34;</span>: <span style="color:#f1fa8c">&#34;man&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>        <span style="color:#ff79c6">&#34;idCard&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>            <span style="color:#ff79c6">&#34;id&#34;</span>: <span style="color:#f1fa8c">&#34;idddd&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>            <span style="color:#ff79c6">&#34;address&#34;</span>: <span style="color:#f1fa8c">&#34;bj&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#ff79c6">&#34;sc&#34;</span>: <span style="color:#f1fa8c">&#34;success&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">&#34;sm&#34;</span>: <span style="color:#f1fa8c">&#34;response successful&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>}
+</code></pre></div><blockquote>
+<p>针对微博数据的校验示例，这里就不一一罗列了。</p>
+</blockquote>
+<p>至此，关于动态校验的介绍就over了！通过<code>DynamicValidator</code>可以极大的简化针对动态校验的场景，也方便了在不规模修改的情况下，对静态和动态校验进行了整合。</p>
+<p><a href="https://github.com/OpeningO/spring-boot-x/tree/develop/2.0/spring-boot-x-demo/src/main/java/org/openingo">这里</a>是完成的代码示例。</p>
+
+
+</article>
+
+
+<script src="https://utteranc.es/client.js"
+    repo="qicz/ThoughtsHUB"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://izcqi.com/posts/2021/01/09/spring-boot-x-specify/"><i class="fa fa-chevron-circle-left"></i> 细说spring-boot-x</a>
+        </li>
+        
+        
+    </ul>
+</section>
+    
+
+
+
+
+</main>
+    <footer>
+        <h6>© 2012 - 2021 Qicz 
+            - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
+            | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
+            | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>
+    </footer>
+</div>
+
+<script async src="https://izcqi.com/js/busuanzi.pure.mini.js"></script>
+
+</body>
+
+</html>
+

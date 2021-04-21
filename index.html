@@ -111,6 +111,50 @@
         <ul>
           
           <li class="first">
+            <h1><a href="https://izcqi.com/posts/2021/04/21/spring-boot-bean-dynamic-validation/" title="Spring Boot Bean动态校验">Spring Boot Bean动态校验</a></h1>
+            <aside>
+    
+    <span class="fa fa-calendar"><time class="post-date" datetime="2021-04-21T11:01:47&#43;08:00"> Apr 21, 2021 11:01</time>
+    &nbsp; | &nbsp; 
+    
+    <span class="fa fa-book">
+        <em class="categories">
+            
+                
+                <a href="https://izcqi.com/categories/spring">spring</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+     
+    <span class="fa fa-tags">
+        <em class="tags">
+            
+                
+                <a href="https://izcqi.com/tags/spring">#spring</a>
+            
+                , 
+                <a href="https://izcqi.com/tags/springboot">#springboot</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+    <span class="fa fa-plane"><em> 4 minutes read</em> </span>
+</aside>
+            <p>springboot中的bean校验使用的是hibernate-validator，相对来说，这种通过注解的校验，对业务代码的“污染”会很少很多很多了。但是，这种方式的局限也很明显：
+ 使用注解的方式，可以说是一种明确的、静态的校验方式，因为“校验”都通过注解呈现了，也就是已经固化了。当需要根据接口的入参去校验关联的属性时，就无法完成了。
+ 如果要实现这种“根据接口的入参去校验关联的属性”就不得不进行根据入参的动态校验，同时还不能影响原有的校验机制，就是静态校验和动态校验的并存，且不能对业务有过多的“污染”。这也是此文的由来了，接下来会讲解一种静态、动态校验可并存的机制。
+举例：校验用户的信息，如果用户是微信用户，需要校验微信用户相关的信息，如果用户18岁以上，还需要校验身份证信息；如果是微博用户，需要校验微博相关的信息。
+这个场景中，使用静态的方式就不能完成所有场景的校验了。那么传统的做法，可能需要根据org.openingo.account.User#userType的具体取值去判断，比如是org.openingo.account.UserTypeEnum#WECHAT时去校验org.openingo.account.User#weChatAccount等等，如果对应的数据不合法，则抛出对应的异常。这其实就是动态校验的核心逻辑了，下面看具体的源码:
+1@Getter 2@AllArgsConstructor 3public enum UserTypeEnum { 4 5 WECHAT(1), 6 WEIBO(2), 7 ; 8 9 private Integer code; 10 11 @JsonCreator 12 public static UserTypeEnum newByCode(Integer code) { 13 return Stream.</p>
+            
+            <a href="https://izcqi.com/posts/2021/04/21/spring-boot-bean-dynamic-validation/">Read more…</a>
+            
+          </li>
+          
+          <li >
             <h1><a href="https://izcqi.com/posts/2021/01/09/spring-boot-x-specify/" title="细说spring-boot-x">细说spring-boot-x</a></h1>
             <aside>
     
