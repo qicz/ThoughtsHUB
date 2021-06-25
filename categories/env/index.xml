@@ -490,13 +490,15 @@
 &lt;li&gt;RedisIdEngine
 &lt;ul&gt;
 &lt;li&gt;对应的id类型是Long；&lt;/li&gt;
+&lt;li&gt;支持业务隔离，对应的&lt;code&gt;name&lt;/code&gt;就是业务的标识，可在实际业务中定义多个RedisIdEngine；&lt;/li&gt;
 &lt;li&gt;可以使用&lt;code&gt;org.openingo.spring.gedid.worker.DidWorker#getRedisIdEngine&lt;/code&gt;直接获取对应的RedisIdEngine；&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;ZookeeperIdEngine
 &lt;ul&gt;
-&lt;li&gt;基于zk临时顺序节点，不支持业务隔离；&lt;/li&gt;
-&lt;li&gt;对应的Id类型是String，生成的Id有目录&amp;rdquo;/&amp;ldquo;自行根据情况处理；&lt;/li&gt;
+&lt;li&gt;基于zk临时顺序节点；&lt;/li&gt;
+&lt;li&gt;不支持业务隔离，&lt;code&gt;name&lt;/code&gt;对ZookeeperIdEngine，仅便于从didWorker获得ZookeeperIdEngine，也因此实际业务中定义一个&lt;code&gt;name&lt;/code&gt;对应的ZookeeperIdEngine即可；&lt;/li&gt;
+&lt;li&gt;对应的Id类型是String；&lt;/li&gt;
 &lt;li&gt;不支持获取当前id（current操作，会抛出&lt;code&gt;java.lang.UnsupportedOperationException&lt;/code&gt;）；&lt;/li&gt;
 &lt;li&gt;可以使用&lt;code&gt;org.openingo.spring.gedid.worker.DidWorker#getZookeeperIdEngine&lt;/code&gt;直接获取对应的ZookeeperIdEngine；&lt;/li&gt;
 &lt;/ul&gt;
