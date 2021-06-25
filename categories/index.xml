@@ -390,6 +390,12 @@
 &lt;h3 id=&#34;特性清单&#34;&gt;特性清单&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
+&lt;p&gt;分布式id生成器gedid，DidWorker [ 2021.6.25更新 ]&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Safety工具 [ 2021.6.25更新 ]&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
 &lt;p&gt;请求日志，包括请求源、请求目标、请求参数、处理时间、错误异常等信息；&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -432,6 +438,76 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;细说特性&#34;&gt;细说特性&lt;/h2&gt;
+&lt;h3 id=&#34;分布式id生成器--2021625更新--since-300releae&#34;&gt;分布式Id生成器 [ 2021.6.25更新 ] since 3.0.0.RELEAE&lt;/h3&gt;
+&lt;p&gt;目前支持&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RedisIdEngine&lt;/li&gt;
+&lt;li&gt;ZookeeperIdEngine&lt;/li&gt;
+&lt;li&gt;UuidEngine&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;配置&#34;&gt;配置&lt;/h5&gt;
+&lt;p&gt;完全使用&lt;code&gt;spring-boot-starter-data-redis&lt;/code&gt;及&lt;code&gt;spring-cloud-starter-zookeeper-discovery&lt;/code&gt;对应的配置。&lt;/p&gt;
+&lt;h5 id=&#34;使用方式&#34;&gt;使用方式？&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;根据业务情况配置DidWorker&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;@Configuration
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;&lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#50fa7b&#34;&gt;IdWorkerConfig&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4&lt;/span&gt;  @Bean
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5&lt;/span&gt;  DidWorker &lt;span style=&#34;color:#50fa7b&#34;&gt;didWorker&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;RedisIdEngine redisIdEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;,&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6&lt;/span&gt;                      ZookeeperIdEngine zookeeperIdEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;,&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7&lt;/span&gt;                      UuidEngine uuidEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8&lt;/span&gt;      DidWorker didWorker &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; DidWorker&lt;span style=&#34;color:#ff79c6&#34;&gt;();&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9&lt;/span&gt;      DidEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;Long&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt; engine &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; DidEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;a&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;,&lt;/span&gt; redisIdEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10&lt;/span&gt;      didWorker&lt;span style=&#34;color:#ff79c6&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;addEngine&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;engine&lt;span style=&#34;color:#ff79c6&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;11&lt;/span&gt;  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;12&lt;/span&gt;      engine &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; DidEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;b&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;,&lt;/span&gt; redisIdEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;13&lt;/span&gt;      didWorker&lt;span style=&#34;color:#ff79c6&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;addEngine&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;engine&lt;span style=&#34;color:#ff79c6&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;14&lt;/span&gt;  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;15&lt;/span&gt;      DidEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt; zk &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; DidEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;zk&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;,&lt;/span&gt; zookeeperIdEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;16&lt;/span&gt;      didWorker&lt;span style=&#34;color:#ff79c6&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;addEngine&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;zk&lt;span style=&#34;color:#ff79c6&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;17&lt;/span&gt;  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;18&lt;/span&gt;      DidEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;gt;&lt;/span&gt; uuid &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; DidEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;&lt;span style=&#34;color:#f1fa8c&#34;&gt;&amp;#34;uuid&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;,&lt;/span&gt; uuidEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;19&lt;/span&gt;      didWorker&lt;span style=&#34;color:#ff79c6&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;addEngine&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;uuid&lt;span style=&#34;color:#ff79c6&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;20&lt;/span&gt;      &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; didWorker&lt;span style=&#34;color:#ff79c6&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;21&lt;/span&gt;  &lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;22&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;业务中使用&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;@Autowired
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;DidWorker didWorker&lt;span style=&#34;color:#ff79c6&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;DidEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; didEngine &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; didWorker&lt;span style=&#34;color:#ff79c6&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;getEngine&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color:#ff79c6&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;didEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;next&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;();&lt;/span&gt;  &lt;span style=&#34;color:#6272a4&#34;&gt;// 下一个id
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;&lt;/span&gt;didWorker&lt;span style=&#34;color:#ff79c6&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#50fa7b&#34;&gt;current&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color:#ff79c6&#34;&gt;);&lt;/span&gt; &lt;span style=&#34;color:#6272a4&#34;&gt;// 当前id !!! ZookeeperIdEngine不支持此操作
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;注意事项&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RedisIdEngine
+&lt;ul&gt;
+&lt;li&gt;对应的id类型是Long；&lt;/li&gt;
+&lt;li&gt;可以使用&lt;code&gt;org.openingo.spring.gedid.worker.DidWorker#getRedisIdEngine&lt;/code&gt;直接获取对应的RedisIdEngine；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ZookeeperIdEngine
+&lt;ul&gt;
+&lt;li&gt;基于zk临时顺序节点，不支持业务隔离；&lt;/li&gt;
+&lt;li&gt;对应的Id类型是String，生成的Id有目录&amp;rdquo;/&amp;ldquo;自行根据情况处理；&lt;/li&gt;
+&lt;li&gt;不支持获取当前id（current操作，会抛出&lt;code&gt;java.lang.UnsupportedOperationException&lt;/code&gt;）；&lt;/li&gt;
+&lt;li&gt;可以使用&lt;code&gt;org.openingo.spring.gedid.worker.DidWorker#getZookeeperIdEngine&lt;/code&gt;直接获取对应的ZookeeperIdEngine；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;safety-工具--2021625更新--since-300releae&#34;&gt;Safety 工具 [ 2021.6.25更新 ] since 3.0.0.RELEAE&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;封装了&lt;code&gt;ReentrantLock&lt;/code&gt;，具体查看源码&lt;code&gt;org.openingo.spring.safety.Safety&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h3 id=&#34;请求日志&#34;&gt;请求日志&lt;/h3&gt;
 &lt;p&gt;先看看效果&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;****************************************************************
