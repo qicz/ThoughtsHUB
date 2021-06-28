@@ -283,11 +283,11 @@
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#6272a4"></span>      engine <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> DidEngine<span style="color:#ff79c6">&lt;&gt;(</span><span style="color:#f1fa8c">&#34;b&#34;</span><span style="color:#ff79c6">,</span> redisIdEngine<span style="color:#ff79c6">);</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addEngine</span><span style="color:#ff79c6">(</span>engine<span style="color:#ff79c6">);</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>      <span style="color:#6272a4">// global zk
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span style="color:#6272a4"></span>      DidEngine<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">&gt;</span> zk <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> DidEngine<span style="color:#ff79c6">&lt;&gt;(</span><span style="color:#f1fa8c">&#34;zk&#34;</span><span style="color:#ff79c6">,</span> zookeeperIdEngine<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>      <span style="color:#6272a4">// business zk
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span style="color:#6272a4"></span>      DidEngine<span style="color:#ff79c6">&lt;</span>Long<span style="color:#ff79c6">&gt;</span> zk <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> DidEngine<span style="color:#ff79c6">&lt;&gt;(</span><span style="color:#f1fa8c">&#34;zk&#34;</span><span style="color:#ff79c6">,</span> zookeeperIdEngine<span style="color:#ff79c6">);</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addEngine</span><span style="color:#ff79c6">(</span>zk<span style="color:#ff79c6">);</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>      <span style="color:#6272a4">// global uuid
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>      <span style="color:#6272a4">// business uuid
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span style="color:#6272a4"></span>      DidEngine<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">&gt;</span> uuid <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> DidEngine<span style="color:#ff79c6">&lt;&gt;(</span><span style="color:#f1fa8c">&#34;uuid&#34;</span><span style="color:#ff79c6">,</span> uuidEngine<span style="color:#ff79c6">);</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addEngine</span><span style="color:#ff79c6">(</span>uuid<span style="color:#ff79c6">);</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>      <span style="color:#ff79c6">return</span> didWorker<span style="color:#ff79c6">;</span>
@@ -302,7 +302,6 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>DidEngine<span style="color:#ff79c6">&lt;?&gt;</span> didEngine <span style="color:#ff79c6">=</span> didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getEngine</span><span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">);</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>  
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>didEngine<span style="color:#ff79c6">.</span><span style="color:#50fa7b">next</span><span style="color:#ff79c6">();</span>  <span style="color:#6272a4">// 下一个id
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span style="color:#6272a4"></span>didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">current</span><span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">);</span> <span style="color:#6272a4">// 当前id !!! ZookeeperIdEngine不支持此操作
 </span></code></pre></div></li>
 <li>
 <p>自定义Engine</p>
@@ -320,10 +319,9 @@
 </li>
 <li>ZookeeperIdEngine
 <ul>
-<li>基于zk临时顺序节点；</li>
-<li>不支持业务隔离，<code>name</code>对ZookeeperIdEngine，仅便于从didWorker获得ZookeeperIdEngine，也因此实际业务中定义一个<code>name</code>对应的ZookeeperIdEngine即可；</li>
-<li>对应的Id类型是String；</li>
-<li>不支持获取当前id（current操作，会抛出<code>java.lang.UnsupportedOperationException</code>）；</li>
+<li>基于<code>CreateMode.PERSISTENT</code>节点的<code>mZxid</code>和<code>cZxid</code>；</li>
+<li>对应的Id类型是Long；</li>
+<li>支持业务隔离，对应的<code>name</code>就是业务的标识，可在实际业务中定义多个ZookeeperIdEngine；</li>
 <li>可以使用<code>org.openingo.spring.gedid.worker.DidWorker#getZookeeperIdEngine</code>直接获取对应的ZookeeperIdEngine；</li>
 </ul>
 </li>
