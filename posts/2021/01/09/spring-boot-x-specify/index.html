@@ -276,13 +276,13 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>                      UuidEngine uuidEngine<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>      DidWorker didWorker <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> DidWorker<span style="color:#ff79c6">();</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>      <span style="color:#6272a4">// business a
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addRedisEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;a&#34;</span><span style="color:#ff79c6">,</span> redisIdEngine<span style="color:#ff79c6">);</span>
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;a&#34;</span><span style="color:#ff79c6">,</span> redisIdEngine<span style="color:#ff79c6">);</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>      <span style="color:#6272a4">// business b
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addRedisEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;b&#34;</span><span style="color:#ff79c6">,</span> redisIdEngine<span style="color:#ff79c6">);</span>
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;b&#34;</span><span style="color:#ff79c6">,</span> redisIdEngine<span style="color:#ff79c6">);</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>      <span style="color:#6272a4">// business zk
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addZookeeperEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;zk&#34;</span><span style="color:#ff79c6">,</span> zookeeperIdEngine<span style="color:#ff79c6">);</span>
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;zk&#34;</span><span style="color:#ff79c6">,</span> zookeeperIdEngine<span style="color:#ff79c6">);</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>      <span style="color:#6272a4">// business uuid
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addUuidEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;uuid&#34;</span><span style="color:#ff79c6">,</span> uuidEngine<span style="color:#ff79c6">);</span>
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;uuid&#34;</span><span style="color:#ff79c6">,</span> uuidEngine<span style="color:#ff79c6">);</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>      <span style="color:#ff79c6">return</span> didWorker<span style="color:#ff79c6">;</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>  <span style="color:#ff79c6">}</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span style="color:#ff79c6">}</span>
@@ -305,6 +305,7 @@
 <ul>
 <li>RedisIdEngine
 <ul>
+<li>基于redis的<code>incr</code>指令；</li>
 <li>对应的id类型是Long；</li>
 <li>支持业务隔离，对应的<code>name</code>就是业务的标识，可在实际业务中定义多个RedisIdEngine；</li>
 <li>可以使用<code>org.openingo.spring.gedid.worker.DidWorker#getRedisIdEngine</code>直接获取对应的RedisIdEngine；</li>
@@ -313,7 +314,7 @@
 <li>ZookeeperIdEngine
 <ul>
 <li>基于<code>CreateMode.PERSISTENT</code>节点的<code>version</code>；</li>
-<li>对应的Id类型是Long，<strong>但受限与<code>version</code>的类型是integer的</strong>；</li>
+<li>对应的Id类型是Long，<strong>但受限于integer类型的<code>version</code>的取值范围</strong>；</li>
 <li>支持业务隔离，对应的<code>name</code>就是业务的标识，可在实际业务中定义多个ZookeeperIdEngine；</li>
 <li>可以使用<code>org.openingo.spring.gedid.worker.DidWorker#getZookeeperIdEngine</code>直接获取对应的ZookeeperIdEngine；</li>
 </ul>
