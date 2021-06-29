@@ -30,12 +30,11 @@
 <meta property="og:description" content="特别说明：通常，我们会将SpringBoot写作SpringBoot，而此处写作spring-boot是因项目的确就叫做spring-boot-x。以下简称项目。
  项目地址：https://github.com/OpeningO/spring-boot-x
 源起 娱坛有云一人一首成名曲，虽互联网技术与娱之文艺不同，但个人仍以为技术与艺类同，皆为高雅之事。故成此项目，是以个人有利器，便于而后开疆扩土。
-总览 特性清单   分布式id生成器gedid，DidWorker [ 2021.6.25更新 ]
+总览 特性清单   手动事务管理 [2021.6.29更新]
+  分布式id生成器gedid，DidWorker [ 2021.6.25更新 ]
   Safety工具 [ 2021.6.25更新 ]
   请求日志，包括请求源、请求目标、请求参数、处理时间、错误异常等信息；
-  请求响应参数的自动装配（映射）；
-  跨域的配置；
-  嵌入SpringBoot的异常处理机制，可以将原来的错误信息中插入其他信息、或将其解析或转换为其他信息；" />
+  请求响应参数的自动装配（映射）；" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://izcqi.com/posts/2021/01/09/spring-boot-x-specify/" />
 <meta property="article:published_time" content="2021-01-09T09:34:31+08:00" />
@@ -46,12 +45,11 @@
 <meta name="twitter:description" content="特别说明：通常，我们会将SpringBoot写作SpringBoot，而此处写作spring-boot是因项目的确就叫做spring-boot-x。以下简称项目。
  项目地址：https://github.com/OpeningO/spring-boot-x
 源起 娱坛有云一人一首成名曲，虽互联网技术与娱之文艺不同，但个人仍以为技术与艺类同，皆为高雅之事。故成此项目，是以个人有利器，便于而后开疆扩土。
-总览 特性清单   分布式id生成器gedid，DidWorker [ 2021.6.25更新 ]
+总览 特性清单   手动事务管理 [2021.6.29更新]
+  分布式id生成器gedid，DidWorker [ 2021.6.25更新 ]
   Safety工具 [ 2021.6.25更新 ]
   请求日志，包括请求源、请求目标、请求参数、处理时间、错误异常等信息；
-  请求响应参数的自动装配（映射）；
-  跨域的配置；
-  嵌入SpringBoot的异常处理机制，可以将原来的错误信息中插入其他信息、或将其解析或转换为其他信息；"/>
+  请求响应参数的自动装配（映射）；"/>
 <meta name="generator" content="Hugo 0.68.3" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
@@ -181,6 +179,7 @@
     </li>
     <li><a href="#细说特性">细说特性</a>
       <ul>
+        <li><a href="#手动事务管理-2021625-since-312release">手动事务管理 [2021.6.25] since 3.1.2.RELEASE</a></li>
         <li><a href="#分布式id生成器--2021625更新--since-300releae">分布式Id生成器 [ 2021.6.25更新 ] since 3.0.0.RELEAE</a></li>
         <li><a href="#safety-工具--2021625更新--since-300releae">Safety 工具 [ 2021.6.25更新 ] since 3.0.0.RELEAE</a></li>
         <li><a href="#请求日志">请求日志</a></li>
@@ -205,6 +204,9 @@
 <h2 id="总览">总览</h2>
 <h3 id="特性清单">特性清单</h3>
 <ul>
+<li>
+<p>手动事务管理 [2021.6.29更新]</p>
+</li>
 <li>
 <p>分布式id生成器gedid，DidWorker [ 2021.6.25更新 ]</p>
 </li>
@@ -254,7 +256,30 @@
 </code></pre></div></li>
 </ul>
 <h2 id="细说特性">细说特性</h2>
-<h3 id="分布式id生成器--2021625更新--since-300releae">分布式Id生成器 [ 2021.6.25更新 ] since 3.0.0.RELEAE</h3>
+<h3 id="手动事务管理-2021625-since-312release">手动事务管理 [2021.6.25] since 3.1.2.RELEASE</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@Autowired
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#8be9fd;font-style:italic">private</span> ManualTransactionManager manualTransactionManager<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#8be9fd;font-style:italic">private</span> UserEntity <span style="color:#50fa7b">saveUser</span><span style="color:#ff79c6">(</span>UserEntity user<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>  <span style="color:#ff79c6">return</span> userRepo<span style="color:#ff79c6">.</span><span style="color:#50fa7b">save</span><span style="color:#ff79c6">(</span>user<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">saveWithEx</span><span style="color:#ff79c6">(</span>UserEntity user<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>  saveUser<span style="color:#ff79c6">(</span>user<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>  <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> RuntimeException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;error&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">saveEx</span><span style="color:#ff79c6">(</span>UserEntity user<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>  manualTransactionManager<span style="color:#ff79c6">.</span><span style="color:#50fa7b">txRun</span><span style="color:#ff79c6">(()</span> <span style="color:#ff79c6">-&gt;</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">saveWithEx</span><span style="color:#ff79c6">(</span>user<span style="color:#ff79c6">));</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">saveExe</span><span style="color:#ff79c6">(</span>UserEntity user<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>  UserEntity ret <span style="color:#ff79c6">=</span> manualTransactionManager<span style="color:#ff79c6">.</span><span style="color:#50fa7b">txCall</span><span style="color:#ff79c6">(()</span> <span style="color:#ff79c6">-&gt;</span>  <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">saveUser</span><span style="color:#ff79c6">(</span>user<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>  <span style="color:#ff79c6">});</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>  ret <span style="color:#ff79c6">...</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span style="color:#ff79c6">}</span>
+</code></pre></div><h3 id="分布式id生成器--2021625更新--since-300releae">分布式Id生成器 [ 2021.6.25更新 ] since 3.0.0.RELEAE</h3>
 <p>目前支持</p>
 <ul>
 <li>RedisIdEngine</li>
