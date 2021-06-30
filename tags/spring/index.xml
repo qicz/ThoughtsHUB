@@ -390,7 +390,6 @@
 &lt;h3 id=&#34;更新说明&#34;&gt;更新说明&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;重构整个包，发布4.0.0.RELEASE版本  [ 2021.6.30更新 ]&lt;/li&gt;
-&lt;li&gt;无需使用&lt;code&gt;@EnableExtension&lt;/code&gt;注解，引入依赖即可使用&lt;code&gt;spring-boot-x&lt;/code&gt;特性  [ 2021.6.30更新 ] &lt;strong&gt;since v3.2.0.RELEASE&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;优化分布式id生成器，隔离默认的redis配置及Zookeeper配置，让id生成与业务完全分离  [ 2021.6.30更新 ] &lt;strong&gt;since v3.2.0.RELEASE&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;特性清单&#34;&gt;特性清单&lt;/h3&gt;
@@ -585,7 +584,7 @@
 &lt;h4 id=&#34;如何使用&#34;&gt;如何使用？&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;引入项目依赖及&lt;code&gt;spring-boot-starter-aop&lt;/code&gt;~~，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;~~即可；&lt;/p&gt;
+&lt;p&gt;引入项目依赖及&lt;code&gt;spring-boot-starter-aop&lt;/code&gt;，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;即可；&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt;/**
 &lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; * App
 &lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;&lt;span style=&#34;color:#6272a4&#34;&gt; *
@@ -652,7 +651,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可以看到，我们添加了一个&lt;code&gt;@AutoMappingRespResult&lt;/code&gt;注解，在方法体，并无什么特别的了。&lt;/p&gt;
 &lt;h4 id=&#34;如何使用-1&#34;&gt;如何使用？&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;引入项目依赖~~，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;~~；&lt;/li&gt;
+&lt;li&gt;引入项目依赖，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;；&lt;/li&gt;
 &lt;li&gt;在需要包装的&lt;code&gt;Controller&lt;/code&gt;上加入&lt;code&gt;@AutoMappingRespResult&lt;/code&gt;即可。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;特别说明&#34;&gt;特别说明&lt;/h4&gt;
@@ -685,7 +684,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;如何使用-2&#34;&gt;如何使用？&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;del&gt;引入项目依赖，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用；&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;引入项目依赖，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用；&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;可配置？&lt;/p&gt;
@@ -798,7 +797,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;如何使用-3&#34;&gt;如何使用？&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;引入项目依赖及&lt;code&gt;spring-boot-starter-data-redis&lt;/code&gt;~~，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用~~；&lt;/p&gt;
+&lt;p&gt;引入项目依赖及&lt;code&gt;spring-boot-starter-data-redis&lt;/code&gt;，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用；&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;可配置？&lt;/p&gt;
@@ -958,14 +957,14 @@
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;110&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;如何使用-4&#34;&gt;如何使用？&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;引入项目依赖及&lt;code&gt;spring-boot-starter-data-elasticsearch&lt;/code&gt;及&lt;code&gt;elasticsearch-rest-high-level-client&lt;/code&gt;~~，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，~~即可使用。&lt;/li&gt;
+&lt;li&gt;引入项目依赖及&lt;code&gt;spring-boot-starter-data-elasticsearch&lt;/code&gt;及&lt;code&gt;elasticsearch-rest-high-level-client&lt;/code&gt;，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;基于druid和hikari的动态路由routingdatasource&#34;&gt;基于Druid和Hikari的动态路由RoutingDataSource&lt;/h3&gt;
 &lt;p&gt;spring官方提供了&lt;code&gt;org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource&lt;/code&gt;用于支持动态路由，但其对数据源本身的处理很少，故基于此对其从根上进行了扩展，于是有了&lt;code&gt;org.openingo.spring.datasource.routing.RoutingDataSource&lt;/code&gt;，可以便捷的加入移除关闭数据源，且支持&lt;code&gt;Druid&lt;/code&gt;及&lt;code&gt;Hikari&lt;/code&gt;。&lt;/p&gt;
 &lt;h4 id=&#34;如何使用-5&#34;&gt;如何使用？&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;引入项目依赖（使用&lt;code&gt;druid&lt;/code&gt;时加入其依赖）&lt;del&gt;，在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用&lt;/del&gt;；&lt;/p&gt;
+&lt;p&gt;引入项目依赖（使用&lt;code&gt;druid&lt;/code&gt;时加入其依赖），在启动类上加入&lt;code&gt;@EnableExtension&lt;/code&gt;，即可使用；&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;示例：&lt;/p&gt;
