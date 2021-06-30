@@ -387,6 +387,7 @@
 &lt;h2 id=&#34;源起&#34;&gt;源起&lt;/h2&gt;
 &lt;p&gt;娱坛有云&lt;strong&gt;一人一首成名曲&lt;/strong&gt;，虽互联网技术与娱之文艺不同，但个人仍以为技术与艺类同，皆为高雅之事。故成此项目，是以&lt;strong&gt;个人有利器&lt;/strong&gt;，便于而后开疆扩土。&lt;/p&gt;
 &lt;h2 id=&#34;总览&#34;&gt;总览&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://img.shields.io/maven-central/v/org.openingo.spring/spring-boot-x.svg&#34; alt=&#34;maven&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;更新说明&#34;&gt;更新说明&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;重构整个包，发布4.0.0.RELEASE版本  [ 2021.6.30更新 ]&lt;/li&gt;
