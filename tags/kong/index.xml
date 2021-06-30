@@ -477,7 +477,7 @@
 &lt;li&gt;UuidEngine&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h5 id=&#34;配置&#34;&gt;配置&lt;/h5&gt;
-&lt;p&gt;完全使用&lt;code&gt;spring-boot-starter-data-redis&lt;/code&gt;及&lt;code&gt;spring-cloud-starter-zookeeper-discovery&lt;/code&gt;对应的配置。&lt;/p&gt;
+&lt;p&gt;与&lt;code&gt;spring-boot-starter-data-redis&lt;/code&gt;及&lt;code&gt;spring-cloud-starter-zookeeper-discovery&lt;/code&gt;的配置类似，配置前缀不同。配置前缀为&lt;code&gt;openingo.gedid.engine.redis&lt;/code&gt;和&lt;code&gt;openingo.gedid.engine.zookeeper&lt;/code&gt;。&lt;/p&gt;
 &lt;h5 id=&#34;使用方式&#34;&gt;使用方式？&lt;/h5&gt;
 &lt;ul&gt;
 &lt;li&gt;
