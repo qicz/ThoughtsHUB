@@ -4714,7 +4714,7 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 &lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-monitor.png#mid&#34; alt=&#34;&#34;&gt;
 看到就一个 Thread 是 running 的，其他的是 Monitor 的，是不是可以了。我们往下继续走。
 &lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-monitor-t0-over.png#mid&#34; alt=&#34;&#34;&gt;
-看到，Thread0 走出来之后，Thread4 才进入到 Running 状态。也就是加入&lt;code&gt;synchronized&lt;/code&gt;把整个class都锁住了。目的到底，但是性能不好。我们再改造一下&lt;/p&gt;
+看到，Thread0 走出来之后，Thread4 才进入到 Running 状态。也就是加入&lt;code&gt;synchronized&lt;/code&gt;把整个class都锁住了。目的达到，但是性能不好。我们再改造一下&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#50fa7b&#34;&gt;Singleton&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;{&lt;/span&gt;
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;    &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;static&lt;/span&gt; Singleton instance &lt;span style=&#34;color:#ff79c6&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;;&lt;/span&gt;
