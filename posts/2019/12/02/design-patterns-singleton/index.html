@@ -240,16 +240,16 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>running at threadThread-0&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>running at threadThread-1&gt;&gt;cn.zhucongqi.singleton.Singleton@b0545bc
 </code></pre></div><p>出现问题了！！！怎么在多线程下出现了不同实例了？？？是不是我们的设计有问题呢？我们在图示位置打个断点，按照 Thread 来处理</p>
-<p><img src="https://izcqi.com/images/singleton-breakpoint.png" alt=""></p>
+<p><img src="https://izcqi.com/images/singleton-breakpoint.png#mid" alt=""></p>
 <p>然后 Debug 一下
-<img src="https://izcqi.com/images/singleton-breakpoint-running.png" alt=""></p>
+<img src="https://izcqi.com/images/singleton-breakpoint-running.png#mid" alt=""></p>
 <p>我们先来看看 Thread0 的情况
-<img src="https://izcqi.com/images/singleton-breakpoint-t0-running.png" alt="">
-<img src="https://izcqi.com/images/singleton-breakpoint-t0-over.png" alt=""></p>
+<img src="https://izcqi.com/images/singleton-breakpoint-t0-running.png#mid" alt="">
+<img src="https://izcqi.com/images/singleton-breakpoint-t0-over.png#mid" alt=""></p>
 <p>看到此时<code>instance</code>为{Singleton@475}。我们换到 Thread1 再看看
-<img src="https://izcqi.com/images/singleton-breakpoint-t1-running.png" alt="">
+<img src="https://izcqi.com/images/singleton-breakpoint-t1-running.png#mid" alt="">
 看到此时<code>instance</code>也是{Singleton@475}。往下走
-<img src="https://izcqi.com/images/singleton-breakpoint-t1-over.png" alt=""></p>
+<img src="https://izcqi.com/images/singleton-breakpoint-t1-over.png#mid" alt=""></p>
 <p>额等等，怎么<code>instance</code>变成<code>{Singleton@476}</code>了，被覆盖咯？？？
 看来我们的设计有问题哦！</p>
 <p>怎么改造呢？</p>
@@ -268,9 +268,9 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#ff79c6">}</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#ff79c6">}</span>
 </code></pre></div><p>再 Debug 一下。
-<img src="https://izcqi.com/images/singleton-breakpoint-monitor.png" alt="">
+<img src="https://izcqi.com/images/singleton-breakpoint-monitor.png#mid" alt="">
 看到就一个 Thread 是 running 的，其他的是 Monitor 的，是不是可以了。我们往下继续走。
-<img src="https://izcqi.com/images/singleton-breakpoint-monitor-t0-over.png" alt="">
+<img src="https://izcqi.com/images/singleton-breakpoint-monitor-t0-over.png#mid" alt="">
 看到，Thread0 走出来之后，Thread4 才进入到 Running 状态。也就是加入<code>synchronized</code>把整个class都锁住了。目的到底，但是性能不好。我们再改造一下</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Singleton</span> <span style="color:#ff79c6">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
@@ -288,11 +288,11 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>    <span style="color:#ff79c6">}</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span style="color:#ff79c6">}</span>
 </code></pre></div><p>再Debug 看看
-<img src="https://izcqi.com/images/singleton-breakpoint-running-2.png" alt="">
+<img src="https://izcqi.com/images/singleton-breakpoint-running-2.png#mid" alt="">
 现在所有 Thread 都是 Running 的了。我们继续走，先看看 Thread0
-<img src="https://izcqi.com/images/singleton-breakpoint-t0-running-2.png" alt="">
+<img src="https://izcqi.com/images/singleton-breakpoint-t0-running-2.png#mid" alt="">
 再看看 Thread3
-<img src="https://izcqi.com/images/singleton-breakpoint-t3-running.png" alt="">
+<img src="https://izcqi.com/images/singleton-breakpoint-t3-running.png#mid" alt="">
 看样子又要被覆盖咯！！！看来还是不行哦！是不是我们再加一把锁哦？！</p>
 <p>我们再改造一下</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Singleton</span> <span style="color:#ff79c6">{</span>

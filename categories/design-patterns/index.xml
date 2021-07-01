@@ -4683,16 +4683,16 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;running at threadThread-0&amp;gt;&amp;gt;cn.zhucongqi.singleton.Singleton@b0545bc
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;running at threadThread-1&amp;gt;&amp;gt;cn.zhucongqi.singleton.Singleton@b0545bc
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;出现问题了！！！怎么在多线程下出现了不同实例了？？？是不是我们的设计有问题呢？我们在图示位置打个断点，按照 Thread 来处理&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint.png#mid&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;然后 Debug 一下
-&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-running.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-running.png#mid&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;我们先来看看 Thread0 的情况
-&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t0-running.png&#34; alt=&#34;&#34;&gt;
-&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t0-over.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t0-running.png#mid&#34; alt=&#34;&#34;&gt;
+&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t0-over.png#mid&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;看到此时&lt;code&gt;instance&lt;/code&gt;为{Singleton@475}。我们换到 Thread1 再看看
-&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t1-running.png&#34; alt=&#34;&#34;&gt;
+&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t1-running.png#mid&#34; alt=&#34;&#34;&gt;
 看到此时&lt;code&gt;instance&lt;/code&gt;也是{Singleton@475}。往下走
-&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t1-over.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t1-over.png#mid&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;额等等，怎么&lt;code&gt;instance&lt;/code&gt;变成&lt;code&gt;{Singleton@476}&lt;/code&gt;了，被覆盖咯？？？
 看来我们的设计有问题哦！&lt;/p&gt;
 &lt;p&gt;怎么改造呢？&lt;/p&gt;
@@ -4711,9 +4711,9 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;12&lt;/span&gt;    &lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;13&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;再 Debug 一下。
-&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-monitor.png&#34; alt=&#34;&#34;&gt;
+&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-monitor.png#mid&#34; alt=&#34;&#34;&gt;
 看到就一个 Thread 是 running 的，其他的是 Monitor 的，是不是可以了。我们往下继续走。
-&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-monitor-t0-over.png&#34; alt=&#34;&#34;&gt;
+&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-monitor-t0-over.png#mid&#34; alt=&#34;&#34;&gt;
 看到，Thread0 走出来之后，Thread4 才进入到 Running 状态。也就是加入&lt;code&gt;synchronized&lt;/code&gt;把整个class都锁住了。目的到底，但是性能不好。我们再改造一下&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#50fa7b&#34;&gt;Singleton&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;{&lt;/span&gt;
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;
@@ -4731,11 +4731,11 @@ The time (in seconds) for which Kong will cache database entities (both hits and
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;14&lt;/span&gt;    &lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;15&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;再Debug 看看
-&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-running-2.png&#34; alt=&#34;&#34;&gt;
+&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-running-2.png#mid&#34; alt=&#34;&#34;&gt;
 现在所有 Thread 都是 Running 的了。我们继续走，先看看 Thread0
-&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t0-running-2.png&#34; alt=&#34;&#34;&gt;
+&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t0-running-2.png#mid&#34; alt=&#34;&#34;&gt;
 再看看 Thread3
-&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t3-running.png&#34; alt=&#34;&#34;&gt;
+&lt;img src=&#34;https://izcqi.com/images/singleton-breakpoint-t3-running.png#mid&#34; alt=&#34;&#34;&gt;
 看样子又要被覆盖咯！！！看来还是不行哦！是不是我们再加一把锁哦？！&lt;/p&gt;
 &lt;p&gt;我们再改造一下&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#50fa7b&#34;&gt;Singleton&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;{&lt;/span&gt;
