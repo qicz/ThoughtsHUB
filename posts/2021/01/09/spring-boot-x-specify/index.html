@@ -31,7 +31,7 @@
  项目地址：https://github.com/OpeningO/spring-boot-x
 源起 娱坛有云一人一首成名曲，虽互联网技术与娱之文艺不同，但个人仍以为技术与艺类同，皆为高雅之事。故成此项目，是以个人有利器，便于而后开疆扩土。
 总览 更新说明  重构整个包，发布4.0.0.RELEASE版本 [ 2021.6.30更新 ] 优化分布式id生成器，隔离默认的redis配置及Zookeeper配置，让id生成与业务完全分离 [ 2021.6.30更新 ] since v3.2.0.RELEASE  特性清单   手动事务管理 [2021.6.29更新]
-  分布式id生成器gedid，DidWorker [ 2021.6.25更新 ]" />
+  分布式id生成器gedid，DidLoader [ 2021.6.25更新 ]" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://izcqi.com/posts/2021/01/09/spring-boot-x-specify/" />
 <meta property="article:published_time" content="2021-01-09T09:34:31+08:00" />
@@ -43,7 +43,7 @@
  项目地址：https://github.com/OpeningO/spring-boot-x
 源起 娱坛有云一人一首成名曲，虽互联网技术与娱之文艺不同，但个人仍以为技术与艺类同，皆为高雅之事。故成此项目，是以个人有利器，便于而后开疆扩土。
 总览 更新说明  重构整个包，发布4.0.0.RELEASE版本 [ 2021.6.30更新 ] 优化分布式id生成器，隔离默认的redis配置及Zookeeper配置，让id生成与业务完全分离 [ 2021.6.30更新 ] since v3.2.0.RELEASE  特性清单   手动事务管理 [2021.6.29更新]
-  分布式id生成器gedid，DidWorker [ 2021.6.25更新 ]"/>
+  分布式id生成器gedid，DidLoader [ 2021.6.25更新 ]"/>
 <meta name="generator" content="Hugo 0.68.3" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
@@ -138,6 +138,9 @@
         <em class="categories">
             
                 
+                <a href="https://izcqi.com/categories/openingo">openingo</a>
+            
+                , 
                 <a href="https://izcqi.com/categories/spring">spring</a>
             
         </em>
@@ -149,6 +152,9 @@
         <em class="tags">
             
                 
+                <a href="https://izcqi.com/tags/openingo">#openingo</a>
+            
+                , 
                 <a href="https://izcqi.com/tags/spring">#spring</a>
             
                 , 
@@ -209,7 +215,7 @@
 <p>手动事务管理 [2021.6.29更新]</p>
 </li>
 <li>
-<p>分布式id生成器gedid，DidWorker [ 2021.6.25更新 ]</p>
+<p>分布式id生成器gedid，DidLoader [ 2021.6.25更新 ]</p>
 </li>
 <li>
 <p>Safety工具 [ 2021.6.25更新 ]</p>
@@ -281,71 +287,7 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>  ret <span style="color:#ff79c6">...</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="分布式id生成器--2021625更新--since-300releae">分布式Id生成器 [ 2021.6.25更新 ] since 3.0.0.RELEAE</h3>
-<p>目前支持</p>
-<ul>
-<li>RedisIdEngine</li>
-<li>ZookeeperIdEngine</li>
-<li>UuidEngine</li>
-</ul>
-<h5 id="配置">配置</h5>
-<p>与<code>spring-boot-starter-data-redis</code>及<code>spring-cloud-starter-zookeeper-discovery</code>的配置类似，配置前缀不同。配置前缀为<code>openingo.gedid.engine.redis</code>和<code>openingo.gedid.engine.zookeeper</code>。</p>
-<h5 id="使用方式">使用方式？</h5>
-<ul>
-<li>
-<p>根据业务情况配置DidWorker</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>@Configuration
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">IdWorkerConfig</span> <span style="color:#ff79c6">{</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>  @Bean
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>  DidWorker <span style="color:#50fa7b">didWorker</span><span style="color:#ff79c6">(</span>RedisIdEngine redisIdEngine<span style="color:#ff79c6">,</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>                      ZookeeperIdEngine zookeeperIdEngine<span style="color:#ff79c6">,</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>                      UuidEngine uuidEngine<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>      DidWorker didWorker <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> DidWorker<span style="color:#ff79c6">();</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>      <span style="color:#6272a4">// business a
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;a&#34;</span><span style="color:#ff79c6">,</span> redisIdEngine<span style="color:#ff79c6">);</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>      <span style="color:#6272a4">// business b
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;b&#34;</span><span style="color:#ff79c6">,</span> redisIdEngine<span style="color:#ff79c6">);</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>      <span style="color:#6272a4">// business zk
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;zk&#34;</span><span style="color:#ff79c6">,</span> zookeeperIdEngine<span style="color:#ff79c6">);</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>      <span style="color:#6272a4">// business uuid
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span style="color:#6272a4"></span>      didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addEngine</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;uuid&#34;</span><span style="color:#ff79c6">,</span> uuidEngine<span style="color:#ff79c6">);</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>      <span style="color:#ff79c6">return</span> didWorker<span style="color:#ff79c6">;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>  <span style="color:#ff79c6">}</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span style="color:#ff79c6">}</span>
-</code></pre></div></li>
-<li>
-<p>业务中使用</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>@Autowired
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>DidWorker didWorker<span style="color:#ff79c6">;</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>didWorker<span style="color:#ff79c6">.</span><span style="color:#50fa7b">next</span><span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">);</span>  <span style="color:#6272a4">// 下一个id
-</span></code></pre></div></li>
-<li>
-<p>自定义Engine</p>
-<p>implements <code>org.openingo.spring.gedid.engine.IDidEngine</code>并注入ioc即可。可参考<code>org.openingo.spring.gedid.engine.redis.RedisIdEngine</code>或<code>org.openingo.spring.gedid.engine.zookeeper.ZookeeperIdEngine</code>。</p>
-</li>
-<li>
-<p>注意事项</p>
-<ul>
-<li>RedisIdEngine
-<ul>
-<li>基于redis的<code>incr</code>指令；</li>
-<li>对应的id类型是Long；</li>
-<li>支持业务隔离，对应的<code>name</code>就是业务的标识，可在实际业务中定义多个RedisIdEngine；</li>
-<li>可以使用<code>org.openingo.spring.gedid.worker.DidWorker#getRedisIdEngine</code>直接获取对应的RedisIdEngine；</li>
-</ul>
-</li>
-<li>ZookeeperIdEngine
-<ul>
-<li>基于<code>CreateMode.PERSISTENT</code>节点的<code>version</code>；</li>
-<li>对应的Id类型是Long，<strong>但受限于integer类型的<code>version</code>的取值范围</strong>；</li>
-<li>支持业务隔离，对应的<code>name</code>就是业务的标识，可在实际业务中定义多个ZookeeperIdEngine；</li>
-<li>可以使用<code>org.openingo.spring.gedid.worker.DidWorker#getZookeeperIdEngine</code>直接获取对应的ZookeeperIdEngine；</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+<p>从这里看<a href="https://izcqi.com/posts/2021/07/01/gedid/">分布式id使用说明</a></p>
 <h3 id="safety-工具--2021625更新--since-300releae">Safety 工具 [ 2021.6.25更新 ] since 3.0.0.RELEAE</h3>
 <blockquote>
 <p>封装了<code>ReentrantLock</code>，具体查看源码<code>org.openingo.spring.safety.Safety</code></p>
@@ -402,13 +344,14 @@
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#6272a4"> * @author Qicz
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#6272a4"> */</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>@SpringBootApplication
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">App</span> <span style="color:#ff79c6">{</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>  
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> InterruptedException <span style="color:#ff79c6">{</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>        SpringApplicationX<span style="color:#ff79c6">.</span><span style="color:#50fa7b">run</span><span style="color:#ff79c6">(</span>App<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> args<span style="color:#ff79c6">);</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        SpringApplicationX<span style="color:#ff79c6">.</span><span style="color:#50fa7b">applicationInfo</span><span style="color:#ff79c6">();</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#ff79c6">}</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>@EnableExtension
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">App</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> InterruptedException <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        SpringApplicationX<span style="color:#ff79c6">.</span><span style="color:#50fa7b">run</span><span style="color:#ff79c6">(</span>App<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> args<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        SpringApplicationX<span style="color:#ff79c6">.</span><span style="color:#50fa7b">applicationInfo</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>可配置？</p>

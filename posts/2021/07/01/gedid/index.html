@@ -1,0 +1,510 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta name="generator" content="Hugo 0.68.3" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>分布式ID生成器-GeDid | Qicz&#39;s Thoughts HUB</title>
+  <meta property="og:title" content="分布式ID生成器-GeDid - Qicz&#39;s Thoughts HUB">
+  <meta property="og:type" content="article">
+      
+  <meta property="article:published_time" content="2021-07-01T15:21:53&#43;08:00">
+      
+      
+  <meta property="article:modified_time" content="2021-07-01T15:21:53&#43;08:00">
+      
+  <meta name="Keywords" content="Qicz,Jobsz,RD,technology,tech,learning,设计模式,分布式,架构设计,P6,P7,软件设计,数据库,大数据,MySQL,Zookeeper,MongoDB,redis,dubbo,ServiceMesh,SOFAMesh,Serverless,hugo,Java,Mybatis,Spring,Spring Boot,Spring Cloud,istio,Kong,Gateway">
+  <meta name="description" content="分布式ID生成器-GeDid">
+      
+  <meta name="author" content="Qicz">
+  <meta property="og:url" content="https://izcqi.com/posts/2021/07/01/gedid/">
+  
+  <link rel="shortcut icon" href="https://izcqi.com/favicon.png" />
+  
+
+  <meta property="og:title" content="分布式ID生成器-GeDid" />
+<meta property="og:description" content="源起 ​	尝试设计实现一个分布式id工具，已是好几年前的事了，这里是历史的痕迹。
+​	最初实现了基于redis（jedis客户端）的版本，而后在19年左右，考虑接入Zookeeper版本的。但是一直没有着手去做。
+​	最近借助一次&quot;翻新&quot;的机会，把它又拿出来，考虑完成Zookeeper版本的实现。因spring-boot-x已经有了很多的基础，也便于Gedid在springboot环境下使用，与springboot的整合和利用已有的springboot资源，所以考虑把Gedid迁移至spring-boot-x，以至于进行了大量的改造。多次调整之后，变有了现在的结果。也有了这个文章的整理。
+​	这个文章目的：把Gedid的使用场景和使用方式道明白。
+​
+开始 引入依赖
+1&lt;dependency&gt; 2 &lt;groupId&gt;org.openingo.spring&lt;/groupId&gt; 3 &lt;artifactId&gt;spring-boot-x&lt;/artifactId&gt; 4 &lt;version&gt;${spring-boot-x.version}&lt;/version&gt; 5&lt;/dependency&gt;  在启动类上加入@EnableExtension
+ 目前最新版本 ID引擎 目前支持引擎如下：
+  RedisIdEngine
+ 基于redis的incr指令； 对应的id类型是Long； 支持业务隔离，对应的businessName就是业务的标识； 支持lettuce和jedis，默认为lettuce;    ZookeeperIdEngine" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://izcqi.com/posts/2021/07/01/gedid/" />
+<meta property="article:published_time" content="2021-07-01T15:21:53+08:00" />
+<meta property="article:modified_time" content="2021-07-01T15:21:53+08:00" />
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="分布式ID生成器-GeDid"/>
+<meta name="twitter:description" content="源起 ​	尝试设计实现一个分布式id工具，已是好几年前的事了，这里是历史的痕迹。
+​	最初实现了基于redis（jedis客户端）的版本，而后在19年左右，考虑接入Zookeeper版本的。但是一直没有着手去做。
+​	最近借助一次&quot;翻新&quot;的机会，把它又拿出来，考虑完成Zookeeper版本的实现。因spring-boot-x已经有了很多的基础，也便于Gedid在springboot环境下使用，与springboot的整合和利用已有的springboot资源，所以考虑把Gedid迁移至spring-boot-x，以至于进行了大量的改造。多次调整之后，变有了现在的结果。也有了这个文章的整理。
+​	这个文章目的：把Gedid的使用场景和使用方式道明白。
+​
+开始 引入依赖
+1&lt;dependency&gt; 2 &lt;groupId&gt;org.openingo.spring&lt;/groupId&gt; 3 &lt;artifactId&gt;spring-boot-x&lt;/artifactId&gt; 4 &lt;version&gt;${spring-boot-x.version}&lt;/version&gt; 5&lt;/dependency&gt;  在启动类上加入@EnableExtension
+ 目前最新版本 ID引擎 目前支持引擎如下：
+  RedisIdEngine
+ 基于redis的incr指令； 对应的id类型是Long； 支持业务隔离，对应的businessName就是业务的标识； 支持lettuce和jedis，默认为lettuce;    ZookeeperIdEngine"/>
+<meta name="generator" content="Hugo 0.68.3" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
+  <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="https://izcqi.com/css/styles.css" />
+  
+  <link href="https://izcqi.com/css/monokai.min.css" rel="stylesheet">
+  </head>
+
+<body>
+  <div id="container">
+    <header-container>
+    <header>
+      <h1>
+        <a href="https://izcqi.com/">Qicz&rsquo;s Thoughts HUB</a>
+      </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="mailto:zcq#zhucongqi.cn" title="Email me" target="_blank">
+               <i class="fas fa-envelope fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://github.com/qicz" title="GitHub" target="_blank">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://weibo.com/powerlinux" title="Weibo" target="_blank">
+               <i class="fab fa-weibo fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://douban.com/people/podevor" title="Douban" target="_blank">
+               <i class="fab fa-spotify fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>The creative and technical writing. <!-- raw HTML omitted --> Do more, challenge more, know more, be more.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://izcqi.com/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/categories/">
+                <i class="fa-li fa  fa-lg"></i><span>Categories</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/tags/">
+                <i class="fa-li fa  fa-lg"></i><span>Tags</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://izcqi.com/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+  </header-container>
+    <main>
+
+
+
+
+<article>
+
+    <h1>分布式ID生成器-GeDid</h1>
+
+    
+        <aside>
+    
+    <span class="fa fa-calendar"><time class="post-date" datetime="2021-07-01T15:21:53&#43;08:00"> Jul 1, 2021 15:21</time>
+    &nbsp; | &nbsp; 
+    
+    <span class="fa fa-book">
+        <em class="categories">
+            
+                
+                <a href="https://izcqi.com/categories/openingo">openingo</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+     
+    <span class="fa fa-tags">
+        <em class="tags">
+            
+                
+                <a href="https://izcqi.com/tags/openingo">#openingo</a>
+            
+                , 
+                <a href="https://izcqi.com/tags/spring">#spring</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+    <span class="fa fa-plane"><em> 3 minutes read</em> </span>
+</aside>
+    
+
+    
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#源起">源起</a></li>
+        <li><a href="#开始">开始</a></li>
+        <li><a href="#id引擎">ID引擎</a></li>
+        <li><a href="#使用">使用</a></li>
+        <li><a href="#高级使用">高级使用</a></li>
+        <li><a href="#结语">结语</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+    <h3 id="源起">源起</h3>
+<p>​		尝试设计实现一个分布式id工具，已是好几年前的事了，<a href="https://github.com/qicz/gedid"><strong>这里</strong></a>是历史的痕迹。</p>
+<p>​		最初实现了基于redis（jedis客户端）的版本，而后在19年左右，考虑接入Zookeeper版本的。但是一直没有着手去做。</p>
+<p>​		最近借助一次&quot;翻新&quot;的机会，把它又拿出来，考虑完成Zookeeper版本的实现。因<a href="https://github.com/OpeningO/spring-boot-x">spring-boot-x</a>已经有了很多的基础，也便于<code>Gedid</code>在springboot环境下使用，与springboot的整合和利用已有的springboot资源，所以考虑把<code>Gedid</code>迁移至<a href="https://github.com/OpeningO/spring-boot-x">spring-boot-x</a>，以至于进行了大量的改造。多次调整之后，变有了现在的结果。也有了这个文章的整理。</p>
+<p>​		这个文章目的：把<code>Gedid</code>的使用场景和使用方式道明白。</p>
+<p>​</p>
+<h3 id="开始">开始</h3>
+<p>引入依赖</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">&lt;dependency&gt;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#ff79c6">&lt;groupId&gt;</span>org.openingo.spring<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">&lt;artifactId&gt;</span>spring-boot-x<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    <span style="color:#ff79c6">&lt;version&gt;</span>${spring-boot-x.version}<span style="color:#ff79c6">&lt;/version&gt;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span style="color:#ff79c6">&lt;/dependency&gt;</span>
+</code></pre></div><blockquote>
+<p>在启动类上加入<code>@EnableExtension</code></p>
+</blockquote>
+<p>目前最新版本 <img src="https://img.shields.io/maven-central/v/org.openingo.spring/spring-boot-x.svg" alt="maven"></p>
+<h3 id="id引擎">ID引擎</h3>
+<p>目前支持引擎如下：</p>
+<ul>
+<li>
+<p><code>RedisIdEngine</code></p>
+<ul>
+<li>基于redis的<code>incr</code>指令；</li>
+<li>对应的id类型是<code>Long</code>；</li>
+<li>支持业务隔离，对应的<code>businessName</code>就是业务的标识；</li>
+<li>支持<code>lettuce</code>和<code>jedis</code>，默认为<code>lettuce</code>;</li>
+</ul>
+</li>
+<li>
+<p><code>ZookeeperIdEngine</code></p>
+<ul>
+<li>
+<p>基于<code>CreateMode.PERSISTENT</code>节点的<code>version</code>(<code>ZookeeperIdEngineMode#DATA_VERSION</code>)或<code>zxmid</code>(<code>ZookeeperIdEngineMode#DATA_ZX_MID</code>)；可以注入不同的Bean配置使用的mode，如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>@Bean
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#8be9fd;font-style:italic">public</span> ZookeeperIdEngineMode <span style="color:#50fa7b">zookeeperIdEngineMode</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>  <span style="color:#ff79c6">return</span> ZookeeperIdEngineMode<span style="color:#ff79c6">.</span><span style="color:#50fa7b">DATA_ZX_MID</span><span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span style="color:#ff79c6">}</span>
+</code></pre></div></li>
+<li>
+<p>对应的Id类型是<code>Long</code>；</p>
+</li>
+<li>
+<p>支持业务隔离，对应的<code>businessName</code>就是业务的标识；</p>
+</li>
+<li>
+<p>使用<code>curator</code>客户端；</p>
+<blockquote>
+<p>使用<code>ZookeeperIdEngineMode#DATA_VERSION</code>时，对应id<strong>受限于integer类型的<code>version</code>的取值范围</strong>。</p>
+<p>使用<code>ZookeeperIdEngineMode#DATA_ZX_MID</code>时，对应id可能会因为zk的重启出现较大范围的跳跃。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p><code>UuidEngine</code></p>
+<ul>
+<li>基于<code>java.util.UUID#randomUUID</code>;</li>
+<li>对应id类型为<code>String</code>；</li>
+<li>天然支持业务隔离；</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用">使用</h3>
+<h4 id="配置说明">配置说明</h4>
+<ul>
+<li>
+<p><code>RedisIdEngine</code></p>
+<blockquote>
+<p>与<code>spring-boot-starter-data-redis</code>配置类似，配置前缀为<code>openingo.gedid.engine.redis</code>。</p>
+</blockquote>
+</li>
+<li>
+<p><code>ZookeeperIdEngine</code></p>
+<blockquote>
+<p>与<code>spring-cloud-starter-zookeeper-discovery</code>的配置类似，配置前缀为<code>openingo.gedid.engine.zookeeper</code>。</p>
+</blockquote>
+</li>
+<li>
+<p><code>UuidEngine</code></p>
+<blockquote>
+<p>无需配置</p>
+</blockquote>
+</li>
+<li>
+<p>配置示例</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">openingo</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>  <span style="color:#ff79c6">gedid</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">engine</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>      <span style="color:#ff79c6">zookeeper</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>        <span style="color:#ff79c6">connect-string</span>: localhost:<span style="color:#bd93f9">2182</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>      <span style="color:#ff79c6">redis</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>        <span style="color:#ff79c6">cluster</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span>          <span style="color:#ff79c6">nodes</span>: localhost:<span style="color:#bd93f9">7291</span>,localhost:<span style="color:#bd93f9">7292</span>,localhost:<span style="color:#bd93f9">7293</span>,localhost:<span style="color:#bd93f9">7294</span>,localhost:<span style="color:#bd93f9">7295</span>,localhost:<span style="color:#bd93f9">7296</span>
+</code></pre></div><blockquote>
+<p>示例中使用了2182端口对应的zk，与默认的2181区分，目的是为了说明与默认配置的隔离；redis使用的集群配置。</p>
+<p>redis和Zookeeper的配置前缀与默认的配置完全隔离，目的是将业务使用的redis和Zookeeper和GeDid使用的redis、Zookeeper隔离开，如此配置不会造成业务与GeDid是相互影响。当然也可以配置成完全一样的服务器信息。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="业务配置">业务配置</h4>
+<ul>
+<li>
+<p>根据业务情况，参考如下配置<code>DidLoader</code> 【推荐】</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#6272a4">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#6272a4"> * IdLoaderConfig
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#6272a4"> *
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#6272a4"> * @author Qicz
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#6272a4"> * @since 2021/6/24 16:03
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#6272a4"> */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>@Configuration
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">IdLoaderConfig</span> <span style="color:#8be9fd;font-style:italic">implements</span> DidLoaderConfigurer <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>  @Bean
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>  <span style="color:#8be9fd;font-style:italic">public</span> ZookeeperIdEngineMode <span style="color:#50fa7b">zookeeperIdEngineMode</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>      <span style="color:#ff79c6">return</span> ZookeeperIdEngineMode<span style="color:#ff79c6">.</span><span style="color:#50fa7b">DATA_ZX_MID</span><span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>  <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>  @Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>  <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">configureDidLoader</span><span style="color:#ff79c6">(</span>DidLoader didLoader<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>      <span style="color:#6272a4">// business abc
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span style="color:#6272a4"></span>      didLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">follow</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;redis://abc&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>      <span style="color:#6272a4">// business a
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span style="color:#6272a4"></span>      didLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">follow</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;redis&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;a&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>      <span style="color:#6272a4">// business b
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span style="color:#6272a4"></span>      didLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">follow</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;redis&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;b&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>      <span style="color:#6272a4">// business zk
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span style="color:#6272a4"></span>      didLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">follow</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;zookeeper&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;zk&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>      <span style="color:#6272a4">// business uuid
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span style="color:#6272a4"></span>      didLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">follow</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;uuid&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;uuid&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>  <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span style="color:#ff79c6">}</span>
+</code></pre></div></li>
+<li>
+<p>业务中使用</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>@Autowired
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>DidLoader didLoader<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>didLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">next</span><span style="color:#ff79c6">(</span>businessName<span style="color:#ff79c6">);</span>  <span style="color:#6272a4">// 下一个Id
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span style="color:#6272a4"></span>didLoad<span style="color:#ff79c6">.</span><span style="color:#50fa7b">nextToLong</span><span style="color:#ff79c6">(</span>businessName<span style="color:#ff79c6">);</span> <span style="color:#6272a4">// 下一个Long Id
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span style="color:#6272a4"></span>didLoad<span style="color:#ff79c6">.</span><span style="color:#50fa7b">nextToString</span><span style="color:#ff79c6">(</span>businessName<span style="color:#ff79c6">);</span> <span style="color:#6272a4">//下一个String Id
+</span></code></pre></div></li>
+<li>
+<p>动态配置<code>DidLoader</code></p>
+<blockquote>
+<p>某些特定的情况，可能需要动态的配置业务的id生成，虽然推荐使用【推荐】方式配置，但仍旧提供了对应的支持。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>@Autowired
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>DidLoader didLoader<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">didLoader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">follow</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;redis&#34;</span><span style="color:#ff79c6">,</span> businessName<span style="color:#ff79c6">);</span>
+</code></pre></div></li>
+</ul>
+<h3 id="高级使用">高级使用</h3>
+<h4 id="businessuri">BusinessURI</h4>
+<p>在【推荐】中看到了如下的配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>didLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">follow</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;redis://abc&#34;</span><span style="color:#ff79c6">);</span>
+</code></pre></div><p>这是一种基于<code>BusinessURI</code>的配置方式。与标准<code>URI</code>语法完全一致，只是具体含义有些差异。以<code>redis://abc</code>举例：</p>
+<ul>
+<li>
+<p><code>URI</code>之<code>Schema</code></p>
+<blockquote>
+<p>示例中的<code>redis</code>即就是URI的Schema，在<code>BusinessURI</code>中，其对应着使用的具体<code>IdEngine</code>。比如<code>redis</code>即会使用<code>engineName</code>为<code>redis</code>的IDEngine。默认可用的Schema有<code>redis</code>,<code>zookeeper</code>,<code>uuid</code>分别对应着<code>RedisIDEngine</code>,<code>ZookeeperIdEngine</code>,<code>UuidEngine</code>。</p>
+</blockquote>
+</li>
+<li>
+<p><code>URI</code>之<code>Host</code></p>
+<blockquote>
+<p>示例中的<code>abc</code>即就是URI的Host，在<code>BusinessURI</code>中，其对应着follow的<code>businessName</code>。这也是<code>didLoader.next(businessName); </code>的基础。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="自定义idengine">自定义IdEngine</h4>
+<p><code>org.openingo.spring.extension.gedid.engine.IDidEngine</code>定义了实现一个IdEngine的基本要素</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#6272a4">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#6272a4"> * IDidEngine
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#6272a4"> *
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#6272a4"> * @author Qicz
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#6272a4"> * @since 2021/6/25 10:48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#6272a4"> */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">interface</span> <span style="color:#50fa7b">IDidEngine</span><span style="color:#ff79c6">&lt;</span>T<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>	<span style="color:#6272a4">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#6272a4">	 * Follow The business with name.
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span style="color:#6272a4">	 * @param businessName business name
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#6272a4">	 * @param startId the first id
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#6272a4">	 */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>	<span style="color:#8be9fd">void</span> <span style="color:#50fa7b">follow</span><span style="color:#ff79c6">(</span>String businessName<span style="color:#ff79c6">,</span> T startId<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>	<span style="color:#6272a4">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span style="color:#6272a4">	 * get fixed start id
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span style="color:#6272a4">	 *
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span style="color:#6272a4">	 * @param startId not all startId
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span style="color:#6272a4">	 * @return {@link T} default return startId self
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span style="color:#6272a4">	 */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>	<span style="color:#ff79c6">default</span> T <span style="color:#50fa7b">getFixedStartId</span><span style="color:#ff79c6">(</span>T startId<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>		<span style="color:#ff79c6">return</span> startId<span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>	<span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>	<span style="color:#6272a4">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span style="color:#6272a4">	 * the next id
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span style="color:#6272a4">	 * @param businessName the business name
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span style="color:#6272a4">	 * @return Next id.
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span style="color:#6272a4">	 */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>	T <span style="color:#50fa7b">next</span><span style="color:#ff79c6">(</span>String businessName<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span>	<span style="color:#6272a4">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span style="color:#6272a4">	 * throw onw unsupportedOperationException
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span style="color:#6272a4">	 * @param operation unsupported operation
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span style="color:#6272a4">	 */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span>	<span style="color:#ff79c6">default</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">unsupportedOperation</span><span style="color:#ff79c6">(</span>String operation<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span>		<span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> UnsupportedOperationException<span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">.</span><span style="color:#50fa7b">format</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;`%s` : The `%s` Operation is not supported!&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">engineName</span><span style="color:#ff79c6">(),</span> operation<span style="color:#ff79c6">));</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span>	<span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span>	<span style="color:#6272a4">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span style="color:#6272a4">	 * current engine&#39;s name
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span style="color:#6272a4">	 * @return the engine name
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span style="color:#6272a4">	 */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span>	String <span style="color:#50fa7b">engineName</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span><span style="color:#ff79c6">}</span>
+</code></pre></div><blockquote>
+<p>engineName()可以随意定义除了默认Schema之外的任意的名称。</p>
+</blockquote>
+<h5 id="自定义idengine示例">自定义IdEngine示例</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#6272a4">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#6272a4"> * QiczEngine
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#6272a4"> *
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#6272a4"> * @author Qicz
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#6272a4"> * @since 2021/6/25 17:41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#6272a4"> */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">QiczEngine</span> <span style="color:#8be9fd;font-style:italic">implements</span> IDidEngine<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">&gt;</span>  <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>	@Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>	<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">follow</span><span style="color:#ff79c6">(</span>String businessName<span style="color:#ff79c6">,</span> String startId<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>	<span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>	@Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>	<span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">getFixedStartId</span><span style="color:#ff79c6">(</span>String startId<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>		<span style="color:#ff79c6">return</span> <span style="color:#f1fa8c">&#34;&#34;</span><span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>	<span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>	@Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>	<span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">next</span><span style="color:#ff79c6">(</span>String businessName<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>		<span style="color:#ff79c6">return</span> UUID<span style="color:#ff79c6">.</span><span style="color:#50fa7b">randomUUID</span><span style="color:#ff79c6">().</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>	<span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>	@Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>	<span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">engineName</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>		<span style="color:#ff79c6">return</span> <span style="color:#f1fa8c">&#34;qicz&#34;</span><span style="color:#ff79c6">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>	<span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span style="color:#ff79c6">}</span>
+</code></pre></div><blockquote>
+<p>此处示例，以UUID为例。特别注意，自定义示例需要注入到SpringIoC才可以正常使用。</p>
+</blockquote>
+<h5 id="配置自定义idengine">配置自定义IdEngine</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#6272a4">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#6272a4"> * IdLoaderConfig
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#6272a4"> *
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#6272a4"> * @author Qicz
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#6272a4"> * @since 2021/6/24 16:03
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#6272a4"> */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>@Configuration
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">IdLoaderConfig</span> <span style="color:#8be9fd;font-style:italic">implements</span> DidLoaderConfigurer <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>	@Override
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>	<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">configureDidLoader</span><span style="color:#ff79c6">(</span>DidLoader didLoader<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>		<span style="color:#6272a4">// business abc
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#6272a4"></span>		didLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">follow</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;qicz://business-abcd&#34;</span><span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>    <span style="color:#ff79c6">...</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>	<span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span style="color:#ff79c6">}</span>
+</code></pre></div><blockquote>
+<p>使用<code>qicz</code>引擎follow业务<code>business-abcd</code>。</p>
+</blockquote>
+<h3 id="结语">结语</h3>
+<p>至此，关于的GeDid目前的所有都在这里了。后续有变动将在本文中陆续更新。</p>
+
+
+</article>
+
+
+<script src="https://utteranc.es/client.js"
+    repo="qicz/ThoughtsHUB"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://izcqi.com/posts/2021/04/21/spring-boot-bean-dynamic-validation/"><i class="fa fa-chevron-circle-left"></i> Spring Boot Bean动态校验</a>
+        </li>
+        
+        
+    </ul>
+</section>
+    
+
+
+
+
+</main>
+    <footer>
+        <h6>© 2012 - 2021 Qicz 
+            - Qicz&#39;s Thoughts HUB (<a href="https://izcqi.com/"> https://izcqi.com</a>)
+            | Theme <a href="https://github.com/qicz/qicz-hugo-theme">qicz-theme</a>
+            | This site USES <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></h6>
+    </footer>
+</div>
+
+<script async src="https://izcqi.com/js/busuanzi.pure.mini.js"></script>
+
+</body>
+
+</html>
+

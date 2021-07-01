@@ -111,6 +111,54 @@
         <ul>
           
           <li class="first">
+            <h1><a href="https://izcqi.com/posts/2021/07/01/gedid/" title="分布式ID生成器-GeDid">分布式ID生成器-GeDid</a></h1>
+            <aside>
+    
+    <span class="fa fa-calendar"><time class="post-date" datetime="2021-07-01T15:21:53&#43;08:00"> Jul 1, 2021 15:21</time>
+    &nbsp; | &nbsp; 
+    
+    <span class="fa fa-book">
+        <em class="categories">
+            
+                
+                <a href="https://izcqi.com/categories/openingo">openingo</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+     
+    <span class="fa fa-tags">
+        <em class="tags">
+            
+                
+                <a href="https://izcqi.com/tags/openingo">#openingo</a>
+            
+                , 
+                <a href="https://izcqi.com/tags/spring">#spring</a>
+            
+        </em>
+    </span>
+    
+    &nbsp; | &nbsp; 
+    <span class="fa fa-plane"><em> 3 minutes read</em> </span>
+</aside>
+            <p>源起 ​	尝试设计实现一个分布式id工具，已是好几年前的事了，这里是历史的痕迹。
+​	最初实现了基于redis（jedis客户端）的版本，而后在19年左右，考虑接入Zookeeper版本的。但是一直没有着手去做。
+​	最近借助一次&quot;翻新&quot;的机会，把它又拿出来，考虑完成Zookeeper版本的实现。因spring-boot-x已经有了很多的基础，也便于Gedid在springboot环境下使用，与springboot的整合和利用已有的springboot资源，所以考虑把Gedid迁移至spring-boot-x，以至于进行了大量的改造。多次调整之后，变有了现在的结果。也有了这个文章的整理。
+​	这个文章目的：把Gedid的使用场景和使用方式道明白。
+​
+开始 引入依赖
+1&lt;dependency&gt; 2 &lt;groupId&gt;org.openingo.spring&lt;/groupId&gt; 3 &lt;artifactId&gt;spring-boot-x&lt;/artifactId&gt; 4 &lt;version&gt;${spring-boot-x.version}&lt;/version&gt; 5&lt;/dependency&gt;  在启动类上加入@EnableExtension
+ 目前最新版本 ID引擎 目前支持引擎如下：
+  RedisIdEngine
+ 基于redis的incr指令； 对应的id类型是Long； 支持业务隔离，对应的businessName就是业务的标识； 支持lettuce和jedis，默认为lettuce;    ZookeeperIdEngine</p>
+            
+            <a href="https://izcqi.com/posts/2021/07/01/gedid/">Read more…</a>
+            
+          </li>
+          
+          <li >
             <h1><a href="https://izcqi.com/posts/2021/04/21/spring-boot-bean-dynamic-validation/" title="Spring Boot Bean动态校验">Spring Boot Bean动态校验</a></h1>
             <aside>
     
@@ -165,6 +213,9 @@
         <em class="categories">
             
                 
+                <a href="https://izcqi.com/categories/openingo">openingo</a>
+            
+                , 
                 <a href="https://izcqi.com/categories/spring">spring</a>
             
         </em>
@@ -176,6 +227,9 @@
         <em class="tags">
             
                 
+                <a href="https://izcqi.com/tags/openingo">#openingo</a>
+            
+                , 
                 <a href="https://izcqi.com/tags/spring">#spring</a>
             
                 , 
@@ -191,7 +245,7 @@
  项目地址：https://github.com/OpeningO/spring-boot-x
 源起 娱坛有云一人一首成名曲，虽互联网技术与娱之文艺不同，但个人仍以为技术与艺类同，皆为高雅之事。故成此项目，是以个人有利器，便于而后开疆扩土。
 总览 更新说明  重构整个包，发布4.0.0.RELEASE版本 [ 2021.6.30更新 ] 优化分布式id生成器，隔离默认的redis配置及Zookeeper配置，让id生成与业务完全分离 [ 2021.6.30更新 ] since v3.2.0.RELEASE  特性清单   手动事务管理 [2021.6.29更新]
-  分布式id生成器gedid，DidWorker [ 2021.6.25更新 ]</p>
+  分布式id生成器gedid，DidLoader [ 2021.6.25更新 ]</p>
             
             <a href="https://izcqi.com/posts/2021/01/09/spring-boot-x-specify/">Read more…</a>
             
