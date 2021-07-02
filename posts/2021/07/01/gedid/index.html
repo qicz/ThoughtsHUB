@@ -35,8 +35,7 @@
 开始 引入依赖
 1&lt;dependency&gt; 2 &lt;groupId&gt;org.openingo.spring&lt;/groupId&gt; 3 &lt;artifactId&gt;spring-boot-x&lt;/artifactId&gt; 4 &lt;version&gt;${spring-boot-x.version}&lt;/version&gt; 5&lt;/dependency&gt;  在启动类上加入@EnableExtension
  目前最新版本 ID引擎 目前支持引擎如下：
-  RedisIdEngine
- 基于redis的incr指令； 对应的id类型是Long； 支持业务隔离，对应的businessName就是业务的标识； 支持lettuce和jedis，默认为lettuce;    ZookeeperIdEngine" />
+  EtcdIdEngine since v4." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://izcqi.com/posts/2021/07/01/gedid/" />
 <meta property="article:published_time" content="2021-07-01T20:21:53+08:00" />
@@ -52,8 +51,7 @@
 开始 引入依赖
 1&lt;dependency&gt; 2 &lt;groupId&gt;org.openingo.spring&lt;/groupId&gt; 3 &lt;artifactId&gt;spring-boot-x&lt;/artifactId&gt; 4 &lt;version&gt;${spring-boot-x.version}&lt;/version&gt; 5&lt;/dependency&gt;  在启动类上加入@EnableExtension
  目前最新版本 ID引擎 目前支持引擎如下：
-  RedisIdEngine
- 基于redis的incr指令； 对应的id类型是Long； 支持业务隔离，对应的businessName就是业务的标识； 支持lettuce和jedis，默认为lettuce;    ZookeeperIdEngine"/>
+  EtcdIdEngine since v4."/>
 <meta name="generator" content="Hugo 0.68.3" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />  
   <link rel="stylesheet" href="https://izcqi.com/css/free.min.css?livereload=1574867372890" media="all">
@@ -209,6 +207,22 @@
 <p>目前支持引擎如下：</p>
 <ul>
 <li>
+<p><code>EtcdIdEngine</code>  <strong>since v4.3.0</strong> [ 2021.7.3更新 ]</p>
+<ul>
+<li>基于<code>PutResponse</code>的<code>Prev_Kv</code>的<code>version</code>;</li>
+<li>对应的id类型是<code>Long</code>；</li>
+<li>支持业务隔离，对应的<code>businessName</code>就是业务的标识；</li>
+<li>使用<code>jetcd</code>客户端；</li>
+</ul>
+</li>
+<li>
+<p><code>SnowflakeIdEngine</code> <strong>since v4.3.0</strong> [ 2021.7.3更新 ]</p>
+<ul>
+<li>对应的id类型是<code>Long</code>；</li>
+<li>天然支持业务隔离；</li>
+</ul>
+</li>
+<li>
 <p><code>RedisIdEngine</code></p>
 <ul>
 <li>基于redis的<code>incr</code>指令；</li>
@@ -255,6 +269,25 @@
 <h4 id="配置说明">配置说明</h4>
 <ul>
 <li>
+<p><code>EtcdIdEngine</code> [ 2021.7.3更新 ]</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">openingo</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>  <span style="color:#ff79c6">gedid</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">engine</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>      <span style="color:#ff79c6">etcd</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>        <span style="color:#ff79c6">endpoints</span>: http://localhost:<span style="color:#bd93f9">2379</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>        <span style="color:#ff79c6">user</span>: user
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>        <span style="color:#ff79c6">password</span>: password
+</code></pre></div><blockquote>
+<p>多个endpoint用<strong>英文</strong><code>,</code>分割</p>
+</blockquote>
+</li>
+<li>
+<p><code>SnowflakeIdEngine</code> [ 2021.7.3更新 ]</p>
+<blockquote>
+<p>无需配置</p>
+</blockquote>
+</li>
+<li>
 <p><code>RedisIdEngine</code></p>
 <blockquote>
 <p>与<code>spring-boot-starter-data-redis</code>配置类似，配置前缀为<code>openingo.gedid.engine.redis</code>。</p>
@@ -274,14 +307,18 @@
 </li>
 <li>
 <p>配置示例</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#ff79c6">openingo</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>  <span style="color:#ff79c6">gedid</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#ff79c6">engine</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>      <span style="color:#ff79c6">zookeeper</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>        <span style="color:#ff79c6">connect-string</span>: localhost:<span style="color:#bd93f9">2182</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>      <span style="color:#ff79c6">redis</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>        <span style="color:#ff79c6">cluster</span>:
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span>          <span style="color:#ff79c6">nodes</span>: localhost:<span style="color:#bd93f9">7291</span>,localhost:<span style="color:#bd93f9">7292</span>,localhost:<span style="color:#bd93f9">7293</span>,localhost:<span style="color:#bd93f9">7294</span>,localhost:<span style="color:#bd93f9">7295</span>,localhost:<span style="color:#bd93f9">7296</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#ff79c6">openingo</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>  <span style="color:#ff79c6">gedid</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>    <span style="color:#ff79c6">engine</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>      <span style="color:#ff79c6">zookeeper</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        <span style="color:#ff79c6">connect-string</span>: localhost:<span style="color:#bd93f9">2182</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>      <span style="color:#ff79c6">redis</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        <span style="color:#ff79c6">cluster</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>          <span style="color:#ff79c6">nodes</span>: localhost:<span style="color:#bd93f9">7291</span>,localhost:<span style="color:#bd93f9">7292</span>,localhost:<span style="color:#bd93f9">7293</span>,localhost:<span style="color:#bd93f9">7294</span>,localhost:<span style="color:#bd93f9">7295</span>,localhost:<span style="color:#bd93f9">7296</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>      <span style="color:#ff79c6">etcd</span>:
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>      <span style="color:#ff79c6">endpoints</span>: http://localhost:<span style="color:#bd93f9">2379</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        <span style="color:#ff79c6">user</span>: user
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>        <span style="color:#ff79c6">password</span>: password
 </code></pre></div><blockquote>
 <p>示例中使用了2182端口对应的zk，与默认的2181区分，目的是为了说明与默认配置的隔离；redis使用的集群配置。</p>
 <p>redis和Zookeeper的配置前缀与默认的配置完全隔离，目的是将业务使用的redis和Zookeeper和GeDid使用的redis、Zookeeper隔离开，如此配置不会造成业务与GeDid是相互影响。当然也可以配置成完全一样的服务器信息。</p>

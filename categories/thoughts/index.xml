@@ -40,6 +40,22 @@
 &lt;p&gt;目前支持引擎如下：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
+&lt;p&gt;&lt;code&gt;EtcdIdEngine&lt;/code&gt;  &lt;strong&gt;since v4.3.0&lt;/strong&gt; [ 2021.7.3更新 ]&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于&lt;code&gt;PutResponse&lt;/code&gt;的&lt;code&gt;Prev_Kv&lt;/code&gt;的&lt;code&gt;version&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;对应的id类型是&lt;code&gt;Long&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;支持业务隔离，对应的&lt;code&gt;businessName&lt;/code&gt;就是业务的标识；&lt;/li&gt;
+&lt;li&gt;使用&lt;code&gt;jetcd&lt;/code&gt;客户端；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;SnowflakeIdEngine&lt;/code&gt; &lt;strong&gt;since v4.3.0&lt;/strong&gt; [ 2021.7.3更新 ]&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对应的id类型是&lt;code&gt;Long&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;天然支持业务隔离；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
 &lt;p&gt;&lt;code&gt;RedisIdEngine&lt;/code&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;基于redis的&lt;code&gt;incr&lt;/code&gt;指令；&lt;/li&gt;
@@ -86,6 +102,25 @@
 &lt;h4 id=&#34;配置说明&#34;&gt;配置说明&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
+&lt;p&gt;&lt;code&gt;EtcdIdEngine&lt;/code&gt; [ 2021.7.3更新 ]&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;openingo&lt;/span&gt;:
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;  &lt;span style=&#34;color:#ff79c6&#34;&gt;gedid&lt;/span&gt;:
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ff79c6&#34;&gt;engine&lt;/span&gt;:
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;      &lt;span style=&#34;color:#ff79c6&#34;&gt;etcd&lt;/span&gt;:
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;        &lt;span style=&#34;color:#ff79c6&#34;&gt;endpoints&lt;/span&gt;: http://localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;2379&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;        &lt;span style=&#34;color:#ff79c6&#34;&gt;user&lt;/span&gt;: user
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;        &lt;span style=&#34;color:#ff79c6&#34;&gt;password&lt;/span&gt;: password
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;多个endpoint用&lt;strong&gt;英文&lt;/strong&gt;&lt;code&gt;,&lt;/code&gt;分割&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;SnowflakeIdEngine&lt;/code&gt; [ 2021.7.3更新 ]&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;无需配置&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
 &lt;p&gt;&lt;code&gt;RedisIdEngine&lt;/code&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;与&lt;code&gt;spring-boot-starter-data-redis&lt;/code&gt;配置类似，配置前缀为&lt;code&gt;openingo.gedid.engine.redis&lt;/code&gt;。&lt;/p&gt;
@@ -105,14 +140,18 @@
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;配置示例&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;openingo&lt;/span&gt;:
-&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;  &lt;span style=&#34;color:#ff79c6&#34;&gt;gedid&lt;/span&gt;:
-&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ff79c6&#34;&gt;engine&lt;/span&gt;:
-&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;      &lt;span style=&#34;color:#ff79c6&#34;&gt;zookeeper&lt;/span&gt;:
-&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;        &lt;span style=&#34;color:#ff79c6&#34;&gt;connect-string&lt;/span&gt;: localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;2182&lt;/span&gt;
-&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;      &lt;span style=&#34;color:#ff79c6&#34;&gt;redis&lt;/span&gt;:
-&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;        &lt;span style=&#34;color:#ff79c6&#34;&gt;cluster&lt;/span&gt;:
-&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;8&lt;/span&gt;          &lt;span style=&#34;color:#ff79c6&#34;&gt;nodes&lt;/span&gt;: localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7291&lt;/span&gt;,localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7292&lt;/span&gt;,localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7293&lt;/span&gt;,localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7294&lt;/span&gt;,localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7295&lt;/span&gt;,localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7296&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;openingo&lt;/span&gt;:
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;  &lt;span style=&#34;color:#ff79c6&#34;&gt;gedid&lt;/span&gt;:
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;    &lt;span style=&#34;color:#ff79c6&#34;&gt;engine&lt;/span&gt;:
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4&lt;/span&gt;      &lt;span style=&#34;color:#ff79c6&#34;&gt;zookeeper&lt;/span&gt;:
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5&lt;/span&gt;        &lt;span style=&#34;color:#ff79c6&#34;&gt;connect-string&lt;/span&gt;: localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;2182&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6&lt;/span&gt;      &lt;span style=&#34;color:#ff79c6&#34;&gt;redis&lt;/span&gt;:
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7&lt;/span&gt;        &lt;span style=&#34;color:#ff79c6&#34;&gt;cluster&lt;/span&gt;:
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8&lt;/span&gt;          &lt;span style=&#34;color:#ff79c6&#34;&gt;nodes&lt;/span&gt;: localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7291&lt;/span&gt;,localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7292&lt;/span&gt;,localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7293&lt;/span&gt;,localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7294&lt;/span&gt;,localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7295&lt;/span&gt;,localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;7296&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9&lt;/span&gt;      &lt;span style=&#34;color:#ff79c6&#34;&gt;etcd&lt;/span&gt;:
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10&lt;/span&gt;      &lt;span style=&#34;color:#ff79c6&#34;&gt;endpoints&lt;/span&gt;: http://localhost:&lt;span style=&#34;color:#bd93f9&#34;&gt;2379&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;11&lt;/span&gt;        &lt;span style=&#34;color:#ff79c6&#34;&gt;user&lt;/span&gt;: user
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;12&lt;/span&gt;        &lt;span style=&#34;color:#ff79c6&#34;&gt;password&lt;/span&gt;: password
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;示例中使用了2182端口对应的zk，与默认的2181区分，目的是为了说明与默认配置的隔离；redis使用的集群配置。&lt;/p&gt;
 &lt;p&gt;redis和Zookeeper的配置前缀与默认的配置完全隔离，目的是将业务使用的redis和Zookeeper和GeDid使用的redis、Zookeeper隔离开，如此配置不会造成业务与GeDid是相互影响。当然也可以配置成完全一样的服务器信息。&lt;/p&gt;
