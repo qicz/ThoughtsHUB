@@ -284,9 +284,18 @@
 <li>
 <p><code>SnowflakeIdEngine</code> [ 2021.7.3更新 ]</p>
 <blockquote>
-<p>无需配置</p>
+<p>无需配置；默认<code>workerId</code>及<code>dataCenterId</code>都是<code>0L</code>，可以通过重新注入<code>SnowflakeIdEngine</code>到SpringIoC的方式调整二者，二者取值均需<code>&lt;=31L</code>。</p>
 </blockquote>
-</li>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>@Configuration
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>  <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">SnowflakeConfig</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>      @Bean
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>      @ConditionalOnMissingBean
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>      SnowflakeIdEngine <span style="color:#50fa7b">snowflakeIdEngine</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>          <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> SnowflakeIdEngine<span style="color:#ff79c6">(</span>12L<span style="color:#ff79c6">,</span> 13L<span style="color:#ff79c6">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span>      <span style="color:#ff79c6">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span>  <span style="color:#ff79c6">}</span>
+</code></pre></div></li>
 <li>
 <p><code>RedisIdEngine</code></p>
 <blockquote>

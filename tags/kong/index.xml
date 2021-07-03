@@ -117,9 +117,18 @@
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;SnowflakeIdEngine&lt;/code&gt; [ 2021.7.3更新 ]&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;无需配置&lt;/p&gt;
+&lt;p&gt;无需配置；默认&lt;code&gt;workerId&lt;/code&gt;及&lt;code&gt;dataCenterId&lt;/code&gt;都是&lt;code&gt;0L&lt;/code&gt;，可以通过重新注入&lt;code&gt;SnowflakeIdEngine&lt;/code&gt;到SpringIoC的方式调整二者，二者取值均需&lt;code&gt;&amp;lt;=31L&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;/li&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;@Configuration
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;  &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#8be9fd;font-style:italic&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#50fa7b&#34;&gt;SnowflakeConfig&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;      @Bean
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;      @ConditionalOnMissingBean
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;      SnowflakeIdEngine &lt;span style=&#34;color:#50fa7b&#34;&gt;snowflakeIdEngine&lt;/span&gt;&lt;span style=&#34;color:#ff79c6&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;          &lt;span style=&#34;color:#ff79c6&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ff79c6&#34;&gt;new&lt;/span&gt; SnowflakeIdEngine&lt;span style=&#34;color:#ff79c6&#34;&gt;(&lt;/span&gt;12L&lt;span style=&#34;color:#ff79c6&#34;&gt;,&lt;/span&gt; 13L&lt;span style=&#34;color:#ff79c6&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;8&lt;/span&gt;      &lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;9&lt;/span&gt;  &lt;span style=&#34;color:#ff79c6&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;RedisIdEngine&lt;/code&gt;&lt;/p&gt;
 &lt;blockquote&gt;
